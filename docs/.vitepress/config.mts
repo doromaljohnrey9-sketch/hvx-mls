@@ -2,8 +2,8 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "NextBase",
-  description: "Production-ready full-stack starter with Next.js 16, Supabase, and Drizzle ORM",
+  title: "HVX",
+  description: "HVX (HEMS Past-Exam Video Explainer Learning System MVP)",
   ignoreDeadLinks: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -32,10 +32,6 @@ export default defineConfig({
           { text: "HTTP Status", link: "/patterns/http-status" },
         ],
       },
-    ],
-
-    socialLinks: [
-      { icon: "github", link: "https://github.com/wannacry081/Nextjs-Supabase-Template" },
     ],
   },
 });

@@ -2,6 +2,7 @@
   "name": "hvx",
   "version": "0.1.0",
   "private": true,
+  "description": "HVX: HEMS Past-Exam Video Explainer Learning System MVP",
   "scripts": {
     "start:all": "concurrently \"pnpm dev\" \"pnpm docs:dev\" \"pnpm db:studio\"",
     "dev": "next dev",

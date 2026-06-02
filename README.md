@@ -1,163 +1,71 @@
-# NextBase
+# HVX (HEMS Past-Exam Video Explainer Learning System MVP)
 
-![NextBase Browser Image](/public/nextbase-template.png)
+HVX transitions a manual process—teachers sending individual past-exam solution videos via KakaoTalk—into an automated, secure, and searchable sub-module within the existing HEMS ecosystem.
 
-A production-ready full-stack starter built with **Next.js 16**, **Supabase**, **Drizzle ORM**, and **TypeScript**.
+The primary goal is to **allow approved students to easily find and watch necessary exam videos while strictly preventing external content leakage.**
 
-## Tech Stack
+## 📋 Executive Summary
 
-| Category        | Technology                                    |
-| --------------- | --------------------------------------------- |
-| Framework       | Next.js 16 (App Router), React 19, TypeScript |
-| Auth & Database | Supabase (email/password, OAuth), PostgreSQL  |
-| ORM             | Drizzle ORM (type-safe queries, migrations)   |
-| UI              | Shadcn/ui, Radix, Tailwind CSS v4             |
-| State           | TanStack React Query, Zustand                 |
-| Forms           | react-hook-form, Zod                          |
-| Testing         | Vitest (unit), Playwright (E2E)               |
-| Docs            | VitePress                                     |
-| Deploy          | Docker, GitHub Actions CI                     |
+- **Objective:** Automate, secure, and organize exam solution videos.
+- **Security:** "Approved students only" access model. No video download capabilities.
+- **Priority:** CEO Matt (Target Launch: Tuesday, June 9, 2026).
+- **Hard Deadline:** Friday, June 5, 2026.
+
+## 🎯 Scope: MVP
+
+- **In-Scope:** User access control, video search/filtering, metadata management, and responsive playback.
+- **Out of Scope (Phase 3):** AI recommendation engines, auto-tagging, weak-point analysis, automated reports.
+
+## 👥 User Roles & Permissions
+
+1. **Pending:** Default state for self-signed-up students; restricted from accessing any videos.
+2. **Student:** Approved users who can search and play videos.
+3. **Teacher / Branch Admin:** Can approve/reject/block students and manage video data for their specific branch.
+4. **Super Admin:** Global management rights across all branches.
+
+## 📅 5-Day Work Breakdown Structure (WBS)
+
+| Day | Focus Area | Key Deliverables |
+| --- | --- | --- |
+| **Day 1** | **Foundation** | Data model normalization (DB design); Role/permission policy mapping; Student + Admin screen wireframing. |
+| **Day 2** | **Auth & Approval** | Student self-registration (defaulting to pending); Secure hashed password login; Teacher/Admin student management dashboard. |
+| **Day 3** | **Search & Playback** | Metadata filter search; Mobile/Tablet-first responsive video player; Restricted video URL structures. |
+| **Day 4** | **Admin Features** | Video uploading (files + external URLs); Metadata entry with duplicate alerts; Visibility toggles (`Public`/`Private`/`Hidden`). |
+| **Day 5** | **Migration & QA** | Bulk Excel upload (~600 legacy videos); Verification of completion statuses; Internal QA and final deployment. |
+
+## ✅ Core Acceptance Criteria
+
+- 🔒 **Security First:** Unapproved students have zero access. No video download capabilities exposed.
+- **Search & Usability:** Fluid search by school name and problem number (Tablet/Mobile-first).
+- **Admin Control:** Visibility toggles, bulk-import via Excel.
+- **Localization:** All user-facing UI labels must be rendered in **Korean**.
+
+---
+
+## Technical Foundation
+
+Built on **NextBase** (Next.js 16, Supabase, Drizzle ORM).
+
+### Tech Stack
+
+- **Framework:** Next.js 16 (App Router), React 19, TypeScript
+- **Auth & Database:** Supabase (email/password, OAuth), PostgreSQL
+- **ORM:** Drizzle ORM
+- **UI:** Shadcn/ui, Radix, Tailwind CSS v4
+- **State:** TanStack React Query, Zustand
+- **Docs:** VitePress
 
 ## Quick Start
 
 ```bash
 pnpm install
 cp .env.example .env
-# Add your Supabase credentials (see Environment below)
+# Configure environment variables
 pnpm db:push
-pnpm dev
+pnpm start:development
 ```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-> **Note:** The initial migration includes a database trigger that auto-creates a `profiles` row when a new user signs up. This is applied automatically when you run `pnpm db:push`. See the [Getting Started guide](./docs/overview.md) for details.
-
-## Environment
-
-Copy `.env.example` to `.env` and configure:
-
-| Variable                               | Required | Source                                           |
-| -------------------------------------- | -------- | ------------------------------------------------ |
-| `DATABASE_URL`                         | Yes      | Supabase > Settings > Database                   |
-| `NEXT_PUBLIC_SUPABASE_URL`             | Yes      | Supabase > Settings > API                        |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Yes      | Supabase > Settings > API                        |
-| `NEXT_PUBLIC_SITE_URL`                 | —        | Defaults to `http://localhost:3000`              |
-| `RESEND_API_KEY`                       | —        | [Resend](https://resend.com) for email           |
-| `RESEND_EMAIL_FROM`                    | —        | Sender address                                   |
-| `UPSTASH_REDIS_REST_URL`               | —        | [Upstash](https://upstash.com) for rate limiting |
-| `UPSTASH_REDIS_REST_TOKEN`             | —        | Upstash token                                    |
-
-> **Offline development:** Run `supabase start` for a local Supabase instance. See the [full guide](./docs/overview.md#local-development-offline).
-
-## Commands
-
-```bash
-# Development
-pnpm dev                    # Start dev server
-pnpm build                  # Production build
-pnpm start                  # Serve production build
-pnpm start:all              # Dev + docs + Drizzle Studio
-
-# Database
-pnpm db:push                # Push schema to database
-pnpm db:migrate <name>      # Generate a migration
-pnpm db:update              # Apply pending migrations
-pnpm db:studio              # Open Drizzle Studio
-
-# Quality
-pnpm lint                   # ESLint
-pnpm lint:fix               # Auto-fix lint issues
-pnpm format                 # Prettier
-
-# Testing
-pnpm test:unit              # Vitest
-pnpm test:e2e               # Playwright (Chromium, Firefox, WebKit)
-pnpm test:e2e:ui            # Playwright with UI
-pnpm test:e2e:debug         # Debug mode
-
-# Documentation
-pnpm docs:dev               # VitePress dev server (port 4000)
-pnpm docs:build             # Build docs site
-pnpm docs:preview           # Preview production docs
-```
-
-## Project Structure
-
-```text
-app/
-├── (auth)/                 # Login, register, password reset
-├── (protected)/            # Dashboard (auth-gated)
-├── (public)/               # Landing page
-└── api/                    # API endpoints
-components/
-├── ui/                     # Shadcn/ui primitives (do not modify)
-├── shared/                 # Reusable components
-├── app-sidebar/            # Sidebar shell
-└── providers/              # Context providers
-lib/
-├── supabase/               # Auth + database clients
-├── drizzle/                # ORM connection
-├── guards/                 # Auth guard (requireAuth)
-├── query/                  # React Query client + keys
-├── response.ts             # API response helper
-├── ratelimit.ts            # Rate limiting (Upstash)
-└── seo.ts                  # Metadata helper
-constants/                  # Routes, HTTP status, sidebar, SEO
-schemas/                    # Zod validation schemas
-services/                   # API client wrappers
-queries/                    # React Query option factories
-hooks/                      # Custom hooks
-drizzle/                    # Database schemas + migrations
-tests/                      # Unit + E2E tests
-docs/                       # VitePress documentation
-```
-
-## Features
-
-- **Authentication** — Email/password + OAuth (GitHub, Google), pre-built forms
-- **Route Protection** — Middleware-based auth with automatic redirects
-- **API Layer** — Consistent responses, auth guards, rate limiting
-- **Database** — Drizzle ORM with migrations, studio, soft deletes
-- **Sidebar Shell** — Collapsible navigation with user menu
-- **Email** — Resend integration (optional)
-- **SEO** — Metadata helper with Open Graph and Twitter cards
-- **Rate Limiting** — Tiered Upstash Redis limits (optional, skipped in dev)
-- **CI/CD** — GitHub Actions for lint, tests, and build
-- **Docker** — Multi-stage production build (Node 22 Alpine)
 
 ## Documentation
 
-```bash
-pnpm docs:dev     # Start VitePress at http://localhost:4000
-```
-
-- **[Getting Started](./docs/overview.md)** — Setup, structure, core features
-- **[Architecture Patterns](./docs/patterns/index.md)** — API response, auth guard, validation, routes, caching, status codes
-- **[AGENTS.md](./AGENTS.md)** — Full developer reference
-
-## Configuration
-
-| File                          | Purpose                                     |
-| ----------------------------- | ------------------------------------------- |
-| `next.config.ts`              | Next.js (React Compiler, standalone output) |
-| `tsconfig.json`               | TypeScript (strict mode)                    |
-| `proxy.ts`                    | Route protection middleware                 |
-| `components.json`             | Shadcn/ui configuration                     |
-| `eslint.config.mjs`           | ESLint (flat config)                        |
-| `.prettierrc`                 | Prettier formatting                         |
-| `config/drizzle.config.ts`    | Drizzle ORM                                 |
-| `config/playwright.config.ts` | Playwright E2E tests                        |
-| `config/vitest.config.mts`    | Vitest unit tests                           |
-
-## Resources
-
-| Tool         | Link                                           |
-| ------------ | ---------------------------------------------- |
-| Next.js      | [nextjs.org/docs](https://nextjs.org/docs)     |
-| Supabase     | [supabase.com/docs](https://supabase.com/docs) |
-| Drizzle ORM  | [orm.drizzle.team](https://orm.drizzle.team)   |
-| Shadcn/ui    | [ui.shadcn.com](https://ui.shadcn.com)         |
-| Origin UI    | [originui.com](https://originui.com)           |
-| tweakcn      | [tweakcn.com](https://tweakcn.com)             |
-| Tailwind CSS | [tailwindcss.com](https://tailwindcss.com)     |
-| Upstash      | [upstash.com](https://upstash.com)             |
+- **[VitePress Docs](./docs/overview.md)** — Strategy, UI patterns, and API reference.
+- **[AGENTS.md](./AGENTS.md)** — Developer reference for the starter foundation.

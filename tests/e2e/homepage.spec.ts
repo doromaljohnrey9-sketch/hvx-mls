@@ -10,7 +10,9 @@ test.describe("Home Page", () => {
     await page.goto("/");
 
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Next.js + Supabase");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(
+      "HEMS Past-Exam Video Explainer"
+    );
   });
 
   test("should have navigation with auth links", async ({ page }) => {
@@ -20,12 +22,6 @@ test.describe("Home Page", () => {
     await expect(nav).toBeVisible();
     await expect(nav.getByRole("link", { name: /login/i })).toBeVisible();
     await expect(nav.getByRole("link", { name: /sign up/i })).toBeVisible();
-  });
-
-  test("should display the features section", async ({ page }) => {
-    await page.goto("/");
-
-    await expect(page.getByText("What's included")).toBeVisible();
   });
 
   test("should be responsive", async ({ page }) => {

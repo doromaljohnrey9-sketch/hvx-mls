@@ -4,7 +4,7 @@ outline: deep
 
 # Getting Started
 
-A production-ready template with Next.js 16, Supabase, Drizzle ORM, and TanStack Query. Clone, configure, and start building.
+HVX (HEMS Past-Exam Video Explainer Learning System MVP) is a secure, automated, and searchable solution video learning system. It transitions manual video distribution into a streamlined, auth-gated experience within the HEMS ecosystem.
 
 ## Quick Start
 
@@ -129,6 +129,15 @@ supabase stop
 | `(protected)` | App shell (auth-gated) | `/dashboard`                                                 |
 
 Each group has its own layout and error boundary.
+
+## User Roles & Permissions
+
+The HVX project enforces a tiered access model to ensure security and content integrity:
+
+1.  **Pending**: Default state for self-signed-up students. Restricted from accessing any videos until approved.
+2.  **Student**: Approved users who can search and play videos.
+3.  **Teacher / Branch Admin**: Can approve/reject/block students and manage video data for their specific branch.
+4.  **Super Admin**: Holds global management rights across all branches.
 
 ### Key Directories
 

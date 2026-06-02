@@ -3,12 +3,12 @@
 layout: home
 
 hero:
-  name: "NextBase"
-  text: "Starter Template"
-  tagline: "Production-ready full-stack template with authentication, database, and deployment"
+  name: "HVX"
+  text: "HEMS Past-Exam Video Explainer"
+  tagline: "Secure, searchable, and automated solution video learning system"
   image:
     src: logo.png
-    alt: NextBase
+    alt: HVX
   actions:
     - theme: brand
       text: Get Started
