@@ -8,6 +8,13 @@
       "when": 1768151556388,
       "tag": "0000_InitialCreate",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1780393855577,
+      "tag": "0001_HVX_Foundation",
+      "breakpoints": true
     }
   ]
 }
