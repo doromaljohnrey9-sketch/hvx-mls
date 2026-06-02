@@ -63,7 +63,9 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
       </SidebarHeader>
       <SidebarContent>
         <NavItems {...APP_SIDEBAR_ITEMS.platform} />
-        <NavDrawer title={APP_SIDEBAR_ITEMS.drawer.title} items={APP_SIDEBAR_ITEMS.drawer.items} />
+        {profile && ["teacher", "branch_admin", "super_admin"].includes(profile.role) && (
+          <NavDrawer title={APP_SIDEBAR_ITEMS.drawer.title} items={APP_SIDEBAR_ITEMS.drawer.items} />
+        )}
         <NavItems {...APP_SIDEBAR_ITEMS.secondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

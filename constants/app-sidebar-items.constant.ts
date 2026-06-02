@@ -1,83 +1,52 @@
 import {
-  FrameIcon,
-  SettingsIcon,
-  MapIcon,
-  PieChartIcon,
-  SendIcon,
   LayoutDashboardIcon,
-  DatabaseIcon,
+  SearchIcon,
   UsersIcon,
+  VideoIcon,
 } from "lucide-react";
 
-// Example sidebar items — replace with your own pages and routes.
-// Items with url: "#" are placeholders. Update them when you add real pages.
+// HVX Sidebar navigation items
 export const APP_SIDEBAR_ITEMS = {
   platform: {
-    title: "Platform",
+    title: "HVX",
     items: [
       {
-        name: "Design Engineering",
-        url: "#",
-        icon: FrameIcon,
+        name: "Dashboard",
+        url: "/dashboard",
+        icon: LayoutDashboardIcon,
       },
       {
-        name: "Sales & Marketing",
-        url: "#",
-        icon: PieChartIcon,
-      },
-      {
-        name: "Travel",
-        url: "#",
-        icon: MapIcon,
+        name: "Search Videos",
+        url: "/dashboard/search",
+        icon: SearchIcon,
       },
     ],
   },
   drawer: {
-    title: "Navigation",
+    title: "Management",
     items: [
       {
-        title: "Dashboard",
-        url: "/dashboard",
-        icon: LayoutDashboardIcon,
-        isActive: true,
-        subItems: [
-          { title: "Overview", url: "/dashboard" },
-          { title: "Analytics", url: "#" },
-        ],
-      },
-      {
-        title: "Data",
-        url: "#",
-        icon: DatabaseIcon,
-        subItems: [
-          { title: "Tables", url: "#" },
-          { title: "Migrations", url: "#" },
-        ],
-      },
-      {
-        title: "Users",
-        url: "#",
+        title: "Students",
+        url: "/admin/students",
         icon: UsersIcon,
+        isActive: false,
         subItems: [
-          { title: "All Users", url: "#" },
-          { title: "Roles", url: "#" },
+          { title: "Student List", url: "/admin/students" },
+        ],
+      },
+      {
+        title: "Videos",
+        url: "/admin/videos",
+        icon: VideoIcon,
+        subItems: [
+          { title: "All Videos", url: "/admin/videos" },
+          { title: "Add Video", url: "/admin/videos/new" },
         ],
       },
     ],
   },
   secondary: {
-    title: "Quick Access",
-    items: [
-      {
-        name: "Settings",
-        url: "#",
-        icon: SettingsIcon,
-      },
-      {
-        name: "Feedback",
-        url: "#",
-        icon: SendIcon,
-      },
-    ],
+    title: "",
+    items: [],
   },
 };
