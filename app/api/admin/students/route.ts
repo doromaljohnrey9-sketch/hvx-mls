@@ -1,7 +1,7 @@
 import { eq, and, like, or } from "drizzle-orm";
 import { NextRequest } from "next/server";
 
-import { profiles } from "@/drizzle/schemas";
+import { profiles, branches } from "@/drizzle/schemas";
 import { db } from "@/lib/drizzle/db";
 import { apiResponse } from "@/lib/response";
 import { rateLimit } from "@/lib/ratelimit";
@@ -57,7 +57,21 @@ export async function GET(request: NextRequest) {
 
     // Build the query
     let countQuery = db.select().from(profiles);
-    let dataQuery = db.select().from(profiles);
+    let dataQuery = db
+      .select({
+        id: profiles.id,
+        email: profiles.email,
+        name: profiles.name,
+        imageUrl: profiles.imageUrl,
+        role: profiles.role,
+        branchId: profiles.branchId,
+        createdAt: profiles.createdAt,
+        updatedAt: profiles.updatedAt,
+        deletedAt: profiles.deletedAt,
+        branchName: branches.name,
+      })
+      .from(profiles)
+      .leftJoin(branches, eq(profiles.branchId, branches.id));
 
     if (conditions.length > 0) {
       const whereCondition = and(...conditions);

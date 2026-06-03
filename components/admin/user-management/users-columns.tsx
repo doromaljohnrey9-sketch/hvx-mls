@@ -85,6 +85,28 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
       size: 160,
     },
     {
+      accessorKey: "branchName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          Branch
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const user = row.original;
+        return (
+          <div className="flex flex-col">
+            <span className="text-sm">{user.branchName || "N/A"}</span>
+          </div>
+        );
+      },
+      size: 180,
+    },
+    {
       accessorKey: "createdAt",
       header: ({ column }) => (
         <Button

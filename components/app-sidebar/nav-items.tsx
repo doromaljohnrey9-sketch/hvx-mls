@@ -1,6 +1,7 @@
 import * as React from "react";
 import { type LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   SidebarGroup,
@@ -23,6 +24,8 @@ interface NavItemsProps extends React.ComponentPropsWithoutRef<typeof SidebarGro
 }
 
 export const NavItems = ({ title, items, userRole, ...props }: NavItemsProps) => {
+  const pathname = usePathname();
+
   // Filter items based on user role
   const filteredItems = items.filter((item) => {
     if (!item.roles) return true; // No role restriction = show to all
@@ -37,7 +40,7 @@ export const NavItems = ({ title, items, userRole, ...props }: NavItemsProps) =>
         <SidebarMenu>
           {filteredItems.map((item) => (
             <SidebarMenuItem key={item.name}>
-              <SidebarMenuButton asChild size="sm">
+              <SidebarMenuButton asChild size="sm" isActive={pathname === item.url}>
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.name}</span>

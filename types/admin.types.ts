@@ -1,6 +1,8 @@
 import type { SelectProfile, UserRole } from "./drizzle.types";
 
-export type AdminUser = SelectProfile;
+export type AdminUser = SelectProfile & {
+  branchName?: string | null;
+};
 
 export interface AdminUserUpdate {
   role?: UserRole;

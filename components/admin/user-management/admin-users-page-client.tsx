@@ -25,7 +25,7 @@ export function AdminUsersPageClient() {
   const columns = createUsersColumns({ updateUser: updateUser });
 
   return (
-    <div className="flex-1 space-y-6 p-8">
+    <div className="flex-1 min-w-0 space-y-6 p-8">
       <UsersPageHeader />
       <UsersFilters
         search={search}
