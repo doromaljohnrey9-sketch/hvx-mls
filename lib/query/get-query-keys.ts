@@ -10,4 +10,7 @@ export const getQueryKey = {
   videos: {
     all: ["videos"] as const,
   },
+  branches: {
+    all: ["branches"] as const,
+  },
 } as const;

@@ -290,18 +290,24 @@ pnpm db:studio            # Visual editor
 The dashboard fetches the user's profile from the `profiles` table. A database trigger auto-creates a `profiles` row when a new user signs up. Since Drizzle ORM does not support triggers, you must **manually add this trigger** via the [Supabase SQL Editor](https://supabase.com/dashboard/project/_/sql):
 
 ```sql
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY DEFINER SET search_path = ''
 AS $$
 BEGIN
-  INSERT INTO public.profiles (id, name, email, image_url)
+  INSERT INTO public.profiles (id, name, email, image_url, branch_id)
   VALUES (
     new.id,
     new.raw_user_meta_data ->> 'name',
-    new.raw_user_meta_data ->> 'email',
-    new.raw_user_meta_data ->> 'avatar_url'
+    new.email,
+    new.raw_user_meta_data ->> 'avatar_url',
+    CASE
+      WHEN new.raw_user_meta_data ->> 'branchId' IS NULL THEN NULL
+      ELSE (new.raw_user_meta_data ->> 'branchId')::uuid
+    END
   );
   RETURN new;
 END;

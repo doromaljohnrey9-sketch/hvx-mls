@@ -15,6 +15,20 @@
       "when": 1780393855577,
       "tag": "0001_HVX_Foundation",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780456324147,
+      "tag": "0002_deep_prima",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1780459092880,
+      "tag": "0003_slim_goblin_queen",
+      "breakpoints": true
     }
   ]
 }

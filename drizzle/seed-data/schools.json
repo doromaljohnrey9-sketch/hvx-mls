@@ -1,0 +1,57 @@
+[
+  {
+    "name": "Main Branch",
+    "schools": [
+      {
+        "name": "Central High School"
+      },
+      {
+        "name": "City Academy"
+      }
+    ]
+  },
+  {
+    "name": "North Branch",
+    "schools": [
+      {
+        "name": "North High School"
+      },
+      {
+        "name": "Riverside Academy"
+      }
+    ]
+  },
+  {
+    "name": "South Branch",
+    "schools": [
+      {
+        "name": "South High School"
+      },
+      {
+        "name": "Lakeside Academy"
+      }
+    ]
+  },
+  {
+    "name": "East Branch",
+    "schools": [
+      {
+        "name": "East High School"
+      },
+      {
+        "name": "Mountainview Academy"
+      }
+    ]
+  },
+  {
+    "name": "West Branch",
+    "schools": [
+      {
+        "name": "West High School"
+      },
+      {
+        "name": "Valley Academy"
+      }
+    ]
+  }
+]

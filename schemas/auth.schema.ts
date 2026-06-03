@@ -3,6 +3,9 @@ import { z } from "zod";
 const emailSchema = z.email("Please enter a valid email address");
 const passwordSchema = z.string().min(6, "Password must be at least 6 characters long");
 const nameSchema = z.string().min(2, "Name must be at least 2 characters long");
+const branchIdSchema = z
+  .union([z.string().uuid("Please select a valid branch"), z.literal("none"), z.null()])
+  .optional();
 
 export const loginSchema = z.object({
   email: emailSchema,
@@ -15,6 +18,7 @@ export const registerSchema = z.object({
   name: nameSchema,
   email: emailSchema,
   password: passwordSchema,
+  branchId: branchIdSchema,
 });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;
