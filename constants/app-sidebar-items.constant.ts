@@ -1,9 +1,4 @@
-import {
-  LayoutDashboardIcon,
-  SearchIcon,
-  UsersIcon,
-  VideoIcon,
-} from "lucide-react";
+import { LayoutDashboardIcon, SearchIcon, UsersIcon, VideoIcon } from "lucide-react";
 
 // HVX Sidebar navigation items
 export const APP_SIDEBAR_ITEMS = {
@@ -14,34 +9,19 @@ export const APP_SIDEBAR_ITEMS = {
         name: "Dashboard",
         url: "/dashboard",
         icon: LayoutDashboardIcon,
+        roles: ["teacher", "branch_admin", "super_admin"], // Only admin roles see dashboard
       },
       {
         name: "Search Videos",
-        url: "/dashboard/search",
+        url: "/search",
         icon: SearchIcon,
+        roles: ["student", "teacher", "branch_admin", "super_admin"], // All approved roles
       },
-    ],
-  },
-  drawer: {
-    title: "Management",
-    items: [
       {
-        title: "Students",
+        name: "Students",
         url: "/admin/students",
         icon: UsersIcon,
-        isActive: false,
-        subItems: [
-          { title: "Student List", url: "/admin/students" },
-        ],
-      },
-      {
-        title: "Videos",
-        url: "/admin/videos",
-        icon: VideoIcon,
-        subItems: [
-          { title: "All Videos", url: "/admin/videos" },
-          { title: "Add Video", url: "/admin/videos/new" },
-        ],
+        roles: ["teacher", "branch_admin", "super_admin"], // Admin only
       },
     ],
   },

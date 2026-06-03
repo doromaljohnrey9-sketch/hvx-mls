@@ -16,7 +16,6 @@ import {
 import { NavUser } from "@/components/app-sidebar/nav-user";
 
 import { NavItems } from "./nav-items";
-import { NavDrawer } from "./nav-drawer";
 
 import { APP_SIDEBAR_ITEMS } from "@/constants/app-sidebar-items.constant";
 
@@ -62,11 +61,8 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavItems {...APP_SIDEBAR_ITEMS.platform} />
-        {profile && ["teacher", "branch_admin", "super_admin"].includes(profile.role) && (
-          <NavDrawer title={APP_SIDEBAR_ITEMS.drawer.title} items={APP_SIDEBAR_ITEMS.drawer.items} />
-        )}
-        <NavItems {...APP_SIDEBAR_ITEMS.secondary} className="mt-auto" />
+        <NavItems {...APP_SIDEBAR_ITEMS.platform} userRole={profile?.role} />
+        <NavItems {...APP_SIDEBAR_ITEMS.secondary} className="mt-auto" userRole={profile?.role} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser profile={profile} handleSignOut={handleSignOut} isLoading={isLoading} />

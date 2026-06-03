@@ -17,16 +17,25 @@ interface NavItemsProps extends React.ComponentPropsWithoutRef<typeof SidebarGro
     name: string;
     url: string;
     icon: LucideIcon;
+    roles?: string[];
   }[];
+  userRole?: string;
 }
 
-export const NavItems = ({ title, items, ...props }: NavItemsProps) => {
+export const NavItems = ({ title, items, userRole, ...props }: NavItemsProps) => {
+  // Filter items based on user role
+  const filteredItems = items.filter((item) => {
+    if (!item.roles) return true; // No role restriction = show to all
+    if (!userRole) return false; // No user role = don't show
+    return item.roles.includes(userRole);
+  });
+
   return (
     <SidebarGroup {...props}>
       {title && <SidebarGroupLabel>{title}</SidebarGroupLabel>}
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton asChild size="sm">
                 <Link href={item.url}>

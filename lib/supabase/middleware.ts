@@ -10,7 +10,9 @@ import { profiles } from "@/drizzle/schemas";
  * Updates session and handles route protection with role-based gating.
  * - Unauthenticated users → redirect to /login
  * - Pending users accessing protected routes (except /pending) → redirect to /pending
- * - Non-admin users accessing /admin/* → redirect to /dashboard
+ * - Non-admin users accessing /admin/* → redirect to /dashboard (students to /search)
+ * - Students accessing /dashboard → redirect to /search
+ * - Approved users accessing /pending → redirect to /dashboard (students to /search)
  */
 export async function updateSession(request: NextRequest, protectedRoutes: string[]) {
   const response = NextResponse.next({ request });
@@ -69,21 +71,28 @@ export async function updateSession(request: NextRequest, protectedRoutes: strin
     }
 
     // Admin route check — only teacher, branch_admin, super_admin
-    const isAdminRoute =
-      pathname === "/admin" ||
-      pathname.startsWith("/admin/");
+    const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
     const adminRoles = ["teacher", "branch_admin", "super_admin"];
 
     if (isAdminRoute && !adminRoles.includes(profile.role)) {
       const url = request.nextUrl.clone();
-      url.pathname = "/dashboard";
+      // Students redirect to search, others to dashboard
+      url.pathname = profile.role === "student" ? "/search" : "/dashboard";
       return NextResponse.redirect(url);
     }
 
-    // Approved users trying to access /pending — redirect to dashboard
+    // Students trying to access dashboard — redirect to search
+    if (profile.role === "student" && pathname === "/dashboard") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/search";
+      return NextResponse.redirect(url);
+    }
+
+    // Approved users trying to access /pending — redirect based on role
     if (pathname === "/pending") {
       const url = request.nextUrl.clone();
-      url.pathname = "/dashboard";
+      // Students redirect to search, others to dashboard
+      url.pathname = profile.role === "student" ? "/search" : "/dashboard";
       return NextResponse.redirect(url);
     }
   } catch (error) {
