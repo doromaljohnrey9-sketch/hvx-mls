@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 import { ArrowUpDownIcon, PlayIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import type { Video } from "@/types/video.types";
 
@@ -20,15 +21,16 @@ export function createVideosColumns() {
       header: () => <div className="text-sm font-medium">Actions</div>,
       cell: ({ row }) => {
         const video = row.original;
+        const router = useRouter();
         return (
           <Button
             variant="ghost"
             size="sm"
             onClick={() => {
-              window.open(video.videoUrl, "_blank");
+              router.push(`/videos/${video.id}`);
             }}
           >
-            <PlayIcon className="h-4 w-4 mr-2" />
+            <PlayIcon className="size-4 mr-2" />
             Watch
           </Button>
         );
@@ -44,7 +46,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Title
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -62,7 +64,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           School
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -80,7 +82,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Year
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -98,7 +100,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Semester
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -116,7 +118,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Exam Type
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -134,7 +136,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Grade
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -152,7 +154,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Subject
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -170,7 +172,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Problem No.
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {

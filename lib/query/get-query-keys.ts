@@ -9,6 +9,7 @@ export const getQueryKey = {
   },
   videos: {
     all: ["videos"] as const,
+    detail: (id: string) => [...getQueryKey.videos.all, id] as const,
   },
   branches: {
     all: ["branches"] as const,

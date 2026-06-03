@@ -87,7 +87,7 @@ export function VideosFilters({
     <div className="space-y-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 max-w-sm">
-          <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search videos..."
             value={search}
@@ -110,7 +110,7 @@ export function VideosFilters({
         <div className="flex items-center gap-2">
           {hasActiveFilters && (
             <Button variant="ghost" size="sm" onClick={clearFilters}>
-              <XIcon className="h-4 w-4 mr-2" />
+              <XIcon className="size-4 mr-2" />
               Clear Filters
             </Button>
           )}

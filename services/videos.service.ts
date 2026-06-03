@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/config/axios.config";
-import type { VideosResponse, VideosQueryParams } from "@/types/video.types";
+import type { VideosResponse, VideosQueryParams, Video } from "@/types/video.types";
 import type { InsertProblemVideo, SelectProblemVideo } from "@/types/drizzle.types";
 
 import { API_ROUTES } from "@/constants/routes.constant";
@@ -26,6 +26,17 @@ export const videosService = {
     } catch (error) {
       console.error("Failed to fetch videos:", error);
       return { videos: [], total: 0 };
+    }
+  },
+  getVideoById: async (id: string): Promise<Video | null> => {
+    try {
+      const response = await axiosInstance.get<{ success: boolean; data: Video }>(
+        `${API_ROUTES.VIDEOS}/${id}`
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to fetch video:", error);
+      return null;
     }
   },
   create: async (data: InsertProblemVideo): Promise<SelectProblemVideo | null> => {

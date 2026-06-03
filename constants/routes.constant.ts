@@ -17,6 +17,7 @@ export const PROTECTED_ROUTES = {
   ADMIN_STUDENTS: "/admin/students",
   ADMIN_VIDEOS: "/admin/videos",
   SEARCH: "/search",
+  VIDEO: "/videos",
 } as const;
 
 export const API_ROUTES = {
