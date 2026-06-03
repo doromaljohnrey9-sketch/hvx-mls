@@ -16,6 +16,44 @@ export function createVideosColumns() {
       size: 48,
     },
     {
+      id: "actions",
+      header: () => <div className="text-sm font-medium">Actions</div>,
+      cell: ({ row }) => {
+        const video = row.original;
+        return (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              window.open(video.videoUrl, "_blank");
+            }}
+          >
+            <PlayIcon className="h-4 w-4 mr-2" />
+            Watch
+          </Button>
+        );
+      },
+      size: 100,
+    },
+    {
+      accessorKey: "title",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          Title
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const video = row.original;
+        return <span className="text-sm text-muted-foreground">{video.title || "N/A"}</span>;
+      },
+      size: 200,
+    },
+    {
       accessorKey: "examSet.school.name",
       header: ({ column }) => (
         <Button
@@ -140,44 +178,6 @@ export function createVideosColumns() {
         return <span className="font-medium">{video.problemNumber}</span>;
       },
       size: 120,
-    },
-    {
-      accessorKey: "title",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="h-8 px-2"
-        >
-          Title
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => {
-        const video = row.original;
-        return <span className="text-sm text-muted-foreground">{video.title || "N/A"}</span>;
-      },
-      size: 200,
-    },
-    {
-      id: "actions",
-      header: () => <div className="text-sm font-medium">Actions</div>,
-      cell: ({ row }) => {
-        const video = row.original;
-        return (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              window.open(video.videoUrl, "_blank");
-            }}
-          >
-            <PlayIcon className="h-4 w-4 mr-2" />
-            Watch
-          </Button>
-        );
-      },
-      size: 100,
     },
   ];
 

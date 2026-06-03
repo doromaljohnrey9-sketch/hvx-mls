@@ -1,7 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { db } from "@/lib/drizzle/db";
 import { problemVideos, examSets, schools } from "@/drizzle/schemas";
 import { eq, and, like, or, sql } from "drizzle-orm";
+import { apiResponse } from "@/lib/response";
+import { rateLimit } from "@/lib/ratelimit";
+import { HttpStatus } from "@/constants/http-status.constant";
 
 import type { Video } from "@/types/video.types";
 
@@ -119,21 +122,77 @@ export async function GET(request: NextRequest) {
       },
     }));
 
-    return NextResponse.json({
-      success: true,
+    return apiResponse({
       data: {
         videos,
         total,
       },
+      status: HttpStatus.OK,
     });
   } catch (error) {
     console.error("Error fetching videos:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Failed to fetch videos",
-      },
-      { status: 500 }
-    );
+    return apiResponse({
+      data: null,
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: "Failed to fetch videos",
+    });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const rateLimited = await rateLimit("api");
+    if (rateLimited) return rateLimited;
+
+    const body = await request.json();
+    const { examSetId, problemNumber, videoUrl, title, visibility } = body;
+
+    if (!examSetId || !problemNumber || !videoUrl) {
+      return apiResponse({
+        data: null,
+        status: HttpStatus.BAD_REQUEST,
+        message: "Missing required fields: examSetId, problemNumber, videoUrl",
+      });
+    }
+
+    // Check for duplicate problem number in the same exam set
+    const existingVideo = await db
+      .select()
+      .from(problemVideos)
+      .where(
+        and(eq(problemVideos.examSetId, examSetId), eq(problemVideos.problemNumber, problemNumber))
+      )
+      .limit(1);
+
+    if (existingVideo.length > 0) {
+      return apiResponse({
+        data: null,
+        status: HttpStatus.CONFLICT,
+        message: "A video with this problem number already exists in this exam set",
+      });
+    }
+
+    const newVideo = await db
+      .insert(problemVideos)
+      .values({
+        examSetId,
+        problemNumber,
+        videoUrl,
+        title: title || null,
+        visibility: visibility || "public",
+      })
+      .returning();
+
+    return apiResponse({
+      data: newVideo[0],
+      status: HttpStatus.CREATED,
+    });
+  } catch (error) {
+    console.error("Error creating video:", error);
+    return apiResponse({
+      data: null,
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: "Failed to create video",
+    });
   }
 }

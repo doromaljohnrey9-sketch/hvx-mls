@@ -29,6 +29,7 @@ export const API_ROUTES = {
   VIDEOS: "/api/videos",
   BRANCHES: "/api/branches",
   SCHOOLS: "/api/schools",
+  EXAM_SETS: "/api/exam-sets",
   MAIL: {
     SEND: "/api/mail/send",
   },

@@ -16,4 +16,7 @@ export const getQueryKey = {
   schools: {
     all: ["schools"] as const,
   },
+  examSets: {
+    all: ["exam-sets"] as const,
+  },
 } as const;

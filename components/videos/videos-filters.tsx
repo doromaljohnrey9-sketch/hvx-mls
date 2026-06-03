@@ -12,6 +12,8 @@ import {
 import { SearchIcon, XIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
+import { VideoUploadDialog } from "@/components/videos/video-upload-dialog";
+import { useAuth } from "@/hooks/use-auth";
 
 interface VideosFiltersProps {
   search: string;
@@ -53,6 +55,12 @@ export function VideosFilters({
   onProblemNumberFilterChange,
 }: VideosFiltersProps) {
   const { data: schools, isLoading: schoolsLoading } = useQuery(getSchoolsQueryOptions());
+  const { profile } = useAuth();
+
+  const canUploadVideo =
+    profile?.role === "teacher" ||
+    profile?.role === "branch_admin" ||
+    profile?.role === "super_admin";
 
   const hasActiveFilters =
     (schoolIdFilter && schoolIdFilter !== "all") ||
@@ -97,12 +105,15 @@ export function VideosFilters({
             Search
           </Button>
         </div>
-        {hasActiveFilters && (
-          <Button variant="ghost" size="sm" onClick={clearFilters}>
-            <XIcon className="h-4 w-4 mr-2" />
-            Clear Filters
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {hasActiveFilters && (
+            <Button variant="ghost" size="sm" onClick={clearFilters}>
+              <XIcon className="h-4 w-4 mr-2" />
+              Clear Filters
+            </Button>
+          )}
+          {canUploadVideo && <VideoUploadDialog />}
+        </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-7 gap-3">
         <div className="w-full">
