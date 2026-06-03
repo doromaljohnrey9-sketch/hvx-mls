@@ -7,4 +7,7 @@ export const getQueryKey = {
     all: ["admin"] as const,
     users: () => [...getQueryKey.admin.all, "users"] as const,
   },
+  videos: {
+    all: ["videos"] as const,
+  },
 } as const;

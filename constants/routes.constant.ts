@@ -14,6 +14,7 @@ export const PROTECTED_ROUTES = {
   PENDING: "/pending",
   ADMIN_STUDENTS: "/admin/students",
   ADMIN_VIDEOS: "/admin/videos",
+  SEARCH: "/search",
 } as const;
 
 export const API_ROUTES = {
@@ -23,6 +24,7 @@ export const API_ROUTES = {
   ADMIN: {
     STUDENTS: "/api/admin/students",
   },
+  VIDEOS: "/api/videos",
   MAIL: {
     SEND: "/api/mail/send",
   },

@@ -14,7 +14,7 @@ export const APP_SIDEBAR_ITEMS = {
       {
         name: "Search Videos",
         url: "/search",
-        icon: SearchIcon,
+        icon: VideoIcon,
         roles: ["student", "teacher", "branch_admin", "super_admin"], // All approved roles
       },
       {
