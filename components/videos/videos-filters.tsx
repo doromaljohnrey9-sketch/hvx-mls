@@ -10,6 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SearchIcon, XIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getSchoolsQueryOptions } from "@/queries/schools.query";
 
 interface VideosFiltersProps {
   search: string;
@@ -50,6 +52,8 @@ export function VideosFilters({
   onSubjectFilterChange,
   onProblemNumberFilterChange,
 }: VideosFiltersProps) {
+  const { data: schools, isLoading: schoolsLoading } = useQuery(getSchoolsQueryOptions());
+
   const hasActiveFilters =
     (schoolIdFilter && schoolIdFilter !== "all") ||
     (yearFilter && yearFilter !== "all") ||
@@ -102,13 +106,21 @@ export function VideosFilters({
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-7 gap-3">
         <div className="w-full">
-          <Select value={schoolIdFilter} onValueChange={onSchoolIdFilterChange}>
+          <Select
+            value={schoolIdFilter}
+            onValueChange={onSchoolIdFilterChange}
+            disabled={schoolsLoading}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="All Schools" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Schools</SelectItem>
-              {/* TODO: Fetch schools dynamically */}
+              {schools?.map((school) => (
+                <SelectItem key={school.id} value={school.id}>
+                  {school.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

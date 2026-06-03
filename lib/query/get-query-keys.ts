@@ -13,4 +13,7 @@ export const getQueryKey = {
   branches: {
     all: ["branches"] as const,
   },
+  schools: {
+    all: ["schools"] as const,
+  },
 } as const;
