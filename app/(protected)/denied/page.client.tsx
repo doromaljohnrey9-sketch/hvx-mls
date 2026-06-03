@@ -1,0 +1,52 @@
+"use client";
+
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { XCircle } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { getSupabaseClient } from "@/lib/supabase/client";
+
+import { useAuth } from "@/hooks/use-auth";
+
+export const PageClient = () => {
+  const router = useRouter();
+  const supabase = getSupabaseClient();
+  const { user } = useAuth();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast.success("Log out successful.");
+    router.replace("/login");
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center p-6">
+      <Card className="w-full max-w-md text-center">
+        <CardHeader>
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
+            <XCircle className="h-8 w-8 text-destructive" />
+          </div>
+          <CardTitle className="text-xl">Account Denied</CardTitle>
+          <CardDescription>
+            Your account registration has been denied by an administrator.
+            <br />
+            If you believe this is an error, please contact support.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {user && (
+            <p className="text-sm text-muted-foreground">
+              Account: {user.email}
+            </p>
+          )}
+          <Button variant="outline" onClick={handleSignOut} className="w-full">
+            Log out
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};

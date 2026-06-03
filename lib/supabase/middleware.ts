@@ -2,7 +2,11 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { eq } from "drizzle-orm";
 
-import { DEFAULT_UNAUTH_REDIRECT, DEFAULT_PENDING_REDIRECT } from "@/constants/routes.constant";
+import {
+  DEFAULT_UNAUTH_REDIRECT,
+  DEFAULT_PENDING_REDIRECT,
+  PROTECTED_ROUTES,
+} from "@/constants/routes.constant";
 import { db } from "@/lib/drizzle/db";
 import { profiles } from "@/drizzle/schemas";
 
@@ -10,6 +14,8 @@ import { profiles } from "@/drizzle/schemas";
  * Updates session and handles route protection with role-based gating.
  * - Unauthenticated users → redirect to /login
  * - Pending users accessing protected routes (except /pending) → redirect to /pending
+ * - Denied users accessing protected routes (except /denied) → redirect to /denied
+ * - Blocked users accessing protected routes (except /blocked) → redirect to /blocked
  * - Non-admin users accessing /admin/* → redirect to /dashboard (students to /search)
  * - Students accessing /dashboard → redirect to /search
  * - Approved users accessing /pending → redirect to /dashboard (students to /search)
@@ -60,11 +66,36 @@ export async function updateSession(request: NextRequest, protectedRoutes: strin
     const result = await db.select().from(profiles).where(eq(profiles.id, userId)).limit(1);
     const profile = result[0];
 
-    if (!profile || profile.role === "pending") {
-      // Pending users can only access /pending
+    if (!profile) {
+      const url = request.nextUrl.clone();
+      url.pathname = DEFAULT_UNAUTH_REDIRECT;
+      url.searchParams.set("redirect", pathname);
+      return NextResponse.redirect(url);
+    }
+
+    // Handle pending, denied, and blocked users
+    if (profile.role === "pending") {
       if (pathname !== "/pending") {
         const url = request.nextUrl.clone();
         url.pathname = DEFAULT_PENDING_REDIRECT;
+        return NextResponse.redirect(url);
+      }
+      return response;
+    }
+
+    if (profile.role === "denied") {
+      if (pathname !== "/denied") {
+        const url = request.nextUrl.clone();
+        url.pathname = PROTECTED_ROUTES.DENIED;
+        return NextResponse.redirect(url);
+      }
+      return response;
+    }
+
+    if (profile.role === "blocked") {
+      if (pathname !== "/blocked") {
+        const url = request.nextUrl.clone();
+        url.pathname = PROTECTED_ROUTES.BLOCKED;
         return NextResponse.redirect(url);
       }
       return response;
@@ -88,8 +119,8 @@ export async function updateSession(request: NextRequest, protectedRoutes: strin
       return NextResponse.redirect(url);
     }
 
-    // Approved users trying to access /pending — redirect based on role
-    if (pathname === "/pending") {
+    // Approved users trying to access /pending, /denied, or /blocked — redirect based on role
+    if (pathname === "/pending" || pathname === "/denied" || pathname === "/blocked") {
       const url = request.nextUrl.clone();
       // Students redirect to search, others to dashboard
       url.pathname = profile.role === "student" ? "/search" : "/dashboard";

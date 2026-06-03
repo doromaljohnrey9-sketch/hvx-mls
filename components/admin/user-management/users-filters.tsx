@@ -61,6 +61,8 @@ export function UsersFilters({
             <SelectItem value="teacher">Teacher</SelectItem>
             <SelectItem value="student">Student</SelectItem>
             <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="denied">Denied</SelectItem>
+            <SelectItem value="blocked">Blocked</SelectItem>
           </SelectContent>
         </Select>
       </div>

@@ -12,6 +12,8 @@ export const AUTH_ROUTES = {
 export const PROTECTED_ROUTES = {
   DASHBOARD: "/dashboard",
   PENDING: "/pending",
+  DENIED: "/denied",
+  BLOCKED: "/blocked",
   ADMIN_STUDENTS: "/admin/students",
   ADMIN_VIDEOS: "/admin/videos",
   SEARCH: "/search",

@@ -6,6 +6,8 @@ import { branches } from "../branches/branches.schema";
 
 export const userRoleEnum = pgEnum("user_role", [
   "pending",
+  "denied",
+  "blocked",
   "student",
   "teacher",
   "branch_admin",

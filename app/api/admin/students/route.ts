@@ -124,7 +124,15 @@ export async function PATCH(request: NextRequest) {
       });
     }
 
-    const allowedRoles = ["pending", "student", "teacher", "branch_admin", "super_admin"];
+    const allowedRoles = [
+      "pending",
+      "denied",
+      "blocked",
+      "student",
+      "teacher",
+      "branch_admin",
+      "super_admin",
+    ];
     if (!allowedRoles.includes(role)) {
       return apiResponse({
         status: HttpStatus.BAD_REQUEST,

@@ -24,6 +24,8 @@ interface CreateUsersColumnsProps {
 export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
   const ROLE_LABELS: Record<string, string> = {
     pending: "Pending",
+    denied: "Denied",
+    blocked: "Blocked",
     student: "Student",
     teacher: "Teacher",
     branch_admin: "Branch Admin",
@@ -122,23 +124,51 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {user.role !== "super_admin" && user.role !== "branch_admin" && (
-                <DropdownMenuItem
-                  onClick={() => {
-                    updateUser.mutate({
-                      id: user.id,
-                      updates: {
-                        role: user.role === "student" ? "pending" : "student",
-                      },
-                    });
-                    toast.success(
-                      user.role === "student"
-                        ? "User role updated to pending"
-                        : "User approved as student"
-                    );
-                  }}
-                >
-                  {user.role === "student" ? "Revoke" : "Approve"}
-                </DropdownMenuItem>
+                <>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      updateUser.mutate({
+                        id: user.id,
+                        updates: {
+                          role: user.role === "student" ? "pending" : "student",
+                        },
+                      });
+                      toast.success(
+                        user.role === "student"
+                          ? "User role updated to pending"
+                          : "User approved as student"
+                      );
+                    }}
+                  >
+                    {user.role === "student" ? "Revoke" : "Approve"}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      updateUser.mutate({
+                        id: user.id,
+                        updates: {
+                          role: "denied",
+                        },
+                      });
+                      toast.success("User denied");
+                    }}
+                  >
+                    Deny
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      updateUser.mutate({
+                        id: user.id,
+                        updates: {
+                          role: "blocked",
+                        },
+                      });
+                      toast.success("User blocked");
+                    }}
+                  >
+                    Block
+                  </DropdownMenuItem>
+                </>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
