@@ -30,6 +30,7 @@ export const API_ROUTES = {
   BRANCHES: "/api/branches",
   SCHOOLS: "/api/schools",
   EXAM_SETS: "/api/exam-sets",
+  SUBJECTS: "/api/subjects",
   MAIL: {
     SEND: "/api/mail/send",
   },

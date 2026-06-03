@@ -12,6 +12,7 @@ import {
 import { SearchIcon, XIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
+import { getSubjectsQueryOptions } from "@/queries/subjects.query";
 import { VideoUploadDialog } from "@/components/videos/video-upload-dialog";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -55,6 +56,7 @@ export function VideosFilters({
   onProblemNumberFilterChange,
 }: VideosFiltersProps) {
   const { data: schools, isLoading: schoolsLoading } = useQuery(getSchoolsQueryOptions());
+  const { data: subjects, isLoading: subjectsLoading } = useQuery(getSubjectsQueryOptions());
   const { profile } = useAuth();
 
   const canUploadVideo =
@@ -192,13 +194,21 @@ export function VideosFilters({
         </div>
 
         <div className="w-full">
-          <Select value={subjectFilter} onValueChange={onSubjectFilterChange}>
+          <Select
+            value={subjectFilter}
+            onValueChange={onSubjectFilterChange}
+            disabled={subjectsLoading}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="All Subjects" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Subjects</SelectItem>
-              {/* TODO: Fetch subjects dynamically */}
+              {subjects?.map((subject) => (
+                <SelectItem key={subject} value={subject}>
+                  {subject}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

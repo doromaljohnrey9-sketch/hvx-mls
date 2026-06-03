@@ -19,4 +19,7 @@ export const getQueryKey = {
   examSets: {
     all: ["exam-sets"] as const,
   },
+  subjects: {
+    all: ["subjects"] as const,
+  },
 } as const;
