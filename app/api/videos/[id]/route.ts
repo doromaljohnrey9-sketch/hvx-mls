@@ -4,9 +4,11 @@ import { problemVideos, examSets, schools } from "@/drizzle/schemas";
 import { eq } from "drizzle-orm";
 import { apiResponse } from "@/lib/response";
 import { rateLimit } from "@/lib/ratelimit";
+import { requireRole } from "@/lib/guards/role.guard";
 import { HttpStatus } from "@/constants/http-status.constant";
 
 import type { Video } from "@/types/video.types";
+import type { InsertProblemVideo } from "@/types/drizzle.types";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -89,6 +91,93 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       data: null,
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       message: "Failed to fetch video",
+    });
+  }
+}
+
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const rateLimited = await rateLimit("api");
+    if (rateLimited) return rateLimited;
+
+    const { user, error: authError } = await requireRole([
+      "super_admin",
+      "branch_admin",
+      "teacher",
+    ]);
+    if (authError) return authError;
+
+    const { id } = await params;
+    const body = (await request.json()) as Partial<InsertProblemVideo>;
+
+    const updatedVideo = await db
+      .update(problemVideos)
+      .set({
+        ...body,
+        updatedAt: new Date(),
+      })
+      .where(eq(problemVideos.id, id))
+      .returning();
+
+    if (updatedVideo.length === 0) {
+      return apiResponse({
+        data: null,
+        status: HttpStatus.NOT_FOUND,
+        message: "Video not found",
+      });
+    }
+
+    return apiResponse({
+      data: updatedVideo[0],
+      status: HttpStatus.OK,
+    });
+  } catch (error) {
+    console.error("Error updating video:", error);
+    return apiResponse({
+      data: null,
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: "Failed to update video",
+    });
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const rateLimited = await rateLimit("api");
+    if (rateLimited) return rateLimited;
+
+    const { user, error: authError } = await requireRole([
+      "super_admin",
+      "branch_admin",
+      "teacher",
+    ]);
+    if (authError) return authError;
+
+    const { id } = await params;
+
+    const deletedVideo = await db.delete(problemVideos).where(eq(problemVideos.id, id)).returning();
+
+    if (deletedVideo.length === 0) {
+      return apiResponse({
+        data: null,
+        status: HttpStatus.NOT_FOUND,
+        message: "Video not found",
+      });
+    }
+
+    return apiResponse({
+      data: deletedVideo[0],
+      status: HttpStatus.OK,
+    });
+  } catch (error) {
+    console.error("Error deleting video:", error);
+    return apiResponse({
+      data: null,
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: "Failed to delete video",
     });
   }
 }

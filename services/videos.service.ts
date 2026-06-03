@@ -51,4 +51,30 @@ export const videosService = {
       return null;
     }
   },
+  update: async (
+    id: string,
+    data: Partial<InsertProblemVideo>
+  ): Promise<SelectProblemVideo | null> => {
+    try {
+      const response = await axiosInstance.put<{ success: boolean; data: SelectProblemVideo }>(
+        `${API_ROUTES.VIDEOS}/${id}`,
+        data
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to update video:", error);
+      return null;
+    }
+  },
+  delete: async (id: string): Promise<SelectProblemVideo | null> => {
+    try {
+      const response = await axiosInstance.delete<{ success: boolean; data: SelectProblemVideo }>(
+        `${API_ROUTES.VIDEOS}/${id}`
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to delete video:", error);
+      return null;
+    }
+  },
 };

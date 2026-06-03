@@ -3,12 +3,30 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { ArrowUpDownIcon, PlayIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  ArrowUpDownIcon,
+  MoreHorizontalIcon,
+  PlayIcon,
+  PencilIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import type { Video } from "@/types/video.types";
 
-export function createVideosColumns() {
+interface CreateVideosColumnsProps {
+  userRole?: string;
+  onUpdate?: (video: Video) => void;
+  onDelete?: (video: Video) => void;
+}
+
+export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVideosColumnsProps) {
   const columns: ColumnDef<Video>[] = [
     {
       id: "spacer",
@@ -17,8 +35,8 @@ export function createVideosColumns() {
       size: 48,
     },
     {
-      id: "actions",
-      header: () => <div className="text-sm font-medium">Actions</div>,
+      id: "watch",
+      header: () => <div className="text-sm font-medium">Watch</div>,
       cell: ({ row }) => {
         const video = row.original;
         const router = useRouter();
@@ -180,6 +198,54 @@ export function createVideosColumns() {
         return <span className="font-medium">{video.problemNumber}</span>;
       },
       size: 120,
+    },
+    {
+      id: "actions",
+      header: () => <div className="text-sm font-medium">Actions</div>,
+      cell: ({ row }) => {
+        const video = row.original;
+        const canManage =
+          userRole === "super_admin" || userRole === "branch_admin" || userRole === "teacher";
+
+        if (!canManage) {
+          return null;
+        }
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {onUpdate && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    onUpdate(video);
+                  }}
+                >
+                  <PencilIcon className="h-4 w-4 mr-2" />
+                  Edit
+                </DropdownMenuItem>
+              )}
+              {onDelete && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    onDelete(video);
+                  }}
+                  className="text-destructive"
+                >
+                  <Trash2Icon className="h-4 w-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+      size: 80,
     },
   ];
 
