@@ -11,11 +11,17 @@ export const AUTH_ROUTES = {
 
 export const PROTECTED_ROUTES = {
   DASHBOARD: "/dashboard",
+  PENDING: "/pending",
+  ADMIN_STUDENTS: "/admin/students",
+  ADMIN_VIDEOS: "/admin/videos",
 } as const;
 
 export const API_ROUTES = {
   USERS: {
     ME: "/api/users/me",
+  },
+  ADMIN: {
+    STUDENTS: "/api/admin/students",
   },
   MAIL: {
     SEND: "/api/mail/send",
@@ -30,3 +36,8 @@ export const PROTECTED_ROUTE_PATTERNS: string[] = Object.values(PROTECTED_ROUTES
 export const DEFAULT_AUTH_REDIRECT = PROTECTED_ROUTES.DASHBOARD;
 
 export const DEFAULT_UNAUTH_REDIRECT = AUTH_ROUTES.LOGIN;
+
+export const DEFAULT_PENDING_REDIRECT = PROTECTED_ROUTES.PENDING;
+
+// Admin routes that require teacher+ role
+export const ADMIN_ROUTE_PATTERNS = ["/admin/*"] as const;

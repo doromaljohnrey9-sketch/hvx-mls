@@ -55,7 +55,7 @@ export const PageClient = () => {
         }
 
         toast.success("Registration successful", {
-          description: "You can now login with your credentials.",
+          description: "Your account is pending approval by an administrator.",
         });
 
         form.reset();
@@ -107,7 +107,7 @@ export const PageClient = () => {
                       {...field}
                       id="email"
                       type="email"
-                      placeholder="m@example.com"
+                      placeholder="example@email.com"
                       aria-invalid={fieldState.invalid}
                       disabled={isPending}
                     />
@@ -133,7 +133,7 @@ export const PageClient = () => {
               />
               <Field>
                 <Button type="submit" disabled={isPending}>
-                  Submit
+                  Register
                 </Button>
                 <FieldDescription className="text-center">
                   Already have an account? <Link href={AUTH_ROUTES.LOGIN}>Login</Link>
@@ -144,7 +144,7 @@ export const PageClient = () => {
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <Link href="#">Terms of Service</Link> and{" "}
+        By signing up, you agree to our <Link href="#">Terms of Service</Link> and{" "}
         <Link href="#">Privacy Policy</Link>.
       </FieldDescription>
     </div>

@@ -1,83 +1,32 @@
-import {
-  FrameIcon,
-  SettingsIcon,
-  MapIcon,
-  PieChartIcon,
-  SendIcon,
-  LayoutDashboardIcon,
-  DatabaseIcon,
-  UsersIcon,
-} from "lucide-react";
+import { LayoutDashboardIcon, SearchIcon, UsersIcon, VideoIcon } from "lucide-react";
 
-// Example sidebar items — replace with your own pages and routes.
-// Items with url: "#" are placeholders. Update them when you add real pages.
+// HVX Sidebar navigation items
 export const APP_SIDEBAR_ITEMS = {
   platform: {
-    title: "Platform",
+    title: "HVX",
     items: [
       {
-        name: "Design Engineering",
-        url: "#",
-        icon: FrameIcon,
-      },
-      {
-        name: "Sales & Marketing",
-        url: "#",
-        icon: PieChartIcon,
-      },
-      {
-        name: "Travel",
-        url: "#",
-        icon: MapIcon,
-      },
-    ],
-  },
-  drawer: {
-    title: "Navigation",
-    items: [
-      {
-        title: "Dashboard",
+        name: "Dashboard",
         url: "/dashboard",
         icon: LayoutDashboardIcon,
-        isActive: true,
-        subItems: [
-          { title: "Overview", url: "/dashboard" },
-          { title: "Analytics", url: "#" },
-        ],
+        roles: ["teacher", "branch_admin", "super_admin"], // Only admin roles see dashboard
       },
       {
-        title: "Data",
-        url: "#",
-        icon: DatabaseIcon,
-        subItems: [
-          { title: "Tables", url: "#" },
-          { title: "Migrations", url: "#" },
-        ],
+        name: "Search Videos",
+        url: "/search",
+        icon: SearchIcon,
+        roles: ["student", "teacher", "branch_admin", "super_admin"], // All approved roles
       },
       {
-        title: "Users",
-        url: "#",
+        name: "Students",
+        url: "/admin/students",
         icon: UsersIcon,
-        subItems: [
-          { title: "All Users", url: "#" },
-          { title: "Roles", url: "#" },
-        ],
+        roles: ["teacher", "branch_admin", "super_admin"], // Admin only
       },
     ],
   },
   secondary: {
-    title: "Quick Access",
-    items: [
-      {
-        name: "Settings",
-        url: "#",
-        icon: SettingsIcon,
-      },
-      {
-        name: "Feedback",
-        url: "#",
-        icon: SendIcon,
-      },
-    ],
+    title: "",
+    items: [],
   },
 };
