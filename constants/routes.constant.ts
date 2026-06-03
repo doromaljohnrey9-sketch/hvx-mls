@@ -27,6 +27,9 @@ export const API_ROUTES = {
   ADMIN: {
     STUDENTS: "/api/admin/students",
   },
+  DASHBOARD: {
+    STATS: "/api/dashboard/stats",
+  },
   VIDEOS: "/api/videos",
   BRANCHES: "/api/branches",
   SCHOOLS: "/api/schools",
