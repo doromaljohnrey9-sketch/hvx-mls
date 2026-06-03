@@ -204,12 +204,9 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
       header: () => <div className="text-sm font-medium">Actions</div>,
       cell: ({ row }) => {
         const video = row.original;
+        const router = useRouter();
         const canManage =
           userRole === "super_admin" || userRole === "branch_admin" || userRole === "teacher";
-
-        if (!canManage) {
-          return null;
-        }
 
         return (
           <DropdownMenu>
@@ -220,7 +217,15 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {onUpdate && (
+              <DropdownMenuItem
+                onClick={() => {
+                  router.push(`/videos/${video.id}`);
+                }}
+              >
+                <PlayIcon className="h-4 w-4 mr-2" />
+                Watch
+              </DropdownMenuItem>
+              {canManage && onUpdate && (
                 <DropdownMenuItem
                   onClick={() => {
                     onUpdate(video);
@@ -230,7 +235,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
                   Edit
                 </DropdownMenuItem>
               )}
-              {onDelete && (
+              {canManage && onDelete && (
                 <DropdownMenuItem
                   onClick={() => {
                     onDelete(video);
