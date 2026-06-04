@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 import {
   InputGroup,
@@ -9,7 +10,12 @@ import {
   InputGroupButton,
 } from "@/components/ui/input-group";
 
-export const PasswordInput = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
+export interface PasswordInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {}
+
+export const PasswordInput = (props: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -20,8 +26,11 @@ export const PasswordInput = (props: React.InputHTMLAttributes<HTMLInputElement>
         {...props}
       />
       <InputGroupAddon align="inline-end">
-        <InputGroupButton onClick={() => setShowPassword(!showPassword)}>
-          {showPassword ? "Hide" : "Show"}
+        <InputGroupButton
+          onClick={() => setShowPassword((prev) => !prev)}
+          disabled={props.disabled}
+        >
+          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
         </InputGroupButton>
       </InputGroupAddon>
     </InputGroup>
