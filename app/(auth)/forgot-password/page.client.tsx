@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, GraduationCap } from "lucide-react";
+import { Mail, GraduationCap, ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
@@ -61,6 +61,13 @@ export const PageClient = () => {
     <div className="grid min-h-screen w-full lg:grid-cols-2">
       {/* Left: Placeholder image panel */}
       <div className="relative hidden overflow-hidden bg-muted lg:block">
+        <Link
+          href="/"
+          className="absolute left-6 top-6 flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors z-10"
+        >
+          <ArrowLeft className="size-4" />
+          Back to home
+        </Link>
         <div className="absolute inset-0 flex items-center justify-center">
           <AspectRatio ratio={16 / 9} className="w-full max-w-md"></AspectRatio>
         </div>
