@@ -9,6 +9,17 @@ const branchIdSchema = z
 const schoolIdSchema = z
   .union([z.string().uuid("Please select a valid school"), z.literal("none"), z.null()])
   .optional();
+const gradeSchema = z
+  .union([
+    z.number().int().positive("Grade must be a positive number"),
+    z.literal("none"),
+    z.null(),
+  ])
+  .optional();
+const assignedTeacherSchema = z
+  .string()
+  .min(1, "Teacher name must be at least 1 character")
+  .optional();
 
 export const loginSchema = z.object({
   email: emailSchema,
@@ -17,13 +28,21 @@ export const loginSchema = z.object({
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
-export const registerSchema = z.object({
-  name: nameSchema,
-  email: emailSchema,
-  password: passwordSchema,
-  branchId: branchIdSchema,
-  schoolId: schoolIdSchema,
-});
+export const registerSchema = z
+  .object({
+    name: nameSchema,
+    email: emailSchema,
+    password: passwordSchema,
+    confirmPassword: passwordSchema,
+    branchId: branchIdSchema,
+    schoolId: schoolIdSchema,
+    grade: gradeSchema,
+    assignedTeacher: assignedTeacherSchema,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 

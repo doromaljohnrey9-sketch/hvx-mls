@@ -44,8 +44,11 @@ export const PageClient = () => {
       name: "",
       email: "",
       password: "",
+      confirmPassword: "",
       branchId: "none",
       schoolId: "none",
+      grade: "none",
+      assignedTeacher: "",
     },
   });
 
@@ -60,6 +63,8 @@ export const PageClient = () => {
               name: values.name,
               ...(values.branchId && values.branchId !== "none" && { branchId: values.branchId }),
               ...(values.schoolId && values.schoolId !== "none" && { schoolId: values.schoolId }),
+              ...(values.grade && { grade: values.grade }),
+              ...(values.assignedTeacher && { assignedTeacher: values.assignedTeacher }),
             },
           },
         });
@@ -149,6 +154,22 @@ export const PageClient = () => {
                 )}
               />
               <Controller
+                name="confirmPassword"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
+                    <PasswordInput
+                      {...field}
+                      id="confirmPassword"
+                      disabled={isPending}
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
+                  </Field>
+                )}
+              />
+              <Controller
                 name="branchId"
                 control={form.control}
                 render={({ field, fieldState }) => (
@@ -204,6 +225,52 @@ export const PageClient = () => {
                         ))}
                       </SelectContent>
                     </Select>
+                    {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="grade"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel htmlFor="grade">Grade (Optional)</FieldLabel>
+                    <Select
+                      {...field}
+                      value={field.value ? field.value.toString() : "none"}
+                      onValueChange={(value) =>
+                        field.onChange(value === "none" ? null : parseInt(value, 10))
+                      }
+                      disabled={isPending}
+                    >
+                      <SelectTrigger id="grade" aria-invalid={fieldState.invalid}>
+                        <SelectValue placeholder="Select your grade or N/A" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">N/A</SelectItem>
+                        <SelectItem value="1">Grade 1</SelectItem>
+                        <SelectItem value="2">Grade 2</SelectItem>
+                        <SelectItem value="3">Grade 3</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="assignedTeacher"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel htmlFor="assignedTeacher">Assigned Teacher (Optional)</FieldLabel>
+                    <Input
+                      {...field}
+                      id="assignedTeacher"
+                      type="text"
+                      placeholder="Teacher's name"
+                      aria-invalid={fieldState.invalid}
+                      disabled={isPending}
+                    />
                     {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
                   </Field>
                 )}

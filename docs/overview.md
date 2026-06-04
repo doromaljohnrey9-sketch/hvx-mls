@@ -194,7 +194,7 @@ tests/                  Unit (Vitest) + E2E (Playwright)
 Pre-built auth flows with Zod validation (`schemas/auth.schema.ts`):
 
 - **Login** (`/login`) — Email/password + GitHub/Google OAuth
-- **Register** (`/register`) — Account creation, redirects to login
+- **Register** (`/register`) — Account creation with name, email, password, confirm password, branch, school, grade, and assigned teacher (optional fields)
 - **Forgot Password** (`/forgot-password`) — Request reset link
 - **Reset Password** (`/reset-password`) — Complete the reset flow
 
@@ -285,6 +285,8 @@ Drizzle ORM with PostgreSQL:
 
 ```typescript
 // drizzle/schemas/profiles/profiles.schema.ts
+import { pgTable, varchar, uuid, timestamp, integer } from "drizzle-orm/pg-core";
+
 export const profiles = pgTable("profiles", {
   ...baseColumns, // id, createdAt, updatedAt, deletedAt
   email: varchar("email", { length: 255 }).notNull(),
@@ -292,6 +294,8 @@ export const profiles = pgTable("profiles", {
   role: userRoleEnum("role").default("student").notNull(),
   branchId: uuid("branch_id").references(() => branches.id),
   schoolId: uuid("school_id").references(() => schools.id),
+  grade: integer("grade"),
+  assignedTeacher: varchar("assigned_teacher", { length: 100 }),
   approvalStatus: approvalStatusEnum("approval_status").default("pending").notNull(),
   approvedBy: uuid("approved_by"),
   approvedAt: timestamp("approved_at"),
@@ -325,7 +329,7 @@ LANGUAGE plpgsql
 SECURITY DEFINER SET search_path = ''
 AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email, name, role, branch_id, school_id, approval_status)
+  INSERT INTO public.profiles (id, email, name, role, branch_id, school_id, grade, assigned_teacher, approval_status)
   VALUES (
     new.id,
     new.email,
@@ -339,6 +343,11 @@ BEGIN
       WHEN new.raw_user_meta_data ->> 'schoolId' IS NULL THEN NULL
       ELSE (new.raw_user_meta_data ->> 'schoolId')::uuid
     END,
+    CASE
+      WHEN new.raw_user_meta_data ->> 'grade' IS NULL THEN NULL
+      ELSE (new.raw_user_meta_data ->> 'grade')::integer
+    END,
+    new.raw_user_meta_data ->> 'assignedTeacher',
     'pending'
   );
   RETURN new;
@@ -352,7 +361,7 @@ CREATE TRIGGER on_auth_user_created
 
 > **Note:** `pnpm db:push` only syncs tables and columns from your Drizzle TypeScript schemas — it does not create triggers or functions. You must apply the trigger separately after every `db:push`.
 
-> **Trigger Behavior:** The trigger sets new users to `role: "student"` and `approvalStatus: "pending"` by default. Users cannot access protected content until approved by a teacher or branch admin.
+> **Trigger Behavior:** The trigger sets new users to `role: "student"` and `approvalStatus: "pending"` by default. It also extracts optional fields from the registration form: `branch_id`, `school_id`, `grade`, and `assigned_teacher`. Users cannot access protected content until approved by a teacher or branch admin.
 
 ## Email (Resend)
 

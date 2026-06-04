@@ -72,6 +72,8 @@ export async function GET(request: NextRequest) {
         role: profiles.role,
         branchId: profiles.branchId,
         schoolId: profiles.schoolId,
+        grade: profiles.grade,
+        assignedTeacher: profiles.assignedTeacher,
         approvalStatus: profiles.approvalStatus,
         approvedBy: profiles.approvedBy,
         approvedAt: profiles.approvedAt,
