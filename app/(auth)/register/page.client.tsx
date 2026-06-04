@@ -4,6 +4,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
@@ -28,6 +29,7 @@ import { registerSchema, type RegisterFormValues } from "@/schemas/auth.schema";
 import { AUTH_ROUTES } from "@/constants/routes.constant";
 import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
+import { getTeachersQueryOptions } from "@/queries/teachers.query";
 
 export const PageClient = () => {
   const router = useRouter();
@@ -48,9 +50,33 @@ export const PageClient = () => {
       branchId: "none",
       schoolId: "none",
       grade: "none",
-      assignedTeacher: "",
+      assignedTeacher: "none",
     },
   });
+
+  // Auto-select branch when school is selected
+  const schoolId = form.watch("schoolId");
+  const branchId = form.watch("branchId");
+
+  const { data: teachers, isLoading: teachersLoading } = useQuery(
+    getTeachersQueryOptions(
+      branchId && branchId !== "none" ? branchId : undefined,
+      schoolId && schoolId !== "none" ? schoolId : undefined
+    )
+  );
+  useEffect(() => {
+    if (schoolId && schoolId !== "none" && schools) {
+      const selectedSchool = schools.find((s) => s.id === schoolId);
+      if (selectedSchool?.branchId) {
+        form.setValue("branchId", selectedSchool.branchId);
+      }
+    }
+  }, [schoolId, schools, form]);
+
+  // Reset assigned teacher when branch or school changes
+  useEffect(() => {
+    form.setValue("assignedTeacher", "none");
+  }, [branchId, schoolId, form]);
 
   const onFormSubmit = (values: RegisterFormValues) => {
     startTransition(async () => {
@@ -64,7 +90,8 @@ export const PageClient = () => {
               ...(values.branchId && values.branchId !== "none" && { branchId: values.branchId }),
               ...(values.schoolId && values.schoolId !== "none" && { schoolId: values.schoolId }),
               ...(values.grade && { grade: values.grade }),
-              ...(values.assignedTeacher && { assignedTeacher: values.assignedTeacher }),
+              ...(values.assignedTeacher &&
+                values.assignedTeacher !== "none" && { assignedTeacher: values.assignedTeacher }),
             },
           },
         });
@@ -218,17 +245,23 @@ export const PageClient = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="none">N/A</SelectItem>
-                        {schools?.map((school) => (
-                          <SelectItem key={school.id} value={school.id}>
-                            {school.name}
-                          </SelectItem>
-                        ))}
+                        {schools
+                          ?.filter(
+                            (school) =>
+                              !branchId || branchId === "none" || school.branchId === branchId
+                          )
+                          .map((school) => (
+                            <SelectItem key={school.id} value={school.id}>
+                              {school.name}
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
                     {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
                   </Field>
                 )}
               />
+
               <Controller
                 name="grade"
                 control={form.control}
@@ -263,14 +296,24 @@ export const PageClient = () => {
                 render={({ field, fieldState }) => (
                   <Field>
                     <FieldLabel htmlFor="assignedTeacher">Assigned Teacher (Optional)</FieldLabel>
-                    <Input
+                    <Select
                       {...field}
-                      id="assignedTeacher"
-                      type="text"
-                      placeholder="Teacher's name"
-                      aria-invalid={fieldState.invalid}
-                      disabled={isPending}
-                    />
+                      value={field.value || "none"}
+                      onValueChange={(value) => field.onChange(value === "none" ? null : value)}
+                      disabled={isPending || teachersLoading}
+                    >
+                      <SelectTrigger id="assignedTeacher" aria-invalid={fieldState.invalid}>
+                        <SelectValue placeholder="Select a teacher or N/A" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">N/A</SelectItem>
+                        {teachers?.map((teacher) => (
+                          <SelectItem key={teacher.id} value={teacher.name}>
+                            {teacher.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
                   </Field>
                 )}

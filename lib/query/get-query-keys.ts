@@ -20,6 +20,9 @@ export const getQueryKey = {
   schools: {
     all: ["schools"] as const,
   },
+  teachers: {
+    all: ["teachers"] as const,
+  },
   examSets: {
     all: ["exam-sets"] as const,
   },

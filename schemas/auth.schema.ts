@@ -17,8 +17,11 @@ const gradeSchema = z
   ])
   .optional();
 const assignedTeacherSchema = z
-  .string()
-  .min(1, "Teacher name must be at least 1 character")
+  .union([
+    z.string().min(1, "Teacher name must be at least 1 character"),
+    z.literal("none"),
+    z.null(),
+  ])
   .optional();
 
 export const loginSchema = z.object({
