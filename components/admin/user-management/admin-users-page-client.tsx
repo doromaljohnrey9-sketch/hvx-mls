@@ -5,8 +5,10 @@ import { UsersPageHeader } from "@/components/admin/user-management/users-page-h
 import { UsersTable } from "@/components/admin/user-management/users-table";
 import { UsersFilters } from "@/components/admin/user-management/users-filters";
 import { createUsersColumns } from "@/components/admin/user-management/users-columns";
+import { useAuth } from "@/hooks/use-auth";
 
 export function AdminUsersPageClient() {
+  const { user } = useAuth();
   const {
     users,
     isLoading,
@@ -24,7 +26,7 @@ export function AdminUsersPageClient() {
     handlePageChange,
   } = useAdminUserManagement();
 
-  const columns = createUsersColumns({ updateUser: updateUser });
+  const columns = createUsersColumns({ updateUser: updateUser, currentUserId: user?.id });
 
   return (
     <div className="flex-1 min-w-0 space-y-6 p-8">

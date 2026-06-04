@@ -320,7 +320,7 @@ export const PageClient = () => {
               />
               <Field>
                 <Button type="submit" disabled={isPending}>
-                  Register
+                  Request Approval
                 </Button>
                 <FieldDescription className="text-center">
                   Already have an account? <Link href={AUTH_ROUTES.LOGIN}>Login</Link>

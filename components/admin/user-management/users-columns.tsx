@@ -21,9 +21,10 @@ interface CreateUsersColumnsProps {
     mutate: (data: { id: string; updates: AdminUserUpdate }) => void;
     isPending?: boolean;
   };
+  currentUserId?: string;
 }
 
-export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
+export function createUsersColumns({ updateUser, currentUserId }: CreateUsersColumnsProps) {
   const ROLE_LABELS: Record<string, string> = {
     student: "Student",
     teacher: "Teacher",
@@ -104,8 +105,18 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
       ),
       cell: ({ row }) => {
         const user = row.original;
+        const statusColors: Record<string, string> = {
+          pending: "bg-yellow-50 border-yellow-200 text-yellow-700",
+          approved: "bg-green-50 border-green-200 text-green-700",
+          rejected: "bg-red-50 border-red-200 text-red-700",
+          blocked: "bg-gray-50 border-gray-200 text-gray-700",
+        };
         return (
-          <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium">
+          <span
+            className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${
+              statusColors[user.approvalStatus] || ""
+            }`}
+          >
             {APPROVAL_STATUS_LABELS[user.approvalStatus] || user.approvalStatus}
           </span>
         );
@@ -154,11 +165,49 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
       size: 140,
     },
     {
+      accessorKey: "approvedBy",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          Approved By
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const user = row.original;
+        return <span className="text-sm">{user.approverName || "N/A"}</span>;
+      },
+      size: 160,
+    },
+    {
+      accessorKey: "approvedAt",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          Approved At
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const user = row.original;
+        if (!user.approvedAt) return "N/A";
+        return new Date(user.approvedAt).toLocaleDateString();
+      },
+      size: 140,
+    },
+    {
       id: "actions",
       header: () => <div className="text-sm font-medium">Actions</div>,
       cell: ({ row }) => {
         const user = row.original;
         const hasAction = user.role !== "super_admin" && user.role !== "branch_admin";
+        const isSelf = currentUserId === user.id;
 
         if (!hasAction) {
           return null;
@@ -178,9 +227,12 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
                 });
                 toast.success(`User role updated to ${ROLE_LABELS[newRole]}`);
               }}
-              disabled={updateUser.isPending}
+              disabled={updateUser.isPending || isSelf}
             >
-              <SelectTrigger className="h-8 w-[120px]">
+              <SelectTrigger
+                className="h-8 w-[120px]"
+                title={isSelf ? "Cannot modify your own role" : ""}
+              >
                 <SelectValue placeholder="Role" />
               </SelectTrigger>
               <SelectContent>
@@ -200,9 +252,12 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
                 });
                 toast.success(`User status updated to ${APPROVAL_STATUS_LABELS[newStatus]}`);
               }}
-              disabled={updateUser.isPending}
+              disabled={updateUser.isPending || isSelf}
             >
-              <SelectTrigger className="h-8 w-[120px]">
+              <SelectTrigger
+                className="h-8 w-[120px]"
+                title={isSelf ? "Cannot modify your own status" : ""}
+              >
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
