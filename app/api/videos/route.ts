@@ -16,10 +16,8 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search") || undefined;
     const schoolId = searchParams.get("schoolId") || undefined;
     const year = searchParams.get("year") ? parseInt(searchParams.get("year")!, 10) : undefined;
-    const semester = searchParams.get("semester")
-      ? parseInt(searchParams.get("semester")!, 10)
-      : undefined;
-    const examType = searchParams.get("examType") || undefined;
+    const semester = searchParams.get("semester") as "1st" | "2nd" | undefined;
+    const examType = searchParams.get("examType") as "midterm" | "final" | undefined;
     const grade = searchParams.get("grade") ? parseInt(searchParams.get("grade")!, 10) : undefined;
     const subject = searchParams.get("subject") || undefined;
     const problemNumber = searchParams.get("problemNumber")
@@ -74,6 +72,7 @@ export async function GET(request: NextRequest) {
         examType: examSets.examType,
         grade: examSets.grade,
         subject: examSets.subject,
+        title_2: examSets.title,
         status: examSets.status,
         schoolId_2: schools.id,
         schoolName: schools.name,
@@ -109,11 +108,12 @@ export async function GET(request: NextRequest) {
         id: row.examSetId_2,
         schoolId: row.schoolId,
         year: row.year,
-        semester: row.semester,
-        examType: row.examType,
+        semester: row.semester as "1st" | "2nd",
+        examType: row.examType as "midterm" | "final",
         grade: row.grade,
         subject: row.subject,
-        status: row.status as "none" | "partial" | "complete",
+        title: row.title_2,
+        status: row.status as "draft" | "published" | "hidden",
         school: {
           id: row.schoolId_2,
           name: row.schoolName,

@@ -129,8 +129,8 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
                 <SelectContent>
                   {examSets?.map((examSet) => (
                     <SelectItem key={examSet.id} value={examSet.id}>
-                      {examSet.schoolName} - {examSet.year} {examSet.semester === 1 ? "1st" : "2nd"}{" "}
-                      {examSet.examType} G{examSet.grade} - {examSet.subject}
+                      {examSet.schoolName} - {examSet.year} {examSet.semester} {examSet.examType} G
+                      {examSet.grade} - {examSet.subject}
                     </SelectItem>
                   ))}
                 </SelectContent>

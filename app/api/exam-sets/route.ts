@@ -3,6 +3,7 @@ import { db } from "@/lib/drizzle/db";
 import { examSets, schools } from "@/drizzle/schemas";
 import { apiResponse } from "@/lib/response";
 import { rateLimit } from "@/lib/ratelimit";
+import { getSupabaseServer } from "@/lib/supabase/server";
 import { HttpStatus } from "@/constants/http-status.constant";
 import { eq } from "drizzle-orm";
 
@@ -11,14 +12,29 @@ export async function POST(request: NextRequest) {
     const rateLimited = await rateLimit("api");
     if (rateLimited) return rateLimited;
 
-    const body = await request.json();
-    const { schoolId, year, semester, examType, grade, subject } = body;
+    const supabase = await getSupabaseServer();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    if (!schoolId || !year || !semester || !examType || !grade || !subject) {
+    if (authError || !user) {
+      return apiResponse({
+        data: null,
+        status: HttpStatus.UNAUTHORIZED,
+        message: "Unauthorized",
+      });
+    }
+
+    const body = await request.json();
+    const { schoolId, year, semester, examType, grade, subject, title } = body;
+
+    if (!schoolId || !year || !semester || !examType || !grade || !subject || !title) {
       return apiResponse({
         data: null,
         status: HttpStatus.BAD_REQUEST,
-        message: "Missing required fields: schoolId, year, semester, examType, grade, subject",
+        message:
+          "Missing required fields: schoolId, year, semester, examType, grade, subject, title",
       });
     }
 
@@ -31,7 +47,9 @@ export async function POST(request: NextRequest) {
         examType,
         grade,
         subject,
-        status: "none",
+        title,
+        status: "draft",
+        createdBy: user.id,
       })
       .returning();
 
@@ -63,7 +81,9 @@ export async function GET(request: NextRequest) {
         examType: examSets.examType,
         grade: examSets.grade,
         subject: examSets.subject,
+        title: examSets.title,
         status: examSets.status,
+        createdBy: examSets.createdBy,
         createdAt: examSets.createdAt,
         updatedAt: examSets.updatedAt,
         schoolName: schools.name,

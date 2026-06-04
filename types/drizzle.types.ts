@@ -25,3 +25,8 @@ export type UserRole = SelectProfile["role"];
 
 // Approval status type derived from the enum
 export type ApprovalStatus = SelectProfile["approvalStatus"];
+
+// Exam set types derived from enums
+export type Semester = SelectExamSet["semester"];
+export type ExamType = SelectExamSet["examType"];
+export type ExamSetStatus = SelectExamSet["status"];

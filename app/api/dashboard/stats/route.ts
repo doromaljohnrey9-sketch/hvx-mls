@@ -31,11 +31,11 @@ export async function GET() {
       .from(profiles)
       .where(gte(profiles.createdAt, sevenDaysAgo));
 
-    // Get published exam sets (status = "complete")
+    // Get published exam sets (status = "published")
     const [publishedExamSetsCount] = await db
       .select({ count: count() })
       .from(examSets)
-      .where(eq(examSets.status, "complete"));
+      .where(eq(examSets.status, "published"));
 
     // Get users by role
     const usersByRole = await db

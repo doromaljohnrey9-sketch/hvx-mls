@@ -13,11 +13,12 @@ export interface Video {
     id: string;
     schoolId: string;
     year: number;
-    semester: number;
-    examType: string;
+    semester: "1st" | "2nd";
+    examType: "midterm" | "final";
     grade: number;
     subject: string;
-    status: "none" | "partial" | "complete";
+    title: string;
+    status: "draft" | "published" | "hidden";
     school: {
       id: string;
       name: string;
@@ -37,8 +38,8 @@ export interface VideosQueryParams {
   search?: string;
   schoolId?: string;
   year?: number;
-  semester?: number;
-  examType?: string;
+  semester?: "1st" | "2nd";
+  examType?: "midterm" | "final";
   grade?: number;
   subject?: string;
   problemNumber?: number;

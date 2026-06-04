@@ -48,6 +48,7 @@ const videoUploadSchema = {
     examType: "",
     grade: "",
     subject: "",
+    title: "",
   },
 };
 
@@ -73,10 +74,11 @@ export function VideoUploadDialog() {
         const newExamSet = await examSetsService.create({
           schoolId: data.newExamSet.schoolId,
           year: parseInt(data.newExamSet.year),
-          semester: parseInt(data.newExamSet.semester),
-          examType: data.newExamSet.examType,
+          semester: data.newExamSet.semester as "1st" | "2nd",
+          examType: data.newExamSet.examType as "midterm" | "final",
           grade: parseInt(data.newExamSet.grade),
           subject: data.newExamSet.subject,
+          title: data.newExamSet.title,
         });
         if (!newExamSet) {
           throw new Error("Failed to create exam set");
@@ -146,8 +148,8 @@ export function VideoUploadDialog() {
                   <SelectItem value="new">+ Create New Exam Set</SelectItem>
                   {examSets?.map((examSet) => (
                     <SelectItem key={examSet.id} value={examSet.id}>
-                      {examSet.schoolName} - {examSet.year} {examSet.semester === 1 ? "1st" : "2nd"}{" "}
-                      {examSet.examType} G{examSet.grade} - {examSet.subject}
+                      {examSet.schoolName} - {examSet.year} {examSet.semester} {examSet.examType} G
+                      {examSet.grade} - {examSet.subject}
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -26,8 +26,12 @@ export function useVideoSearch() {
     search: searchQuery || undefined,
     schoolId: schoolIdFilter && schoolIdFilter !== "all" ? schoolIdFilter : undefined,
     year: yearFilter && yearFilter !== "all" ? parseInt(yearFilter, 10) : undefined,
-    semester: semesterFilter && semesterFilter !== "all" ? parseInt(semesterFilter, 10) : undefined,
-    examType: examTypeFilter && examTypeFilter !== "all" ? examTypeFilter : undefined,
+    semester:
+      semesterFilter && semesterFilter !== "all" ? (semesterFilter as "1st" | "2nd") : undefined,
+    examType:
+      examTypeFilter && examTypeFilter !== "all"
+        ? (examTypeFilter as "midterm" | "final")
+        : undefined,
     grade: gradeFilter && gradeFilter !== "all" ? parseInt(gradeFilter, 10) : undefined,
     subject: subjectFilter && subjectFilter !== "all" ? subjectFilter : undefined,
     problemNumber: problemNumberFilter ? parseInt(problemNumberFilter, 10) : undefined,
