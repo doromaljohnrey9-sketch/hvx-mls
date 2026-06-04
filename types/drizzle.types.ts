@@ -26,6 +26,12 @@ export type UserRole = SelectProfile["role"];
 // Approval status type derived from the enum
 export type ApprovalStatus = SelectProfile["approvalStatus"];
 
+// Branch status type derived from the enum
+export type BranchStatus = SelectBranch["status"];
+
+// School type derived from the enum
+export type SchoolType = SelectSchool["schoolType"];
+
 // Exam set types derived from enums
 export type Semester = SelectExamSet["semester"];
 export type ExamType = SelectExamSet["examType"];

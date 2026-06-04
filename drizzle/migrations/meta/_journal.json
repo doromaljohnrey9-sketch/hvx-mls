@@ -50,6 +50,13 @@
       "when": 1780546653482,
       "tag": "0006_nappy_spiral",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1780547625203,
+      "tag": "0007_yummy_sabretooth",
+      "breakpoints": true
     }
   ]
 }

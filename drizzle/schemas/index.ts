@@ -1,6 +1,6 @@
 export { profiles, userRoleEnum, approvalStatusEnum } from "./profiles/profiles.schema";
-export { branches } from "./branches/branches.schema";
-export { schools } from "./schools/schools.schema";
+export { branches, branchStatusEnum } from "./branches/branches.schema";
+export { schools, schoolTypeEnum } from "./schools/schools.schema";
 export {
   examSets,
   semesterEnum,

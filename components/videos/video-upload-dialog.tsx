@@ -149,7 +149,7 @@ export function VideoUploadDialog() {
                   {examSets?.map((examSet) => (
                     <SelectItem key={examSet.id} value={examSet.id}>
                       {examSet.schoolName} - {examSet.year} {examSet.semester} {examSet.examType} G
-                      {examSet.grade} - {examSet.subject}
+                      {examSet.grade} - {examSet.subject} - {examSet.title}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -197,8 +197,8 @@ export function VideoUploadDialog() {
                         <SelectValue placeholder="Select semester" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="1">1st Semester</SelectItem>
-                        <SelectItem value="2">2nd Semester</SelectItem>
+                        <SelectItem value="1st">1st Semester</SelectItem>
+                        <SelectItem value="2nd">2nd Semester</SelectItem>
                       </SelectContent>
                     </Select>
                   </Field>
@@ -213,8 +213,8 @@ export function VideoUploadDialog() {
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Midterm">Midterm</SelectItem>
-                        <SelectItem value="Final">Final</SelectItem>
+                        <SelectItem value="midterm">Midterm</SelectItem>
+                        <SelectItem value="final">Final</SelectItem>
                       </SelectContent>
                     </Select>
                   </Field>
@@ -239,6 +239,14 @@ export function VideoUploadDialog() {
                   <Field>
                     <FieldLabel>Subject</FieldLabel>
                     <Input {...form.register("newExamSet.subject")} placeholder="Mathematics" />
+                  </Field>
+
+                  <Field className="col-span-2">
+                    <FieldLabel>Exam Set Title</FieldLabel>
+                    <Input
+                      {...form.register("newExamSet.title")}
+                      placeholder="2024 1st Semester Midterm Exam"
+                    />
                   </Field>
                 </div>
               </div>

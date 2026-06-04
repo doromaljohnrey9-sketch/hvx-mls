@@ -16,6 +16,8 @@ async function seed() {
         .insert(branches)
         .values({
           name: branchData.name,
+          regionName: branchData.regionName,
+          status: branchData.status as "active" | "inactive",
         })
         .returning();
 
@@ -30,6 +32,8 @@ async function seed() {
           .values({
             name: schoolData.name,
             branchId: branch.id,
+            schoolType: schoolData.schoolType as "high_school" | "middle_school" | "elementary",
+            region: schoolData.region,
           })
           .returning();
 
