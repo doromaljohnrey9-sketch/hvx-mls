@@ -36,3 +36,7 @@ export type SchoolType = SelectSchool["schoolType"];
 export type Semester = SelectExamSet["semester"];
 export type ExamType = SelectExamSet["examType"];
 export type ExamSetStatus = SelectExamSet["status"];
+
+// Video types derived from enums
+export type VideoVisibility = SelectProblemVideo["visibility"];
+export type VideoUploadStatus = SelectProblemVideo["uploadStatus"];

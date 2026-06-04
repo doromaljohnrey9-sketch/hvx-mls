@@ -5,8 +5,12 @@ export interface Video {
   examSetId: string;
   problemNumber: number;
   videoUrl: string;
+  filePath: string | null;
+  duration: number | null;
   title: string | null;
   visibility: "public" | "private" | "hidden";
+  uploadStatus: "pending" | "completed" | "failed";
+  uploadedBy: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
   examSet: {

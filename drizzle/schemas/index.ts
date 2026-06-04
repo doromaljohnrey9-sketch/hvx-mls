@@ -7,4 +7,8 @@ export {
   examTypeEnum,
   examSetStatusEnum,
 } from "./exam-sets/exam-sets.schema";
-export { problemVideos, videoVisibilityEnum } from "./problem-videos/problem-videos.schema";
+export {
+  problemVideos,
+  videoVisibilityEnum,
+  videoUploadStatusEnum,
+} from "./problem-videos/problem-videos.schema";

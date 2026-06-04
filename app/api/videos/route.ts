@@ -4,6 +4,7 @@ import { problemVideos, examSets, schools } from "@/drizzle/schemas";
 import { eq, and, like, or, sql } from "drizzle-orm";
 import { apiResponse } from "@/lib/response";
 import { rateLimit } from "@/lib/ratelimit";
+import { requireRole } from "@/lib/guards/role.guard";
 import { HttpStatus } from "@/constants/http-status.constant";
 
 import type { Video } from "@/types/video.types";
@@ -61,8 +62,12 @@ export async function GET(request: NextRequest) {
         examSetId: problemVideos.examSetId,
         problemNumber: problemVideos.problemNumber,
         videoUrl: problemVideos.videoUrl,
+        filePath: problemVideos.filePath,
+        duration: problemVideos.duration,
         title: problemVideos.title,
         visibility: problemVideos.visibility,
+        uploadStatus: problemVideos.uploadStatus,
+        uploadedBy: problemVideos.uploadedBy,
         createdAt: problemVideos.createdAt,
         updatedAt: problemVideos.updatedAt,
         examSetId_2: examSets.id,
@@ -100,8 +105,12 @@ export async function GET(request: NextRequest) {
       examSetId: row.examSetId,
       problemNumber: row.problemNumber,
       videoUrl: row.videoUrl,
+      filePath: row.filePath,
+      duration: row.duration,
       title: row.title,
       visibility: row.visibility as "public" | "private" | "hidden",
+      uploadStatus: row.uploadStatus as "pending" | "completed" | "failed",
+      uploadedBy: row.uploadedBy,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
       examSet: {
@@ -144,8 +153,15 @@ export async function POST(request: NextRequest) {
     const rateLimited = await rateLimit("api");
     if (rateLimited) return rateLimited;
 
+    const { user, error: authError } = await requireRole([
+      "super_admin",
+      "branch_admin",
+      "teacher",
+    ]);
+    if (authError) return authError;
+
     const body = await request.json();
-    const { examSetId, problemNumber, videoUrl, title, visibility } = body;
+    const { examSetId, problemNumber, videoUrl, filePath, duration, title, visibility } = body;
 
     if (!examSetId || !problemNumber || !videoUrl) {
       return apiResponse({
@@ -178,8 +194,12 @@ export async function POST(request: NextRequest) {
         examSetId,
         problemNumber,
         videoUrl,
+        filePath: filePath || null,
+        duration: duration || null,
         title: title || null,
         visibility: visibility || "public",
+        uploadStatus: "completed",
+        uploadedBy: user!.id,
       })
       .returning();
 

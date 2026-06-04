@@ -23,8 +23,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         examSetId: problemVideos.examSetId,
         problemNumber: problemVideos.problemNumber,
         videoUrl: problemVideos.videoUrl,
+        filePath: problemVideos.filePath,
+        duration: problemVideos.duration,
         title: problemVideos.title,
         visibility: problemVideos.visibility,
+        uploadStatus: problemVideos.uploadStatus,
+        uploadedBy: problemVideos.uploadedBy,
         createdAt: problemVideos.createdAt,
         updatedAt: problemVideos.updatedAt,
         examSetId_2: examSets.id,
@@ -61,8 +65,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       examSetId: row.examSetId,
       problemNumber: row.problemNumber,
       videoUrl: row.videoUrl,
+      filePath: row.filePath,
+      duration: row.duration,
       title: row.title,
       visibility: row.visibility as "public" | "private" | "hidden",
+      uploadStatus: row.uploadStatus as "pending" | "completed" | "failed",
+      uploadedBy: row.uploadedBy,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
       examSet: {
@@ -116,6 +124,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       .update(problemVideos)
       .set({
         ...body,
+        uploadedBy: user!.id,
         updatedAt: new Date(),
       })
       .where(eq(problemVideos.id, id))
