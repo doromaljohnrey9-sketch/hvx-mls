@@ -2,8 +2,8 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "HVX",
-  description: "HVX (HEMS Past-Exam Video Explainer Learning System MVP)",
+  title: "MLS",
+  description: "MLS (Math Learning Studio - Past-Exam Video Explainer Learning System MVP)",
   ignoreDeadLinks: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

@@ -14,22 +14,29 @@ import { SearchIcon, XIcon } from "lucide-react";
 interface UsersFiltersProps {
   search: string;
   roleFilter: string;
+  approvalStatusFilter: string;
   onSearchChange: (value: string) => void;
   onSearchSubmit: () => void;
   onRoleFilterChange: (value: string) => void;
+  onApprovalStatusFilterChange: (value: string) => void;
 }
 
 export function UsersFilters({
   search,
   roleFilter,
+  approvalStatusFilter,
   onSearchChange,
   onSearchSubmit,
   onRoleFilterChange,
+  onApprovalStatusFilterChange,
 }: UsersFiltersProps) {
-  const hasActiveFilters = roleFilter && roleFilter !== "all";
+  const hasActiveFilters =
+    (roleFilter && roleFilter !== "all") ||
+    (approvalStatusFilter && approvalStatusFilter !== "all");
 
   const clearFilters = () => {
     onRoleFilterChange("all");
+    onApprovalStatusFilterChange("all");
   };
 
   return (
@@ -64,7 +71,7 @@ export function UsersFilters({
             </Button>
           )}
           <Select value={roleFilter} onValueChange={onRoleFilterChange}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[140px]">
               <SelectValue placeholder="All Roles" />
             </SelectTrigger>
             <SelectContent>
@@ -73,8 +80,17 @@ export function UsersFilters({
               <SelectItem value="branch_admin">Branch Admin</SelectItem>
               <SelectItem value="teacher">Teacher</SelectItem>
               <SelectItem value="student">Student</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={approvalStatusFilter} onValueChange={onApprovalStatusFilterChange}>
+            <SelectTrigger className="w-[140px]">
+              <SelectValue placeholder="All Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
               <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="denied">Denied</SelectItem>
+              <SelectItem value="approved">Approved</SelectItem>
+              <SelectItem value="rejected">Rejected</SelectItem>
               <SelectItem value="blocked">Blocked</SelectItem>
             </SelectContent>
           </Select>

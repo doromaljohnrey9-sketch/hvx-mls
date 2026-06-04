@@ -4,7 +4,7 @@ outline: deep
 
 # Getting Started
 
-HVX (HEMS Past-Exam Video Explainer Learning System MVP) is a secure, automated, and searchable solution video learning system. It transitions manual video distribution into a streamlined, auth-gated experience within the HEMS ecosystem.
+MLS (Math Learning Studio - Past-Exam Video Explainer Learning System MVP) is a secure, automated, and searchable solution video learning system. It transitions manual video distribution into a streamlined, auth-gated experience within the HEMS ecosystem.
 
 ## Quick Start
 
@@ -132,7 +132,7 @@ Each group has its own layout and error boundary.
 
 ## User Roles & Permissions
 
-The HVX project enforces a tiered access model to ensure security and content integrity:
+The MLS project enforces a tiered access model to ensure security and content integrity:
 
 ### Roles
 

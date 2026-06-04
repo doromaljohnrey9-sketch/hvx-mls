@@ -56,8 +56,8 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
                   <Command className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">HVX</span>
-                  <span className="truncate text-xs">HEMS Video Explainer</span>
+                  <span className="truncate font-medium">MLS</span>
+                  <span className="truncate text-xs">Math Learning Studio</span>
                 </div>
               </Link>
             </SidebarMenuButton>

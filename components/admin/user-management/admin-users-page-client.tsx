@@ -13,12 +13,14 @@ export function AdminUsersPageClient() {
     updateUser,
     search,
     roleFilter,
+    approvalStatusFilter,
     page,
     pageSize,
     totalPages,
     handleSearchChange,
     handleSearchSubmit,
     handleRoleFilterChange,
+    handleApprovalStatusFilterChange,
     handlePageChange,
   } = useAdminUserManagement();
 
@@ -30,9 +32,11 @@ export function AdminUsersPageClient() {
       <UsersFilters
         search={search}
         roleFilter={roleFilter}
+        approvalStatusFilter={approvalStatusFilter}
         onSearchChange={handleSearchChange}
         onSearchSubmit={handleSearchSubmit}
         onRoleFilterChange={handleRoleFilterChange}
+        onApprovalStatusFilterChange={handleApprovalStatusFilterChange}
       />
       <UsersTable
         columns={columns}
