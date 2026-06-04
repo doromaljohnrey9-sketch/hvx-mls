@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getVideoByIdQueryOptions } from "@/queries/videos.query";
+import { getPublicUrlSync } from "@/lib/supabase/storage.client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -17,6 +18,9 @@ import {
   PlayIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+
+// Default Supabase Storage bucket for exam videos
+const DEFAULT_VIDEO_BUCKET = "exams";
 
 interface VideoPlayerProps {
   videoId: string;
@@ -48,6 +52,12 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
   const router = useRouter();
   const { data: video, isLoading, error } = useQuery(getVideoByIdQueryOptions(videoId));
 
+  const resolvedVideoUrl = video
+    ? video.filePath
+      ? getPublicUrlSync(DEFAULT_VIDEO_BUCKET, video.filePath)
+      : video.videoUrl
+    : undefined;
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -77,11 +87,12 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
     );
   }
 
-  const embedUrl = video.videoUrl
-    .replace("watch?v=", "embed/")
-    .replace("youtu.be/", "youtube.com/embed/");
+  const embedUrl = resolvedVideoUrl
+    ? resolvedVideoUrl.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")
+    : undefined;
 
-  const isYouTube = video.videoUrl.includes("youtube.com") || video.videoUrl.includes("youtu.be");
+  const isYouTube =
+    resolvedVideoUrl?.includes("youtube.com") || resolvedVideoUrl?.includes("youtu.be");
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
@@ -121,7 +132,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
               />
             ) : (
               <video
-                src={video.videoUrl}
+                src={resolvedVideoUrl}
                 className="w-full h-full"
                 controls
                 onError={(e) => console.error("Video error:", e)}
