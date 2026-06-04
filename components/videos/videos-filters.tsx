@@ -125,7 +125,7 @@ export function VideosFilters({
             disabled={schoolsLoading}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Schools" />
+              <SelectValue placeholder="All Schools" className="truncate" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Schools</SelectItem>
@@ -141,7 +141,7 @@ export function VideosFilters({
         <div className="w-full">
           <Select value={yearFilter} onValueChange={onYearFilterChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Years" />
+              <SelectValue placeholder="All Years" className="truncate" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Years</SelectItem>
@@ -156,7 +156,7 @@ export function VideosFilters({
         <div className="w-full">
           <Select value={semesterFilter} onValueChange={onSemesterFilterChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Semesters" />
+              <SelectValue placeholder="All Semesters" className="truncate" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Semesters</SelectItem>
@@ -169,12 +169,12 @@ export function VideosFilters({
         <div className="w-full">
           <Select value={examTypeFilter} onValueChange={onExamTypeFilterChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Types" />
+              <SelectValue placeholder="All Types" className="truncate" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="Midterm">Midterm</SelectItem>
-              <SelectItem value="Final">Final</SelectItem>
+              <SelectItem value="midterm">Midterm</SelectItem>
+              <SelectItem value="final">Final</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -182,7 +182,7 @@ export function VideosFilters({
         <div className="w-full">
           <Select value={gradeFilter} onValueChange={onGradeFilterChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Grades" />
+              <SelectValue placeholder="All Grades" className="truncate" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Grades</SelectItem>
@@ -200,7 +200,7 @@ export function VideosFilters({
             disabled={subjectsLoading}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Subjects" />
+              <SelectValue placeholder="All Subjects" className="truncate" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Subjects</SelectItem>

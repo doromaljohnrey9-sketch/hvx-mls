@@ -4,19 +4,21 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   ArrowUpDownIcon,
-  MoreHorizontalIcon,
   PlayIcon,
-  PencilIcon,
-  Trash2Icon,
+  SchoolIcon,
+  Calendar,
+  BookOpen,
+  Clock,
+  ClipboardList,
+  Award,
+  Hash,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+
+import { VideoActionsDropdown } from "@/components/videos/video-actions-dropdown";
+
+import { toSentenceCase } from "@/lib/utils";
 
 import type { Video } from "@/types/video.types";
 
@@ -36,13 +38,13 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
     },
     {
       id: "watch",
-      header: () => <div className="text-sm font-medium">Watch</div>,
+      header: () => <div className="text-sm font-semibold text-foreground">Watch</div>,
       cell: ({ row }) => {
         const video = row.original;
         const router = useRouter();
         return (
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => {
               router.push(`/videos/${video.id}`);
@@ -53,7 +55,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
           </Button>
         );
       },
-      size: 100,
+      size: 120,
     },
     {
       accessorKey: "title",
@@ -69,7 +71,11 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
       ),
       cell: ({ row }) => {
         const video = row.original;
-        return <span className="text-sm text-muted-foreground">{video.title || "N/A"}</span>;
+        return (
+          <span className="font-semibold text-sm text-foreground truncate">
+            {video.title || "N/A"}
+          </span>
+        );
       },
       size: 200,
     },
@@ -87,7 +93,12 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
       ),
       cell: ({ row }) => {
         const video = row.original;
-        return <span className="font-medium">{video.examSet.school.name}</span>;
+        return (
+          <div className="flex items-center gap-2">
+            <SchoolIcon className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{video.examSet.school.name}</span>
+          </div>
+        );
       },
       size: 200,
     },
@@ -105,7 +116,12 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
       ),
       cell: ({ row }) => {
         const video = row.original;
-        return <span>{video.examSet.year}</span>;
+        return (
+          <div className="flex items-center gap-2">
+            <Calendar className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{video.examSet.year}</span>
+          </div>
+        );
       },
       size: 100,
     },
@@ -123,7 +139,12 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
       ),
       cell: ({ row }) => {
         const video = row.original;
-        return <span>{video.examSet.semester}</span>;
+        return (
+          <div className="flex items-center gap-2">
+            <Clock className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{video.examSet.semester}</span>
+          </div>
+        );
       },
       size: 140,
     },
@@ -141,7 +162,14 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
       ),
       cell: ({ row }) => {
         const video = row.original;
-        return <span>{video.examSet.examType}</span>;
+        return (
+          <div className="flex items-center gap-2">
+            <ClipboardList className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">
+              {toSentenceCase(video.examSet.examType)}
+            </span>
+          </div>
+        );
       },
       size: 120,
     },
@@ -159,7 +187,12 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
       ),
       cell: ({ row }) => {
         const video = row.original;
-        return <span>{video.examSet.grade}</span>;
+        return (
+          <div className="flex items-center gap-2">
+            <Award className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{video.examSet.grade}</span>
+          </div>
+        );
       },
       size: 120,
     },
@@ -177,7 +210,12 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
       ),
       cell: ({ row }) => {
         const video = row.original;
-        return <span>{video.examSet.subject}</span>;
+        return (
+          <div className="flex items-center gap-2">
+            <BookOpen className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{video.examSet.subject}</span>
+          </div>
+        );
       },
       size: 120,
     },
@@ -195,59 +233,27 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
       ),
       cell: ({ row }) => {
         const video = row.original;
-        return <span className="font-medium">{video.problemNumber}</span>;
+        return (
+          <div className="flex items-center gap-2">
+            <Hash className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{video.problemNumber}</span>
+          </div>
+        );
       },
-      size: 120,
+      size: 140,
     },
     {
       id: "actions",
-      header: () => <div className="text-sm font-medium">Actions</div>,
+      header: () => <div className="text-sm font-semibold text-foreground">Actions</div>,
       cell: ({ row }) => {
         const video = row.original;
-        const router = useRouter();
-        const canManage =
-          userRole === "super_admin" || userRole === "branch_admin" || userRole === "teacher";
-
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontalIcon className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => {
-                  router.push(`/videos/${video.id}`);
-                }}
-              >
-                <PlayIcon className="h-4 w-4 mr-2" />
-                Watch
-              </DropdownMenuItem>
-              {canManage && onUpdate && (
-                <DropdownMenuItem
-                  onClick={() => {
-                    onUpdate(video);
-                  }}
-                >
-                  <PencilIcon className="h-4 w-4 mr-2" />
-                  Edit
-                </DropdownMenuItem>
-              )}
-              {canManage && onDelete && (
-                <DropdownMenuItem
-                  onClick={() => {
-                    onDelete(video);
-                  }}
-                  className="text-destructive"
-                >
-                  <Trash2Icon className="h-4 w-4 mr-2" />
-                  Delete
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <VideoActionsDropdown
+            video={video}
+            userRole={userRole}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+          />
         );
       },
       size: 80,

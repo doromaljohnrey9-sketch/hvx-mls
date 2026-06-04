@@ -14,3 +14,12 @@ export function formatDate(date: string | Date | null | undefined): string {
     day: "numeric",
   });
 }
+
+export function toSentenceCase(str: string): string {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
