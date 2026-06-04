@@ -12,9 +12,12 @@ export const AUTH_ROUTES = {
 export const PROTECTED_ROUTES = {
   DASHBOARD: "/dashboard",
   PENDING: "/pending",
+  DENIED: "/denied",
+  BLOCKED: "/blocked",
   ADMIN_STUDENTS: "/admin/students",
   ADMIN_VIDEOS: "/admin/videos",
   SEARCH: "/search",
+  VIDEO: "/videos",
 } as const;
 
 export const API_ROUTES = {
@@ -24,7 +27,14 @@ export const API_ROUTES = {
   ADMIN: {
     STUDENTS: "/api/admin/students",
   },
+  DASHBOARD: {
+    STATS: "/api/dashboard/stats",
+  },
   VIDEOS: "/api/videos",
+  BRANCHES: "/api/branches",
+  SCHOOLS: "/api/schools",
+  EXAM_SETS: "/api/exam-sets",
+  SUBJECTS: "/api/subjects",
   MAIL: {
     SEND: "/api/mail/send",
   },

@@ -1,6 +1,6 @@
-# HVX (HEMS Past-Exam Video Explainer Learning System MVP)
+# MLS (Math Learning Studio - Past-Exam Video Explainer Learning System MVP)
 
-HVX transitions a manual process—teachers sending individual past-exam solution videos via KakaoTalk—into an automated, secure, and searchable sub-module within the existing HEMS ecosystem.
+MLS transitions a manual process—teachers sending individual past-exam solution videos via KakaoTalk—into an automated, secure, and searchable sub-module within the existing HEMS ecosystem.
 
 The primary goal is to **allow approved students to easily find and watch necessary exam videos while strictly preventing external content leakage.**
 
@@ -25,13 +25,13 @@ The primary goal is to **allow approved students to easily find and watch necess
 
 ## 📅 5-Day Work Breakdown Structure (WBS)
 
-| Day | Focus Area | Key Deliverables |
-| --- | --- | --- |
-| **Day 1** | **Foundation** | Data model normalization (DB design); Role/permission policy mapping; Student + Admin screen wireframing. |
-| **Day 2** | **Auth & Approval** | Student self-registration (defaulting to pending); Secure hashed password login; Teacher/Admin student management dashboard. |
-| **Day 3** | **Search & Playback** | Metadata filter search; Mobile/Tablet-first responsive video player; Restricted video URL structures. |
-| **Day 4** | **Admin Features** | Video uploading (files + external URLs); Metadata entry with duplicate alerts; Visibility toggles (`Public`/`Private`/`Hidden`). |
-| **Day 5** | **Migration & QA** | Bulk Excel upload (~600 legacy videos); Verification of completion statuses; Internal QA and final deployment. |
+| Day       | Focus Area            | Key Deliverables                                                                                                                 |
+| --------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Day 1** | **Foundation**        | Data model normalization (DB design); Role/permission policy mapping; Student + Admin screen wireframing.                        |
+| **Day 2** | **Auth & Approval**   | Student self-registration (defaulting to pending); Secure hashed password login; Teacher/Admin student management dashboard.     |
+| **Day 3** | **Search & Playback** | Metadata filter search; Mobile/Tablet-first responsive video player; Restricted video URL structures.                            |
+| **Day 4** | **Admin Features**    | Video uploading (files + external URLs); Metadata entry with duplicate alerts; Visibility toggles (`Public`/`Private`/`Hidden`). |
+| **Day 5** | **Migration & QA**    | Bulk Excel upload (~600 legacy videos); Verification of completion statuses; Internal QA and final deployment.                   |
 
 ## ✅ Core Acceptance Criteria
 

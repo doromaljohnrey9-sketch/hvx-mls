@@ -1,0 +1,87 @@
+[
+  {
+    "name": "Main Branch",
+    "regionName": "Seoul",
+    "status": "active",
+    "schools": [
+      {
+        "name": "Central High School",
+        "schoolType": "high_school",
+        "region": "Seoul"
+      },
+      {
+        "name": "City Academy",
+        "schoolType": "high_school",
+        "region": "Seoul"
+      }
+    ]
+  },
+  {
+    "name": "North Branch",
+    "regionName": "Gyeonggi",
+    "status": "active",
+    "schools": [
+      {
+        "name": "North High School",
+        "schoolType": "high_school",
+        "region": "Gyeonggi"
+      },
+      {
+        "name": "Riverside Academy",
+        "schoolType": "high_school",
+        "region": "Gyeonggi"
+      }
+    ]
+  },
+  {
+    "name": "South Branch",
+    "regionName": "Busan",
+    "status": "active",
+    "schools": [
+      {
+        "name": "South High School",
+        "schoolType": "high_school",
+        "region": "Busan"
+      },
+      {
+        "name": "Lakeside Academy",
+        "schoolType": "high_school",
+        "region": "Busan"
+      }
+    ]
+  },
+  {
+    "name": "East Branch",
+    "regionName": "Daegu",
+    "status": "active",
+    "schools": [
+      {
+        "name": "East High School",
+        "schoolType": "high_school",
+        "region": "Daegu"
+      },
+      {
+        "name": "Mountainview Academy",
+        "schoolType": "high_school",
+        "region": "Daegu"
+      }
+    ]
+  },
+  {
+    "name": "West Branch",
+    "regionName": "Incheon",
+    "status": "active",
+    "schools": [
+      {
+        "name": "West High School",
+        "schoolType": "high_school",
+        "region": "Incheon"
+      },
+      {
+        "name": "Valley Academy",
+        "schoolType": "high_school",
+        "region": "Incheon"
+      }
+    ]
+  }
+]

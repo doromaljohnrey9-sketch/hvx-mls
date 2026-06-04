@@ -3,12 +3,12 @@
 layout: home
 
 hero:
-  name: "HVX"
-  text: "HEMS Past-Exam Video Explainer"
+  name: "MLS"
+  text: "Math Learning Studio"
   tagline: "Secure, searchable, and automated solution video learning system"
   image:
     src: logo.png
-    alt: HVX
+    alt: MLS
   actions:
     - theme: brand
       text: Get Started

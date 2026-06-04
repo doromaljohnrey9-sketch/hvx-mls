@@ -1,7 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { db } from "@/lib/drizzle/db";
 import { problemVideos, examSets, schools } from "@/drizzle/schemas";
 import { eq, and, like, or, sql } from "drizzle-orm";
+import { apiResponse } from "@/lib/response";
+import { rateLimit } from "@/lib/ratelimit";
+import { requireRole } from "@/lib/guards/role.guard";
+import { HttpStatus } from "@/constants/http-status.constant";
 
 import type { Video } from "@/types/video.types";
 
@@ -13,10 +17,8 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search") || undefined;
     const schoolId = searchParams.get("schoolId") || undefined;
     const year = searchParams.get("year") ? parseInt(searchParams.get("year")!, 10) : undefined;
-    const semester = searchParams.get("semester")
-      ? parseInt(searchParams.get("semester")!, 10)
-      : undefined;
-    const examType = searchParams.get("examType") || undefined;
+    const semester = searchParams.get("semester") as "1st" | "2nd" | undefined;
+    const examType = searchParams.get("examType") as "midterm" | "final" | undefined;
     const grade = searchParams.get("grade") ? parseInt(searchParams.get("grade")!, 10) : undefined;
     const subject = searchParams.get("subject") || undefined;
     const problemNumber = searchParams.get("problemNumber")
@@ -60,8 +62,12 @@ export async function GET(request: NextRequest) {
         examSetId: problemVideos.examSetId,
         problemNumber: problemVideos.problemNumber,
         videoUrl: problemVideos.videoUrl,
+        filePath: problemVideos.filePath,
+        duration: problemVideos.duration,
         title: problemVideos.title,
         visibility: problemVideos.visibility,
+        uploadStatus: problemVideos.uploadStatus,
+        uploadedBy: problemVideos.uploadedBy,
         createdAt: problemVideos.createdAt,
         updatedAt: problemVideos.updatedAt,
         examSetId_2: examSets.id,
@@ -71,6 +77,7 @@ export async function GET(request: NextRequest) {
         examType: examSets.examType,
         grade: examSets.grade,
         subject: examSets.subject,
+        title_2: examSets.title,
         status: examSets.status,
         schoolId_2: schools.id,
         schoolName: schools.name,
@@ -98,19 +105,24 @@ export async function GET(request: NextRequest) {
       examSetId: row.examSetId,
       problemNumber: row.problemNumber,
       videoUrl: row.videoUrl,
+      filePath: row.filePath,
+      duration: row.duration,
       title: row.title,
       visibility: row.visibility as "public" | "private" | "hidden",
+      uploadStatus: row.uploadStatus as "pending" | "completed" | "failed",
+      uploadedBy: row.uploadedBy,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
       examSet: {
         id: row.examSetId_2,
         schoolId: row.schoolId,
         year: row.year,
-        semester: row.semester,
-        examType: row.examType,
+        semester: row.semester as "1st" | "2nd",
+        examType: row.examType as "midterm" | "final",
         grade: row.grade,
         subject: row.subject,
-        status: row.status as "none" | "partial" | "complete",
+        title: row.title_2,
+        status: row.status as "draft" | "published" | "hidden",
         school: {
           id: row.schoolId_2,
           name: row.schoolName,
@@ -119,21 +131,88 @@ export async function GET(request: NextRequest) {
       },
     }));
 
-    return NextResponse.json({
-      success: true,
+    return apiResponse({
       data: {
         videos,
         total,
       },
+      status: HttpStatus.OK,
     });
   } catch (error) {
     console.error("Error fetching videos:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Failed to fetch videos",
-      },
-      { status: 500 }
-    );
+    return apiResponse({
+      data: null,
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: "Failed to fetch videos",
+    });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const rateLimited = await rateLimit("api");
+    if (rateLimited) return rateLimited;
+
+    const { user, error: authError } = await requireRole([
+      "super_admin",
+      "branch_admin",
+      "teacher",
+    ]);
+    if (authError) return authError;
+
+    const body = await request.json();
+    const { examSetId, problemNumber, videoUrl, filePath, duration, title, visibility } = body;
+
+    if (!examSetId || !problemNumber || !videoUrl) {
+      return apiResponse({
+        data: null,
+        status: HttpStatus.BAD_REQUEST,
+        message: "Missing required fields: examSetId, problemNumber, videoUrl",
+      });
+    }
+
+    // Check for duplicate problem number in the same exam set
+    const existingVideo = await db
+      .select()
+      .from(problemVideos)
+      .where(
+        and(eq(problemVideos.examSetId, examSetId), eq(problemVideos.problemNumber, problemNumber))
+      )
+      .limit(1);
+
+    if (existingVideo.length > 0) {
+      return apiResponse({
+        data: null,
+        status: HttpStatus.CONFLICT,
+        message: "A video with this problem number already exists in this exam set",
+      });
+    }
+
+    const newVideo = await db
+      .insert(problemVideos)
+      .values({
+        examSetId,
+        problemNumber,
+        videoUrl,
+        filePath: filePath || null,
+        duration: duration || null,
+        title: title || null,
+        visibility: visibility || "public",
+        uploadStatus: "completed",
+        uploadedBy: user!.id,
+      })
+      .returning();
+
+    return apiResponse({
+      data: newVideo[0],
+      status: HttpStatus.CREATED,
+    });
+  } catch (error) {
+    console.error("Error creating video:", error);
+    return apiResponse({
+      data: null,
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: "Failed to create video",
+    });
   }
 }

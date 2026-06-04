@@ -13,26 +13,30 @@ export function AdminUsersPageClient() {
     updateUser,
     search,
     roleFilter,
+    approvalStatusFilter,
     page,
     pageSize,
     totalPages,
     handleSearchChange,
     handleSearchSubmit,
     handleRoleFilterChange,
+    handleApprovalStatusFilterChange,
     handlePageChange,
   } = useAdminUserManagement();
 
   const columns = createUsersColumns({ updateUser: updateUser });
 
   return (
-    <div className="flex-1 space-y-6 p-8">
+    <div className="flex-1 min-w-0 space-y-6 p-8">
       <UsersPageHeader />
       <UsersFilters
         search={search}
         roleFilter={roleFilter}
+        approvalStatusFilter={approvalStatusFilter}
         onSearchChange={handleSearchChange}
         onSearchSubmit={handleSearchSubmit}
         onRoleFilterChange={handleRoleFilterChange}
+        onApprovalStatusFilterChange={handleApprovalStatusFilterChange}
       />
       <UsersTable
         columns={columns}

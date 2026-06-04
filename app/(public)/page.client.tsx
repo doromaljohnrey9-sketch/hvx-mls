@@ -7,7 +7,7 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 
 import { useAuth } from "@/hooks/use-auth";
 
-// Premium Branding for HVX System
+// Premium Branding for MLS System
 
 export const PageClient = () => {
   const { user } = useAuth();
@@ -16,7 +16,7 @@ export const PageClient = () => {
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <nav className="border-b border-border">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <span className="font-mono text-sm uppercase tracking-tight">HVX System</span>
+          <span className="font-mono text-sm uppercase tracking-tight">MLS System</span>
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-4 text-sm">
               {user ? (
@@ -59,8 +59,8 @@ export const PageClient = () => {
           </h1>
 
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            Automated, secure, and searchable sub-module within the HEMS ecosystem.
-            Approved students can easily find and watch exam solution videos.
+            Automated, secure, and searchable sub-module within the HEMS ecosystem. Approved
+            students can easily find and watch exam solution videos.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -76,7 +76,7 @@ export const PageClient = () => {
       <footer className="border-t border-border py-10">
         <div className="max-w-2xl mx-auto px-4 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <span>&copy; {new Date().getFullYear()} HVX System</span>
+            <span>&copy; {new Date().getFullYear()} MLS System</span>
             <Link href="/privacy" className="hover:text-foreground transition">
               Privacy
             </Link>

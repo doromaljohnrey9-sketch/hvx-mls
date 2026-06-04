@@ -10,6 +10,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SearchIcon, XIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getSchoolsQueryOptions } from "@/queries/schools.query";
+import { getSubjectsQueryOptions } from "@/queries/subjects.query";
+import { VideoUploadDialog } from "@/components/videos/video-upload-dialog";
+import { useAuth } from "@/hooks/use-auth";
 
 interface VideosFiltersProps {
   search: string;
@@ -50,6 +55,15 @@ export function VideosFilters({
   onSubjectFilterChange,
   onProblemNumberFilterChange,
 }: VideosFiltersProps) {
+  const { data: schools, isLoading: schoolsLoading } = useQuery(getSchoolsQueryOptions());
+  const { data: subjects, isLoading: subjectsLoading } = useQuery(getSubjectsQueryOptions());
+  const { profile } = useAuth();
+
+  const canUploadVideo =
+    profile?.role === "teacher" ||
+    profile?.role === "branch_admin" ||
+    profile?.role === "super_admin";
+
   const hasActiveFilters =
     (schoolIdFilter && schoolIdFilter !== "all") ||
     (yearFilter && yearFilter !== "all") ||
@@ -73,7 +87,7 @@ export function VideosFilters({
     <div className="space-y-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 max-w-sm">
-          <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search videos..."
             value={search}
@@ -93,22 +107,33 @@ export function VideosFilters({
             Search
           </Button>
         </div>
-        {hasActiveFilters && (
-          <Button variant="ghost" size="sm" onClick={clearFilters}>
-            <XIcon className="h-4 w-4 mr-2" />
-            Clear Filters
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {hasActiveFilters && (
+            <Button variant="ghost" size="sm" onClick={clearFilters}>
+              <XIcon className="size-4 mr-2" />
+              Clear Filters
+            </Button>
+          )}
+          {canUploadVideo && <VideoUploadDialog />}
+        </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-7 gap-3">
         <div className="w-full">
-          <Select value={schoolIdFilter} onValueChange={onSchoolIdFilterChange}>
+          <Select
+            value={schoolIdFilter}
+            onValueChange={onSchoolIdFilterChange}
+            disabled={schoolsLoading}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="All Schools" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Schools</SelectItem>
-              {/* TODO: Fetch schools dynamically */}
+              {schools?.map((school) => (
+                <SelectItem key={school.id} value={school.id}>
+                  {school.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -169,13 +194,21 @@ export function VideosFilters({
         </div>
 
         <div className="w-full">
-          <Select value={subjectFilter} onValueChange={onSubjectFilterChange}>
+          <Select
+            value={subjectFilter}
+            onValueChange={onSubjectFilterChange}
+            disabled={subjectsLoading}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="All Subjects" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Subjects</SelectItem>
-              {/* TODO: Fetch subjects dynamically */}
+              {subjects?.map((subject) => (
+                <SelectItem key={subject} value={subject}>
+                  {subject}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

@@ -1,12 +1,12 @@
 # AGENTS.md
 
-Developer guide for working with the HVX project. This guide outlines the project structure, conventions, patterns, and workflows to help you understand and extend the system.
+Developer guide for working with the MLS project. This guide outlines the project structure, conventions, patterns, and workflows to help you understand and extend the system.
 
 ## Project Overview
 
 ### What You Have
 
-You've cloned a full-stack system built on the HVX foundation (Next.js + Supabase + Drizzle ORM), with a separate VitePress docs site:
+You've cloned a full-stack system built on the MLS foundation (Next.js + Supabase + Drizzle ORM), with a separate VitePress docs site:
 
 - **Included features:** Authentication flows, protected routes, dashboard shell, API routes, and CI pipeline for lint/unit/e2e/build
 - **Key directories:** `app/(auth)/*`, `app/(protected)/*`, `app/api/*`, `.github/workflows/*`

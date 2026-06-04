@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/config/axios.config";
-import type { VideosResponse, VideosQueryParams } from "@/types/video.types";
+import type { VideosResponse, VideosQueryParams, Video } from "@/types/video.types";
+import type { InsertProblemVideo, SelectProblemVideo } from "@/types/drizzle.types";
 
 import { API_ROUTES } from "@/constants/routes.constant";
 
@@ -16,7 +17,8 @@ export const videosService = {
       if (params.examType) queryParams.append("examType", params.examType);
       if (params.grade) queryParams.append("grade", params.grade.toString());
       if (params.subject) queryParams.append("subject", params.subject);
-      if (params.problemNumber) queryParams.append("problemNumber", params.problemNumber.toString());
+      if (params.problemNumber)
+        queryParams.append("problemNumber", params.problemNumber.toString());
 
       const url = `${API_ROUTES.VIDEOS}?${queryParams.toString()}`;
       const response = await axiosInstance.get<{ success: boolean; data: VideosResponse }>(url);
@@ -24,6 +26,55 @@ export const videosService = {
     } catch (error) {
       console.error("Failed to fetch videos:", error);
       return { videos: [], total: 0 };
+    }
+  },
+  getVideoById: async (id: string): Promise<Video | null> => {
+    try {
+      const response = await axiosInstance.get<{ success: boolean; data: Video }>(
+        `${API_ROUTES.VIDEOS}/${id}`
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to fetch video:", error);
+      return null;
+    }
+  },
+  create: async (data: InsertProblemVideo): Promise<SelectProblemVideo | null> => {
+    try {
+      const response = await axiosInstance.post<{ success: boolean; data: SelectProblemVideo }>(
+        API_ROUTES.VIDEOS,
+        data
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to create video:", error);
+      return null;
+    }
+  },
+  update: async (
+    id: string,
+    data: Partial<InsertProblemVideo>
+  ): Promise<SelectProblemVideo | null> => {
+    try {
+      const response = await axiosInstance.put<{ success: boolean; data: SelectProblemVideo }>(
+        `${API_ROUTES.VIDEOS}/${id}`,
+        data
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to update video:", error);
+      return null;
+    }
+  },
+  delete: async (id: string): Promise<SelectProblemVideo | null> => {
+    try {
+      const response = await axiosInstance.delete<{ success: boolean; data: SelectProblemVideo }>(
+        `${API_ROUTES.VIDEOS}/${id}`
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to delete video:", error);
+      return null;
     }
   },
 };

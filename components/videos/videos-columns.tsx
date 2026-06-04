@@ -3,17 +3,75 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { ArrowUpDownIcon, PlayIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  ArrowUpDownIcon,
+  MoreHorizontalIcon,
+  PlayIcon,
+  PencilIcon,
+  Trash2Icon,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import type { Video } from "@/types/video.types";
 
-export function createVideosColumns() {
+interface CreateVideosColumnsProps {
+  userRole?: string;
+  onUpdate?: (video: Video) => void;
+  onDelete?: (video: Video) => void;
+}
+
+export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVideosColumnsProps) {
   const columns: ColumnDef<Video>[] = [
     {
       id: "spacer",
       header: () => null,
       cell: () => null,
       size: 48,
+    },
+    {
+      id: "watch",
+      header: () => <div className="text-sm font-medium">Watch</div>,
+      cell: ({ row }) => {
+        const video = row.original;
+        const router = useRouter();
+        return (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              router.push(`/videos/${video.id}`);
+            }}
+          >
+            <PlayIcon className="size-4 mr-2" />
+            Watch
+          </Button>
+        );
+      },
+      size: 100,
+    },
+    {
+      accessorKey: "title",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          Title
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const video = row.original;
+        return <span className="text-sm text-muted-foreground">{video.title || "N/A"}</span>;
+      },
+      size: 200,
     },
     {
       accessorKey: "examSet.school.name",
@@ -24,7 +82,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           School
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -42,7 +100,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Year
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -60,7 +118,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Semester
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -78,7 +136,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Exam Type
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -96,7 +154,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Grade
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -114,7 +172,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Subject
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -132,7 +190,7 @@ export function createVideosColumns() {
           className="h-8 px-2"
         >
           Problem No.
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -142,42 +200,57 @@ export function createVideosColumns() {
       size: 120,
     },
     {
-      accessorKey: "title",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="h-8 px-2"
-        >
-          Title
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => {
-        const video = row.original;
-        return <span className="text-sm text-muted-foreground">{video.title || "N/A"}</span>;
-      },
-      size: 200,
-    },
-    {
       id: "actions",
       header: () => <div className="text-sm font-medium">Actions</div>,
       cell: ({ row }) => {
         const video = row.original;
+        const router = useRouter();
+        const canManage =
+          userRole === "super_admin" || userRole === "branch_admin" || userRole === "teacher";
+
         return (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              window.open(video.videoUrl, "_blank");
-            }}
-          >
-            <PlayIcon className="h-4 w-4 mr-2" />
-            Watch
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => {
+                  router.push(`/videos/${video.id}`);
+                }}
+              >
+                <PlayIcon className="h-4 w-4 mr-2" />
+                Watch
+              </DropdownMenuItem>
+              {canManage && onUpdate && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    onUpdate(video);
+                  }}
+                >
+                  <PencilIcon className="h-4 w-4 mr-2" />
+                  Edit
+                </DropdownMenuItem>
+              )}
+              {canManage && onDelete && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    onDelete(video);
+                  }}
+                  className="text-destructive"
+                >
+                  <Trash2Icon className="h-4 w-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         );
       },
-      size: 100,
+      size: 80,
     },
   ];
 

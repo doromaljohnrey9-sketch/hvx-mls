@@ -1,9 +1,12 @@
-import type { SelectProfile, UserRole } from "./drizzle.types";
+import type { SelectProfile, UserRole, ApprovalStatus } from "./drizzle.types";
 
-export type AdminUser = SelectProfile;
+export type AdminUser = SelectProfile & {
+  branchName?: string | null;
+};
 
 export interface AdminUserUpdate {
   role?: UserRole;
+  approvalStatus?: ApprovalStatus;
 }
 
 export interface AdminUsersResponse {
@@ -16,4 +19,5 @@ export interface AdminUsersQueryParams {
   pageSize?: number;
   search?: string;
   role?: UserRole;
+  approvalStatus?: ApprovalStatus;
 }

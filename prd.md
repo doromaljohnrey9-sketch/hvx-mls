@@ -1,8 +1,8 @@
 Background | 배경
 
-Replace the current process of teachers manually sending past-exam solution videos via KakaoTalk (~600 videos) with a HEMS sub-module (HVX) where approved students search and watch videos by school / year / semester / exam type / problem number. Access is approval-based to prevent external leakage.
+Replace the current process of teachers manually sending past-exam solution videos via KakaoTalk (~600 videos) with a HEMS sub-module (MLS) where approved students search and watch videos by school / year / semester / exam type / problem number. Access is approval-based to prevent external leakage.
 
-현재 선생님이 카카오톡으로 기출문제 풀이 영상(약 600개)을 개별 전달하는 방식을, 승인된 학생이 학교·연도·학기·시험구분·문항번호로 직접 검색·시청하는 HEMS 하위 모듈(HVX)로 전환. 외부 유출 방지를 위해 승인 기반 접근 제어 적용.
+현재 선생님이 카카오톡으로 기출문제 풀이 영상(약 600개)을 개별 전달하는 방식을, 승인된 학생이 학교·연도·학기·시험구분·문항번호로 직접 검색·시청하는 HEMS 하위 모듈(MLS)로 전환. 외부 유출 방지를 위해 승인 기반 접근 제어 적용.
 
 Scope (MVP) | 범위
 
@@ -84,7 +84,7 @@ Deliverable UI labels in Korean | UI 라벨 한국어
 
 Notes | 비고
 
-Source: PRD (G-HEMS-HVX-PRD-20260602-001) | 출처: PRD 문서
+Source: PRD (G-HEMS-MLS-PRD-20260602-001) | 출처: PRD 문서
 
 Author / Requested by: CEO (Matt) | 요청자: 대표님
 

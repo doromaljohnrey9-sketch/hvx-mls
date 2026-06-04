@@ -13,6 +13,7 @@ import type { SelectProfile, UserRole } from "@/types/drizzle.types";
 
 /**
  * Requires authentication AND checks user role against allowed roles.
+ * Also checks that user is approved (not pending/rejected/blocked).
  * Returns user, profile, and optional error response.
  */
 export async function requireRole(allowedRoles: UserRole[]): Promise<{
@@ -48,6 +49,18 @@ export async function requireRole(allowedRoles: UserRole[]): Promise<{
         error: apiResponse({
           status: HttpStatus.FORBIDDEN,
           message: "Profile not found.",
+        }),
+      };
+    }
+
+    // Check approval status
+    if (profile.approvalStatus !== "approved") {
+      return {
+        user,
+        profile,
+        error: apiResponse({
+          status: HttpStatus.FORBIDDEN,
+          message: "Account not approved.",
         }),
       };
     }

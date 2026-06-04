@@ -24,3 +24,9 @@ export const getVideosQueryOptions = (params: VideosQueryParams) =>
     ],
     queryFn: () => videosService.getVideos(params),
   });
+
+export const getVideoByIdQueryOptions = (id: string) =>
+  queryOptions({
+    queryKey: getQueryKey.videos.detail(id),
+    queryFn: () => videosService.getVideoById(id),
+  });

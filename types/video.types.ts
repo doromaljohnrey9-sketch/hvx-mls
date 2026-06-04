@@ -5,19 +5,24 @@ export interface Video {
   examSetId: string;
   problemNumber: number;
   videoUrl: string;
+  filePath: string | null;
+  duration: number | null;
   title: string | null;
   visibility: "public" | "private" | "hidden";
+  uploadStatus: "pending" | "completed" | "failed";
+  uploadedBy: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
   examSet: {
     id: string;
     schoolId: string;
     year: number;
-    semester: number;
-    examType: string;
+    semester: "1st" | "2nd";
+    examType: "midterm" | "final";
     grade: number;
     subject: string;
-    status: "none" | "partial" | "complete";
+    title: string;
+    status: "draft" | "published" | "hidden";
     school: {
       id: string;
       name: string;
@@ -37,8 +42,8 @@ export interface VideosQueryParams {
   search?: string;
   schoolId?: string;
   year?: number;
-  semester?: number;
-  examType?: string;
+  semester?: "1st" | "2nd";
+  examType?: "midterm" | "final";
   grade?: number;
   subject?: string;
   problemNumber?: number;

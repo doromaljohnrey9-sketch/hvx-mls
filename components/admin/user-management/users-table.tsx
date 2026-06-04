@@ -55,89 +55,100 @@ export function UsersTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                const canSort = header.column.getCanSort();
-                const sorted = header.column.getIsSorted();
-                const headerDef = header.column.columnDef.header;
+    <div className="w-full max-w-full overflow-x-auto rounded-md border">
+      <div className="min-w-0">
+        <Table style={{ minWidth: table.getTotalSize() }} className="table-fixed">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  const canSort = header.column.getCanSort();
+                  const sorted = header.column.getIsSorted();
+                  const headerDef = header.column.columnDef.header;
 
-                const headerContent = header.isPlaceholder ? null : typeof headerDef === "string" &&
-                  canSort ? (
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 text-left text-sm font-medium text-muted-foreground"
-                    onClick={header.column.getToggleSortingHandler()}
-                  >
-                    {headerDef}
-                    <span className="opacity-60">
-                      {sorted === "asc" ? (
-                        <ChevronUpIcon className="h-4 w-4" />
-                      ) : sorted === "desc" ? (
-                        <ChevronDownIcon className="h-4 w-4" />
-                      ) : (
-                        <ChevronUpIcon className="h-4 w-4 opacity-0" />
-                      )}
-                    </span>
-                  </button>
-                ) : (
-                  flexRender(header.column.columnDef.header, header.getContext())
-                );
+                  const headerContent = header.isPlaceholder ? null : typeof headerDef ===
+                      "string" && canSort ? (
+                    <button
+                      type="button"
+                      className="flex items-center gap-2 text-left text-sm font-medium text-muted-foreground"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      {headerDef}
+                      <span className="opacity-60">
+                        {sorted === "asc" ? (
+                          <ChevronUpIcon className="h-4 w-4" />
+                        ) : sorted === "desc" ? (
+                          <ChevronDownIcon className="h-4 w-4" />
+                        ) : (
+                          <ChevronUpIcon className="h-4 w-4 opacity-0" />
+                        )}
+                      </span>
+                    </button>
+                  ) : (
+                    flexRender(header.column.columnDef.header, header.getContext())
+                  );
 
-                return (
-                  <TableHead
-                    key={header.id}
-                    className={
-                      typeof headerDef === "string" && canSort
-                        ? "cursor-pointer select-none"
-                        : undefined
-                    }
-                    onClick={
-                      typeof headerDef === "string" && canSort
-                        ? header.column.getToggleSortingHandler()
-                        : undefined
-                    }
-                  >
-                    {headerContent}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
-            [...Array(5)].map((_, i) => (
-              <TableRow key={i}>
-                {[...Array(7)].map((_, j) => (
-                  <TableCell key={j} className="h-12">
-                    <Skeleton className="h-8 w-full" />
-                  </TableCell>
-                ))}
+                  return (
+                    <TableHead
+                      key={header.id}
+                      style={{
+                        width: header.column.columnDef.size
+                          ? `${header.column.columnDef.size}px`
+                          : undefined,
+                      }}
+                      className={`${typeof headerDef === "string" && canSort ? "cursor-pointer select-none" : ""} overflow-hidden shrink-0`}
+                      onClick={
+                        typeof headerDef === "string" && canSort
+                          ? header.column.getToggleSortingHandler()
+                          : undefined
+                      }
+                    >
+                      {headerContent}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+            ))}
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              [...Array(5)].map((_, i) => (
+                <TableRow key={i}>
+                  {[...Array(columns.length)].map((_, j) => (
+                    <TableCell key={j} className="h-12">
+                      <Skeleton className="h-8 w-full" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      style={{
+                        width: cell.column.columnDef.size
+                          ? `${cell.column.columnDef.size}px`
+                          : undefined,
+                      }}
+                      className="overflow-hidden shrink-0"
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No users found.
+                </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No users found.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            )}
+          </TableBody>
+        </Table>
+      </div>
       {pagination && (
         <div className="flex items-center justify-between border-t px-4 py-3">
           <div className="text-sm text-muted-foreground">

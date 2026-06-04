@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/config/axios.config";
-import type { SelectProfile, UserRole } from "@/types/drizzle.types";
+import type { SelectProfile, UserRole, ApprovalStatus } from "@/types/drizzle.types";
 import type { AdminUsersResponse, AdminUsersQueryParams } from "@/types/admin.types";
 
 import { API_ROUTES } from "@/constants/routes.constant";
@@ -28,6 +28,19 @@ export const adminService = {
     }
   },
 
+  updateStudentApprovalStatus: async (
+    userId: string,
+    approvalStatus: ApprovalStatus
+  ): Promise<boolean> => {
+    try {
+      await axiosInstance.patch(API_ROUTES.ADMIN.STUDENTS, { userId, approvalStatus });
+      return true;
+    } catch (error) {
+      console.error("Failed to update student approval status:", error);
+      return false;
+    }
+  },
+
   getAdminUsers: async (params: AdminUsersQueryParams): Promise<AdminUsersResponse> => {
     try {
       const queryParams = new URLSearchParams();
@@ -35,6 +48,7 @@ export const adminService = {
       if (params.pageSize) queryParams.append("pageSize", params.pageSize.toString());
       if (params.search) queryParams.append("search", params.search);
       if (params.role) queryParams.append("role", params.role);
+      if (params.approvalStatus) queryParams.append("approvalStatus", params.approvalStatus);
 
       const url = `${API_ROUTES.ADMIN.STUDENTS}?${queryParams.toString()}`;
       const response = await axiosInstance.get<{ success: boolean; data: AdminUsersResponse }>(url);

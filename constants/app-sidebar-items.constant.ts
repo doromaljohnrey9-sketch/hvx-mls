@@ -1,9 +1,9 @@
 import { LayoutDashboardIcon, SearchIcon, UsersIcon, VideoIcon } from "lucide-react";
 
-// HVX Sidebar navigation items
+// MLS Sidebar navigation items
 export const APP_SIDEBAR_ITEMS = {
   platform: {
-    title: "HVX",
+    title: "MLS",
     items: [
       {
         name: "Dashboard",
