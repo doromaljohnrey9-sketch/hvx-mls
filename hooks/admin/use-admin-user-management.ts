@@ -2,8 +2,9 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 
-import { updateAdminUser } from "@/app/actions/admin";
+import { adminService } from "@/services/admin.service";
 import { getAdminUsersQueryOptions } from "@/queries/admin-users.query";
 import { getQueryKey } from "@/lib/query/get-query-keys";
 import type { AdminUserUpdate } from "@/types/admin.types";
@@ -30,10 +31,23 @@ export function useAdminUserManagement() {
   );
 
   const updateUser = useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: AdminUserUpdate }) =>
-      updateAdminUser(id, updates),
+    mutationFn: async ({ id, updates }: { id: string; updates: AdminUserUpdate }) => {
+      if (updates.role) {
+        await adminService.updateStudentRole(id, updates.role);
+      }
+      if (updates.approvalStatus) {
+        await adminService.updateStudentApprovalStatus(id, updates.approvalStatus);
+      }
+      return true;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getQueryKey.admin.users() });
+    },
+    onError: (error: any) => {
+      console.error("Failed to update user:", error);
+      toast.error("Failed to update user", {
+        description: error.response?.data?.message || error.message || "Please try again",
+      });
     },
   });
 

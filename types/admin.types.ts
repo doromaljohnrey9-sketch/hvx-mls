@@ -2,6 +2,7 @@ import type { SelectProfile, UserRole, ApprovalStatus } from "./drizzle.types";
 
 export type AdminUser = SelectProfile & {
   branchName?: string | null;
+  schoolName?: string | null;
   approverName?: string | null;
 };
 

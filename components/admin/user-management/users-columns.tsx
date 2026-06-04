@@ -1,19 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuCheckboxItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { UserActionsDropdown } from "@/components/admin/user-management/user-actions-dropdown";
 import {
   ArrowUpDownIcon,
   GraduationCap,
@@ -25,7 +16,7 @@ import {
   Ban,
   Calendar,
   User,
-  MoreHorizontalIcon,
+  SchoolIcon,
 } from "lucide-react";
 
 import type { AdminUser, AdminUserUpdate } from "@/types/admin.types";
@@ -85,7 +76,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           className="h-8 px-2"
         >
           Name
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -180,6 +171,29 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
       size: 180,
     },
     {
+      accessorKey: "schoolName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          School
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const user = row.original;
+        return (
+          <div className="flex items-center gap-2">
+            <SchoolIcon className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{user.schoolName || "N/A"}</span>
+          </div>
+        );
+      },
+      size: 180,
+    },
+    {
       accessorKey: "createdAt",
       header: ({ column }) => (
         <Button
@@ -264,89 +278,14 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           return null;
         }
 
-        const [selectedRole, setSelectedRole] = useState<UserRole | null>(user.role);
-        const [selectedStatus, setSelectedStatus] = useState<ApprovalStatus | null>(
-          user.approvalStatus
-        );
-        const [isOpen, setIsOpen] = useState(false);
-
-        const availableRoles: UserRole[] = ["student", "teacher", "branch_admin"];
-        const availableStatuses: ApprovalStatus[] = ["pending", "approved", "rejected", "blocked"];
-
-        const handleConfirm = () => {
-          const updates: AdminUserUpdate = {};
-          let hasChanges = false;
-
-          if (selectedRole && selectedRole !== user.role) {
-            updates.role = selectedRole;
-            hasChanges = true;
-          }
-          if (selectedStatus && selectedStatus !== user.approvalStatus) {
-            updates.approvalStatus = selectedStatus;
-            hasChanges = true;
-          }
-
-          if (hasChanges) {
-            updateUser.mutate({
-              id: user.id,
-              updates,
-            });
-            if (updates.role) {
-              toast.success(`User role updated to ${ROLE_LABELS[updates.role]}`);
-            }
-            if (updates.approvalStatus) {
-              toast.success(
-                `User status updated to ${APPROVAL_STATUS_LABELS[updates.approvalStatus]}`
-              );
-            }
-          }
-          setIsOpen(false);
-        };
-
         return (
-          <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 p-0"
-                disabled={updateUser.isPending || isSelf}
-              >
-                <MoreHorizontalIcon className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Role</DropdownMenuLabel>
-              {availableRoles.map((role) => (
-                <DropdownMenuCheckboxItem
-                  key={role}
-                  checked={selectedRole === role}
-                  onCheckedChange={(checked) => checked && setSelectedRole(role)}
-                  onSelect={(e) => e.preventDefault()}
-                >
-                  {ROLE_LABELS[role]}
-                </DropdownMenuCheckboxItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>Status</DropdownMenuLabel>
-              {availableStatuses.map((status) => (
-                <DropdownMenuCheckboxItem
-                  key={status}
-                  checked={selectedStatus === status}
-                  onCheckedChange={(checked) => checked && setSelectedStatus(status)}
-                  onSelect={(e) => e.preventDefault()}
-                >
-                  {APPROVAL_STATUS_LABELS[status]}
-                </DropdownMenuCheckboxItem>
-              ))}
-              <DropdownMenuSeparator />
-              <div className="flex items-center justify-end gap-2 p-2">
-                <Button size="sm" onClick={handleConfirm} disabled={updateUser.isPending}>
-                  Confirm
-                </Button>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <UserActionsDropdown
+            user={user}
+            updateUser={updateUser}
+            isSelf={isSelf}
+            roleLabels={ROLE_LABELS}
+            statusLabels={APPROVAL_STATUS_LABELS}
+          />
         );
       },
       size: 80,

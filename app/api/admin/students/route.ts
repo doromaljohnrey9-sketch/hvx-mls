@@ -1,7 +1,7 @@
 import { eq, and, like, or, sql } from "drizzle-orm";
 import { NextRequest } from "next/server";
 
-import { profiles, branches } from "@/drizzle/schemas";
+import { profiles, branches, schools } from "@/drizzle/schemas";
 import { alias } from "drizzle-orm/pg-core";
 import { db } from "@/lib/drizzle/db";
 import { apiResponse } from "@/lib/response";
@@ -85,10 +85,12 @@ export async function GET(request: NextRequest) {
         updatedAt: profiles.updatedAt,
         deletedAt: profiles.deletedAt,
         branchName: branches.name,
+        schoolName: schools.name,
         approverName: approverProfiles.name,
       })
       .from(profiles)
       .leftJoin(branches, eq(profiles.branchId, branches.id))
+      .leftJoin(schools, eq(profiles.schoolId, schools.id))
       .leftJoin(approverProfiles, eq(profiles.approvedBy, approverProfiles.id));
 
     if (conditions.length > 0) {

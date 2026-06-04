@@ -76,11 +76,11 @@ export function UsersTable<TData, TValue>({
                       {headerDef}
                       <span className="opacity-60">
                         {sorted === "asc" ? (
-                          <ChevronUpIcon className="h-4 w-4" />
+                          <ChevronUpIcon className="size-4" />
                         ) : sorted === "desc" ? (
-                          <ChevronDownIcon className="h-4 w-4" />
+                          <ChevronDownIcon className="size-4" />
                         ) : (
-                          <ChevronUpIcon className="h-4 w-4 opacity-0" />
+                          <ChevronUpIcon className="size-4 opacity-0" />
                         )}
                       </span>
                     </button>
@@ -163,7 +163,7 @@ export function UsersTable<TData, TValue>({
               onClick={() => pagination.onPageChange(pagination.page - 1)}
               disabled={pagination.page === 1}
             >
-              <ChevronLeftIcon className="h-4 w-4" />
+              <ChevronLeftIcon className="size-4" />
               Previous
             </Button>
             <div className="text-sm text-foreground font-medium">
@@ -176,7 +176,7 @@ export function UsersTable<TData, TValue>({
               disabled={pagination.page === pagination.totalPages}
             >
               Next
-              <ChevronRightIcon className="h-4 w-4" />
+              <ChevronRightIcon className="size-4" />
             </Button>
           </div>
         </div>
