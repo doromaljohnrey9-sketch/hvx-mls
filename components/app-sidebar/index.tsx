@@ -22,18 +22,22 @@ import { APP_SIDEBAR_ITEMS } from "@/constants/app-sidebar-items.constant";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "nextjs-toploader/app";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useAuth } from "@/hooks/use-auth";
+import { getQueryKey } from "@/lib/query/get-query-keys";
 
 export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const router = useRouter();
   const supabase = getSupabaseClient();
+  const queryClient = useQueryClient();
 
   const { profile, isLoading } = useAuth();
 
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
+      queryClient.invalidateQueries({ queryKey: getQueryKey.users.all });
       router.push("/");
     } catch (error) {
       console.error("Sign out failed:", error);

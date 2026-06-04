@@ -3,6 +3,7 @@
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { XCircle } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,14 +11,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { getSupabaseClient } from "@/lib/supabase/client";
 
 import { useAuth } from "@/hooks/use-auth";
+import { getQueryKey } from "@/lib/query/get-query-keys";
 
 export const PageClient = () => {
   const router = useRouter();
   const supabase = getSupabaseClient();
+  const queryClient = useQueryClient();
   const { user } = useAuth();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
+    queryClient.invalidateQueries({ queryKey: getQueryKey.users.all });
     toast.success("Log out successful.");
     router.replace("/login");
   };
@@ -37,11 +41,7 @@ export const PageClient = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {user && (
-            <p className="text-sm text-muted-foreground">
-              Account: {user.email}
-            </p>
-          )}
+          {user && <p className="text-sm text-muted-foreground">Account: {user.email}</p>}
           <Button variant="outline" onClick={handleSignOut} className="w-full">
             Log out
           </Button>
