@@ -9,7 +9,7 @@ import { requireRole } from "@/lib/guards/role.guard";
 
 import { HttpStatus } from "@/constants/http-status.constant";
 
-import type { UserRole } from "@/types/drizzle.types";
+import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 import type { AdminUsersResponse } from "@/types/admin.types";
 
 const ADMIN_ROLES: UserRole[] = ["teacher", "branch_admin", "super_admin"];
@@ -24,6 +24,7 @@ const ADMIN_ROLES: UserRole[] = ["teacher", "branch_admin", "super_admin"];
  * - pageSize: number (default 10)
  * - search: string (search by name or email)
  * - role: UserRole (filter by role)
+ * - approvalStatus: ApprovalStatus (filter by approval status)
  */
 export async function GET(request: NextRequest) {
   try {
@@ -38,6 +39,7 @@ export async function GET(request: NextRequest) {
     const pageSize = Math.min(100, Math.max(1, parseInt(searchParams.get("pageSize") || "10", 10)));
     const search = searchParams.get("search") || "";
     const roleFilter = searchParams.get("role") as UserRole | null;
+    const approvalStatusFilter = searchParams.get("approvalStatus") as ApprovalStatus | null;
     const conditions = [];
 
     // Branch-scoped access for non-super admins
@@ -48,6 +50,11 @@ export async function GET(request: NextRequest) {
     // Role filter
     if (roleFilter) {
       conditions.push(eq(profiles.role, roleFilter));
+    }
+
+    // Approval status filter
+    if (approvalStatusFilter) {
+      conditions.push(eq(profiles.approvalStatus, approvalStatusFilter));
     }
 
     // Search by name or email
@@ -62,9 +69,12 @@ export async function GET(request: NextRequest) {
         id: profiles.id,
         email: profiles.email,
         name: profiles.name,
-        imageUrl: profiles.imageUrl,
         role: profiles.role,
         branchId: profiles.branchId,
+        schoolId: profiles.schoolId,
+        approvalStatus: profiles.approvalStatus,
+        approvedBy: profiles.approvedBy,
+        approvedAt: profiles.approvedAt,
         createdAt: profiles.createdAt,
         updatedAt: profiles.updatedAt,
         deletedAt: profiles.deletedAt,
@@ -107,8 +117,8 @@ export async function GET(request: NextRequest) {
 
 /**
  * PATCH /api/admin/students
- * Update a student's role. Teacher+ only.
- * Body: { userId: string, role?: UserRole }
+ * Update a student's role or approval status. Teacher+ only.
+ * Body: { userId: string, role?: UserRole, approvalStatus?: ApprovalStatus }
  */
 export async function PATCH(request: NextRequest) {
   try {
@@ -119,9 +129,10 @@ export async function PATCH(request: NextRequest) {
     if (error) return error;
 
     const body = await request.json();
-    const { userId, role } = body as {
+    const { userId, role, approvalStatus } = body as {
       userId: string;
       role?: UserRole;
+      approvalStatus?: ApprovalStatus;
     };
 
     if (!userId) {
@@ -131,27 +142,33 @@ export async function PATCH(request: NextRequest) {
       });
     }
 
-    if (!role) {
+    if (!role && !approvalStatus) {
       return apiResponse({
         status: HttpStatus.BAD_REQUEST,
-        message: "Role is required.",
+        message: "Role or approvalStatus is required.",
       });
     }
 
-    const allowedRoles = [
-      "pending",
-      "denied",
-      "blocked",
-      "student",
-      "teacher",
-      "branch_admin",
-      "super_admin",
-    ];
-    if (!allowedRoles.includes(role)) {
-      return apiResponse({
-        status: HttpStatus.BAD_REQUEST,
-        message: "Invalid role.",
-      });
+    // Validate role if provided
+    if (role) {
+      const allowedRoles = ["student", "teacher", "branch_admin", "super_admin"];
+      if (!allowedRoles.includes(role)) {
+        return apiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          message: "Invalid role.",
+        });
+      }
+    }
+
+    // Validate approvalStatus if provided
+    if (approvalStatus) {
+      const allowedStatuses = ["pending", "approved", "rejected", "blocked"];
+      if (!allowedStatuses.includes(approvalStatus)) {
+        return apiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          message: "Invalid approval status.",
+        });
+      }
     }
 
     // Fetch target user
@@ -177,11 +194,27 @@ export async function PATCH(request: NextRequest) {
       });
     }
 
-    // Update the user role
-    await db.update(profiles).set({ role }).where(eq(profiles.id, userId));
+    // Build update object
+    const updateData: {
+      role?: UserRole;
+      approvalStatus?: ApprovalStatus;
+      approvedBy?: string;
+      approvedAt?: Date;
+    } = {};
+    if (role) updateData.role = role;
+    if (approvalStatus) {
+      updateData.approvalStatus = approvalStatus;
+      if (approvalStatus === "approved") {
+        updateData.approvedBy = profile!.id;
+        updateData.approvedAt = new Date();
+      }
+    }
+
+    // Update the user
+    await db.update(profiles).set(updateData).where(eq(profiles.id, userId));
 
     return apiResponse({
-      data: { userId, role },
+      data: { userId, ...updateData },
       status: HttpStatus.OK,
     });
   } catch (error) {

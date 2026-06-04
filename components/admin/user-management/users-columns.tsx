@@ -14,7 +14,7 @@ import {
 import { ArrowUpDownIcon } from "lucide-react";
 
 import type { AdminUser, AdminUserUpdate } from "@/types/admin.types";
-import type { UserRole } from "@/types/drizzle.types";
+import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 
 interface CreateUsersColumnsProps {
   updateUser: {
@@ -25,13 +25,17 @@ interface CreateUsersColumnsProps {
 
 export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
   const ROLE_LABELS: Record<string, string> = {
-    pending: "Pending",
-    denied: "Denied",
-    blocked: "Blocked",
     student: "Student",
     teacher: "Teacher",
     branch_admin: "Branch Admin",
     super_admin: "Super Admin",
+  };
+
+  const APPROVAL_STATUS_LABELS: Record<string, string> = {
+    pending: "Pending",
+    approved: "Approved",
+    rejected: "Rejected",
+    blocked: "Blocked",
   };
 
   const columns: ColumnDef<AdminUser>[] = [
@@ -81,6 +85,28 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
         return (
           <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium">
             {ROLE_LABELS[user.role] || user.role}
+          </span>
+        );
+      },
+      size: 160,
+    },
+    {
+      accessorKey: "approvalStatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          Status
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const user = row.original;
+        return (
+          <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium">
+            {APPROVAL_STATUS_LABELS[user.approvalStatus] || user.approvalStatus}
           </span>
         );
       },
@@ -138,41 +164,59 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
           return null;
         }
 
-        const availableRoles: UserRole[] = [
-          "pending",
-          "denied",
-          "blocked",
-          "student",
-          "teacher",
-          "branch_admin",
-        ];
+        const availableRoles: UserRole[] = ["student", "teacher", "branch_admin"];
+        const availableStatuses: ApprovalStatus[] = ["pending", "approved", "rejected", "blocked"];
 
         return (
-          <Select
-            defaultValue={user.role}
-            onValueChange={(newRole: UserRole) => {
-              updateUser.mutate({
-                id: user.id,
-                updates: { role: newRole },
-              });
-              toast.success(`User role updated to ${ROLE_LABELS[newRole]}`);
-            }}
-            disabled={updateUser.isPending}
-          >
-            <SelectTrigger className="h-8 w-[140px]">
-              <SelectValue placeholder="Select role" />
-            </SelectTrigger>
-            <SelectContent>
-              {availableRoles.map((role) => (
-                <SelectItem key={role} value={role}>
-                  {ROLE_LABELS[role]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex gap-2">
+            <Select
+              defaultValue={user.role}
+              onValueChange={(newRole: UserRole) => {
+                updateUser.mutate({
+                  id: user.id,
+                  updates: { role: newRole },
+                });
+                toast.success(`User role updated to ${ROLE_LABELS[newRole]}`);
+              }}
+              disabled={updateUser.isPending}
+            >
+              <SelectTrigger className="h-8 w-[120px]">
+                <SelectValue placeholder="Role" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableRoles.map((role) => (
+                  <SelectItem key={role} value={role}>
+                    {ROLE_LABELS[role]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select
+              defaultValue={user.approvalStatus}
+              onValueChange={(newStatus: ApprovalStatus) => {
+                updateUser.mutate({
+                  id: user.id,
+                  updates: { approvalStatus: newStatus },
+                });
+                toast.success(`User status updated to ${APPROVAL_STATUS_LABELS[newStatus]}`);
+              }}
+              disabled={updateUser.isPending}
+            >
+              <SelectTrigger className="h-8 w-[120px]">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableStatuses.map((status) => (
+                  <SelectItem key={status} value={status}>
+                    {APPROVAL_STATUS_LABELS[status]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         );
       },
-      size: 160,
+      size: 280,
     },
   ];
 

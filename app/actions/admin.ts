@@ -31,6 +31,11 @@ export async function updateAdminUser(userId: string, updates: AdminUserUpdate) 
       .update(profiles)
       .set({
         ...(updates.role && { role: updates.role }),
+        ...(updates.approvalStatus && { approvalStatus: updates.approvalStatus }),
+        ...(updates.approvalStatus === "approved" && {
+          approvedBy: authUser.id,
+          approvedAt: new Date(),
+        }),
       })
       .where(eq(profiles.id, userId));
 

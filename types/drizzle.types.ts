@@ -22,3 +22,6 @@ export type InsertProblemVideo = typeof schema.problemVideos.$inferInsert;
 
 // Role type derived from the enum
 export type UserRole = SelectProfile["role"];
+
+// Approval status type derived from the enum
+export type ApprovalStatus = SelectProfile["approvalStatus"];

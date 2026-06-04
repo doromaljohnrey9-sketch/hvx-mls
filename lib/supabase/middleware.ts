@@ -73,8 +73,8 @@ export async function updateSession(request: NextRequest, protectedRoutes: strin
       return NextResponse.redirect(url);
     }
 
-    // Handle pending, denied, and blocked users
-    if (profile.role === "pending") {
+    // Handle pending, rejected, and blocked users (based on approvalStatus)
+    if (profile.approvalStatus === "pending") {
       if (pathname !== "/pending") {
         const url = request.nextUrl.clone();
         url.pathname = DEFAULT_PENDING_REDIRECT;
@@ -83,7 +83,7 @@ export async function updateSession(request: NextRequest, protectedRoutes: strin
       return response;
     }
 
-    if (profile.role === "denied") {
+    if (profile.approvalStatus === "rejected") {
       if (pathname !== "/denied") {
         const url = request.nextUrl.clone();
         url.pathname = PROTECTED_ROUTES.DENIED;
@@ -92,7 +92,7 @@ export async function updateSession(request: NextRequest, protectedRoutes: strin
       return response;
     }
 
-    if (profile.role === "blocked") {
+    if (profile.approvalStatus === "blocked") {
       if (pathname !== "/blocked") {
         const url = request.nextUrl.clone();
         url.pathname = PROTECTED_ROUTES.BLOCKED;

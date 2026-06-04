@@ -134,10 +134,25 @@ Each group has its own layout and error boundary.
 
 The HVX project enforces a tiered access model to ensure security and content integrity:
 
-1.  **Pending**: Default state for self-signed-up students. Restricted from accessing any videos until approved.
-2.  **Student**: Approved users who can search and play videos.
-3.  **Teacher / Branch Admin**: Can approve/reject/block students and manage video data for their specific branch.
-4.  **Super Admin**: Holds global management rights across all branches.
+### Roles
+
+- **Student**: Approved users who can search and play videos.
+- **Teacher**: Can approve/reject/block students and manage video data for their specific branch.
+- **Branch Admin**: Branch manager with same permissions as teacher plus branch-level user management.
+- **Super Admin**: Holds global management rights across all branches.
+
+### Approval Status
+
+- **Pending**: Default state for self-signed-up students. Restricted from accessing any videos until approved.
+- **Approved**: User has been approved and can access the system based on their role.
+- **Rejected**: User's sign-up was rejected by an admin.
+- **Blocked**: User was blocked by an admin (e.g., for policy violations).
+
+### Access Control
+
+- Users must have `approvalStatus = "approved"` to access protected routes.
+- Role-based permissions determine what actions a user can perform (e.g., approving students, managing videos).
+- Branch admins are scoped to their own branch; super admins have global access.
 
 ### Key Directories
 
@@ -274,7 +289,12 @@ export const profiles = pgTable("profiles", {
   ...baseColumns, // id, createdAt, updatedAt, deletedAt
   email: varchar("email", { length: 255 }).notNull(),
   name: varchar("name", { length: 100 }).notNull(),
-  imageUrl: varchar("image_url", { length: 255 }),
+  role: userRoleEnum("role").default("student").notNull(),
+  branchId: uuid("branch_id").references(() => branches.id),
+  schoolId: uuid("school_id").references(() => schools.id),
+  approvalStatus: approvalStatusEnum("approval_status").default("pending").notNull(),
+  approvedBy: uuid("approved_by"),
+  approvedAt: timestamp("approved_at"),
 });
 ```
 
@@ -289,6 +309,13 @@ pnpm db:studio            # Visual editor
 
 The dashboard fetches the user's profile from the `profiles` table. A database trigger auto-creates a `profiles` row when a new user signs up. Since Drizzle ORM does not support triggers, you must **manually add this trigger** via the [Supabase SQL Editor](https://supabase.com/dashboard/project/_/sql):
 
+```bash
+# Option 1: Copy from the trigger file
+cat drizzle/migrations/profiles-trigger.sql
+
+# Option 2: Copy the SQL below directly
+```
+
 ```sql
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 
@@ -298,16 +325,21 @@ LANGUAGE plpgsql
 SECURITY DEFINER SET search_path = ''
 AS $$
 BEGIN
-  INSERT INTO public.profiles (id, name, email, image_url, branch_id)
+  INSERT INTO public.profiles (id, email, name, role, branch_id, school_id, approval_status)
   VALUES (
     new.id,
-    new.raw_user_meta_data ->> 'name',
     new.email,
-    new.raw_user_meta_data ->> 'avatar_url',
+    COALESCE(new.raw_user_meta_data ->> 'name', 'Unknown User'),
+    'student',
     CASE
       WHEN new.raw_user_meta_data ->> 'branchId' IS NULL THEN NULL
       ELSE (new.raw_user_meta_data ->> 'branchId')::uuid
-    END
+    END,
+    CASE
+      WHEN new.raw_user_meta_data ->> 'schoolId' IS NULL THEN NULL
+      ELSE (new.raw_user_meta_data ->> 'schoolId')::uuid
+    END,
+    'pending'
   );
   RETURN new;
 END;
@@ -319,6 +351,8 @@ CREATE TRIGGER on_auth_user_created
 ```
 
 > **Note:** `pnpm db:push` only syncs tables and columns from your Drizzle TypeScript schemas — it does not create triggers or functions. You must apply the trigger separately after every `db:push`.
+
+> **Trigger Behavior:** The trigger sets new users to `role: "student"` and `approvalStatus: "pending"` by default. Users cannot access protected content until approved by a teacher or branch admin.
 
 ## Email (Resend)
 

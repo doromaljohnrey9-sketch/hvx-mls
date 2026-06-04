@@ -7,6 +7,7 @@ import { updateAdminUser } from "@/app/actions/admin";
 import { getAdminUsersQueryOptions } from "@/queries/admin-users.query";
 import { getQueryKey } from "@/lib/query/get-query-keys";
 import type { AdminUserUpdate } from "@/types/admin.types";
+import type { ApprovalStatus } from "@/types/drizzle.types";
 
 export function useAdminUserManagement() {
   const queryClient = useQueryClient();
@@ -15,6 +16,7 @@ export function useAdminUserManagement() {
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
+  const [approvalStatusFilter, setApprovalStatusFilter] = useState<string>("all");
 
   const users = useQuery(
     getAdminUsersQueryOptions({
@@ -22,6 +24,8 @@ export function useAdminUserManagement() {
       pageSize,
       search: searchQuery || undefined,
       role: roleFilter === "all" ? undefined : (roleFilter as any),
+      approvalStatus:
+        approvalStatusFilter === "all" ? undefined : (approvalStatusFilter as ApprovalStatus),
     })
   );
 
@@ -47,6 +51,11 @@ export function useAdminUserManagement() {
     setPage(1);
   };
 
+  const handleApprovalStatusFilterChange = (value: string) => {
+    setApprovalStatusFilter(value);
+    setPage(1);
+  };
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -59,12 +68,14 @@ export function useAdminUserManagement() {
     isLoading: users.isLoading,
     search: searchInput,
     roleFilter,
+    approvalStatusFilter,
     page,
     pageSize,
     totalPages,
     handleSearchChange,
     handleSearchSubmit,
     handleRoleFilterChange,
+    handleApprovalStatusFilterChange,
     handlePageChange,
   };
 }

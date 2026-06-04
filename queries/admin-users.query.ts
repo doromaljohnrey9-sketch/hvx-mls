@@ -14,6 +14,7 @@ export const getAdminUsersQueryOptions = (params: AdminUsersQueryParams) =>
         pageSize: params.pageSize,
         search: params.search,
         role: params.role,
+        approvalStatus: params.approvalStatus,
       },
     ],
     queryFn: () => adminService.getAdminUsers(params),

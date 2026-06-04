@@ -4,7 +4,7 @@ import { ChevronsUpDown, LogOut } from "lucide-react";
 import type { SelectProfile } from "@/types/drizzle.types";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -34,13 +34,11 @@ export const NavUser = ({ profile, handleSignOut, isLoading }: NavUserProps) => 
   }
 
   const email = profile?.email || "No email";
-  const imageUrl = profile?.imageUrl || undefined;
   const displayName = profile?.name || "Unknown User";
 
   const userInfo = (
     <>
       <Avatar className="h-8 w-8 rounded-lg">
-        <AvatarImage src={imageUrl} alt={displayName} />
         <AvatarFallback className="rounded-lg">{displayName.charAt(0)}</AvatarFallback>
       </Avatar>
       <div className="grid flex-1 text-left text-sm leading-tight">

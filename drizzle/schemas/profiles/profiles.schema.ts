@@ -1,24 +1,32 @@
-import { pgTable, varchar, pgEnum, uuid } from "drizzle-orm/pg-core";
+import { pgTable, varchar, pgEnum, uuid, timestamp } from "drizzle-orm/pg-core";
 
 // Base columns
 import { baseColumns } from "../base";
 import { branches } from "../branches/branches.schema";
+import { schools } from "../schools/schools.schema";
 
 export const userRoleEnum = pgEnum("user_role", [
-  "pending",
-  "denied",
-  "blocked",
   "student",
   "teacher",
   "branch_admin",
   "super_admin",
 ]);
 
+export const approvalStatusEnum = pgEnum("approval_status", [
+  "pending",
+  "approved",
+  "rejected",
+  "blocked",
+]);
+
 export const profiles = pgTable("profiles", {
   ...baseColumns,
   email: varchar("email", { length: 255 }).notNull(),
   name: varchar("name", { length: 100 }).notNull(),
-  imageUrl: varchar("image_url", { length: 255 }),
-  role: userRoleEnum("role").default("pending").notNull(),
+  role: userRoleEnum("role").default("student").notNull(),
   branchId: uuid("branch_id").references(() => branches.id),
+  schoolId: uuid("school_id").references(() => schools.id),
+  approvalStatus: approvalStatusEnum("approval_status").default("pending").notNull(),
+  approvedBy: uuid("approved_by"),
+  approvedAt: timestamp("approved_at"),
 });

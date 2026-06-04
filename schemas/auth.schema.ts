@@ -6,6 +6,9 @@ const nameSchema = z.string().min(2, "Name must be at least 2 characters long");
 const branchIdSchema = z
   .union([z.string().uuid("Please select a valid branch"), z.literal("none"), z.null()])
   .optional();
+const schoolIdSchema = z
+  .union([z.string().uuid("Please select a valid school"), z.literal("none"), z.null()])
+  .optional();
 
 export const loginSchema = z.object({
   email: emailSchema,
@@ -19,6 +22,7 @@ export const registerSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
   branchId: branchIdSchema,
+  schoolId: schoolIdSchema,
 });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;
