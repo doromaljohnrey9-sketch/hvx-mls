@@ -5,14 +5,16 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ArrowUpDownIcon, MoreHorizontalIcon } from "lucide-react";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ArrowUpDownIcon } from "lucide-react";
 
 import type { AdminUser, AdminUserUpdate } from "@/types/admin.types";
+import type { UserRole } from "@/types/drizzle.types";
 
 interface CreateUsersColumnsProps {
   updateUser: {
@@ -136,67 +138,41 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
           return null;
         }
 
+        const availableRoles: UserRole[] = [
+          "pending",
+          "denied",
+          "blocked",
+          "student",
+          "teacher",
+          "branch_admin",
+        ];
+
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontalIcon className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {user.role !== "super_admin" && user.role !== "branch_admin" && (
-                <>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      updateUser.mutate({
-                        id: user.id,
-                        updates: {
-                          role: user.role === "student" ? "pending" : "student",
-                        },
-                      });
-                      toast.success(
-                        user.role === "student"
-                          ? "User role updated to pending"
-                          : "User approved as student"
-                      );
-                    }}
-                  >
-                    {user.role === "student" ? "Revoke" : "Approve"}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      updateUser.mutate({
-                        id: user.id,
-                        updates: {
-                          role: "denied",
-                        },
-                      });
-                      toast.success("User denied");
-                    }}
-                  >
-                    Deny
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      updateUser.mutate({
-                        id: user.id,
-                        updates: {
-                          role: "blocked",
-                        },
-                      });
-                      toast.success("User blocked");
-                    }}
-                  >
-                    Block
-                  </DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Select
+            defaultValue={user.role}
+            onValueChange={(newRole: UserRole) => {
+              updateUser.mutate({
+                id: user.id,
+                updates: { role: newRole },
+              });
+              toast.success(`User role updated to ${ROLE_LABELS[newRole]}`);
+            }}
+            disabled={updateUser.isPending}
+          >
+            <SelectTrigger className="h-8 w-[140px]">
+              <SelectValue placeholder="Select role" />
+            </SelectTrigger>
+            <SelectContent>
+              {availableRoles.map((role) => (
+                <SelectItem key={role} value={role}>
+                  {ROLE_LABELS[role]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         );
       },
-      size: 80,
+      size: 160,
     },
   ];
 
