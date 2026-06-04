@@ -1,29 +1,37 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { UserActionsDropdown } from "@/components/admin/user-management/user-actions-dropdown";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ArrowUpDownIcon } from "lucide-react";
+  ArrowUpDownIcon,
+  GraduationCap,
+  Shield,
+  Building,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Ban,
+  Calendar,
+  User,
+  SchoolIcon,
+} from "lucide-react";
 
 import type { AdminUser, AdminUserUpdate } from "@/types/admin.types";
 import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
+import { formatDate } from "@/lib/utils";
 
 interface CreateUsersColumnsProps {
   updateUser: {
     mutate: (data: { id: string; updates: AdminUserUpdate }) => void;
     isPending?: boolean;
   };
+  currentUserId?: string;
 }
 
-export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
+export function createUsersColumns({ updateUser, currentUserId }: CreateUsersColumnsProps) {
   const ROLE_LABELS: Record<string, string> = {
     student: "Student",
     teacher: "Teacher",
@@ -31,11 +39,25 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
     super_admin: "Super Admin",
   };
 
+  const ROLE_ICONS: Record<string, React.ReactNode> = {
+    student: <GraduationCap className="size-3" />,
+    teacher: <GraduationCap className="size-3" />,
+    branch_admin: <Building className="size-3" />,
+    super_admin: <Shield className="size-3" />,
+  };
+
   const APPROVAL_STATUS_LABELS: Record<string, string> = {
     pending: "Pending",
     approved: "Approved",
     rejected: "Rejected",
     blocked: "Blocked",
+  };
+
+  const STATUS_ICONS: Record<string, React.ReactNode> = {
+    pending: <Clock className="size-3" />,
+    approved: <CheckCircle className="size-3" />,
+    rejected: <XCircle className="size-3" />,
+    blocked: <Ban className="size-3" />,
   };
 
   const columns: ColumnDef<AdminUser>[] = [
@@ -54,15 +76,20 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
           className="h-8 px-2"
         >
           Name
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+          <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
       cell: ({ row }) => {
         const user = row.original;
         return (
-          <div className="flex flex-col">
-            <span className="font-medium">{user.name || "N/A"}</span>
-            <span className="text-xs text-muted-foreground">{user.email}</span>
+          <div className="flex items-center gap-2">
+            <User className="size-4 text-muted-foreground shrink-0" />
+            <div className="flex flex-col gap-1">
+              <span className="font-semibold text-sm text-foreground truncate">
+                {user.name || "N/A"}
+              </span>
+              <span className="text-xs text-muted-foreground truncate">{user.email}</span>
+            </div>
           </div>
         );
       },
@@ -83,9 +110,10 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
       cell: ({ row }) => {
         const user = row.original;
         return (
-          <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium">
+          <Badge variant="secondary">
+            {ROLE_ICONS[user.role]}
             {ROLE_LABELS[user.role] || user.role}
-          </span>
+          </Badge>
         );
       },
       size: 160,
@@ -104,10 +132,17 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
       ),
       cell: ({ row }) => {
         const user = row.original;
+        const statusVariant: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+          pending: "secondary",
+          approved: "default",
+          rejected: "destructive",
+          blocked: "outline",
+        };
         return (
-          <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium">
+          <Badge variant={statusVariant[user.approvalStatus] || "secondary"}>
+            {STATUS_ICONS[user.approvalStatus]}
             {APPROVAL_STATUS_LABELS[user.approvalStatus] || user.approvalStatus}
-          </span>
+          </Badge>
         );
       },
       size: 160,
@@ -127,8 +162,32 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
       cell: ({ row }) => {
         const user = row.original;
         return (
-          <div className="flex flex-col">
-            <span className="text-sm">{user.branchName || "N/A"}</span>
+          <div className="flex items-center gap-2">
+            <Building className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{user.branchName || "N/A"}</span>
+          </div>
+        );
+      },
+      size: 180,
+    },
+    {
+      accessorKey: "schoolName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          School
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const user = row.original;
+        return (
+          <div className="flex items-center gap-2">
+            <SchoolIcon className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{user.schoolName || "N/A"}</span>
           </div>
         );
       },
@@ -148,75 +207,88 @@ export function createUsersColumns({ updateUser }: CreateUsersColumnsProps) {
       ),
       cell: ({ row }) => {
         const user = row.original;
-        if (!user.createdAt) return "N/A";
-        return new Date(user.createdAt).toLocaleDateString();
+        return (
+          <div className="flex items-center gap-2">
+            <Calendar className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-muted-foreground truncate">
+              {formatDate(user.createdAt)}
+            </span>
+          </div>
+        );
+      },
+      size: 140,
+    },
+    {
+      accessorKey: "approvedBy",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          Approved By
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const user = row.original;
+        return (
+          <div className="flex items-center gap-2">
+            <User className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{user.approverName || "N/A"}</span>
+          </div>
+        );
+      },
+      size: 160,
+    },
+    {
+      accessorKey: "approvedAt",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          Approved At
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const user = row.original;
+        return (
+          <div className="flex items-center gap-2">
+            <Calendar className="size-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-muted-foreground truncate">
+              {formatDate(user.approvedAt)}
+            </span>
+          </div>
+        );
       },
       size: 140,
     },
     {
       id: "actions",
-      header: () => <div className="text-sm font-medium">Actions</div>,
+      header: () => <div className="text-sm font-semibold text-foreground">Actions</div>,
       cell: ({ row }) => {
         const user = row.original;
         const hasAction = user.role !== "super_admin" && user.role !== "branch_admin";
+        const isSelf = currentUserId === user.id;
 
         if (!hasAction) {
           return null;
         }
 
-        const availableRoles: UserRole[] = ["student", "teacher", "branch_admin"];
-        const availableStatuses: ApprovalStatus[] = ["pending", "approved", "rejected", "blocked"];
-
         return (
-          <div className="flex gap-2">
-            <Select
-              defaultValue={user.role}
-              onValueChange={(newRole: UserRole) => {
-                updateUser.mutate({
-                  id: user.id,
-                  updates: { role: newRole },
-                });
-                toast.success(`User role updated to ${ROLE_LABELS[newRole]}`);
-              }}
-              disabled={updateUser.isPending}
-            >
-              <SelectTrigger className="h-8 w-[120px]">
-                <SelectValue placeholder="Role" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableRoles.map((role) => (
-                  <SelectItem key={role} value={role}>
-                    {ROLE_LABELS[role]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select
-              defaultValue={user.approvalStatus}
-              onValueChange={(newStatus: ApprovalStatus) => {
-                updateUser.mutate({
-                  id: user.id,
-                  updates: { approvalStatus: newStatus },
-                });
-                toast.success(`User status updated to ${APPROVAL_STATUS_LABELS[newStatus]}`);
-              }}
-              disabled={updateUser.isPending}
-            >
-              <SelectTrigger className="h-8 w-[120px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableStatuses.map((status) => (
-                  <SelectItem key={status} value={status}>
-                    {APPROVAL_STATUS_LABELS[status]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <UserActionsDropdown
+            user={user}
+            updateUser={updateUser}
+            isSelf={isSelf}
+            roleLabels={ROLE_LABELS}
+            statusLabels={APPROVAL_STATUS_LABELS}
+          />
         );
       },
-      size: 280,
+      size: 80,
     },
   ];
 

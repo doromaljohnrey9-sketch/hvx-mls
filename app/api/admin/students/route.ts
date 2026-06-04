@@ -1,7 +1,8 @@
-import { eq, and, like, or } from "drizzle-orm";
+import { eq, and, like, or, sql } from "drizzle-orm";
 import { NextRequest } from "next/server";
 
-import { profiles, branches } from "@/drizzle/schemas";
+import { profiles, branches, schools } from "@/drizzle/schemas";
+import { alias } from "drizzle-orm/pg-core";
 import { db } from "@/lib/drizzle/db";
 import { apiResponse } from "@/lib/response";
 import { rateLimit } from "@/lib/ratelimit";
@@ -13,6 +14,9 @@ import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 import type { AdminUsersResponse } from "@/types/admin.types";
 
 const ADMIN_ROLES: UserRole[] = ["teacher", "branch_admin", "super_admin"];
+
+// Create alias for self-join to get approver name
+const approverProfiles = alias(profiles, "approver_profiles");
 
 /**
  * GET /api/admin/students
@@ -72,6 +76,8 @@ export async function GET(request: NextRequest) {
         role: profiles.role,
         branchId: profiles.branchId,
         schoolId: profiles.schoolId,
+        grade: profiles.grade,
+        assignedTeacher: profiles.assignedTeacher,
         approvalStatus: profiles.approvalStatus,
         approvedBy: profiles.approvedBy,
         approvedAt: profiles.approvedAt,
@@ -79,9 +85,13 @@ export async function GET(request: NextRequest) {
         updatedAt: profiles.updatedAt,
         deletedAt: profiles.deletedAt,
         branchName: branches.name,
+        schoolName: schools.name,
+        approverName: approverProfiles.name,
       })
       .from(profiles)
-      .leftJoin(branches, eq(profiles.branchId, branches.id));
+      .leftJoin(branches, eq(profiles.branchId, branches.id))
+      .leftJoin(schools, eq(profiles.schoolId, schools.id))
+      .leftJoin(approverProfiles, eq(profiles.approvedBy, approverProfiles.id));
 
     if (conditions.length > 0) {
       const whereCondition = and(...conditions);
@@ -179,6 +189,14 @@ export async function PATCH(request: NextRequest) {
       return apiResponse({
         status: HttpStatus.NOT_FOUND,
         message: "User not found.",
+      });
+    }
+
+    // Users cannot modify themselves (except super admins)
+    if (profile!.id === userId && profile!.role !== "super_admin") {
+      return apiResponse({
+        status: HttpStatus.FORBIDDEN,
+        message: "Cannot modify your own account.",
       });
     }
 

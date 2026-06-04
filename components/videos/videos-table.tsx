@@ -70,17 +70,17 @@ export function VideosTable<TData, TValue>({
                       "string" && canSort ? (
                     <button
                       type="button"
-                      className="flex items-center gap-2 text-left text-sm font-medium text-muted-foreground"
+                      className="flex items-center gap-2 text-left text-sm font-semibold text-foreground"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       {headerDef}
                       <span className="opacity-60">
                         {sorted === "asc" ? (
-                          <ChevronUpIcon className="h-4 w-4" />
+                          <ChevronUpIcon className="size-4" />
                         ) : sorted === "desc" ? (
-                          <ChevronDownIcon className="h-4 w-4" />
+                          <ChevronDownIcon className="size-4" />
                         ) : (
-                          <ChevronUpIcon className="h-4 w-4 opacity-0" />
+                          <ChevronUpIcon className="size-4 opacity-0" />
                         )}
                       </span>
                     </button>
@@ -115,8 +115,8 @@ export function VideosTable<TData, TValue>({
               [...Array(5)].map((_, i) => (
                 <TableRow key={i}>
                   {[...Array(columns.length)].map((_, j) => (
-                    <TableCell key={j} className="h-12">
-                      <Skeleton className="h-8 w-full" />
+                    <TableCell key={j} className="h-16">
+                      <Skeleton className="h-10 w-full" />
                     </TableCell>
                   ))}
                 </TableRow>
@@ -132,7 +132,7 @@ export function VideosTable<TData, TValue>({
                           ? `${cell.column.columnDef.size}px`
                           : undefined,
                       }}
-                      className="overflow-hidden shrink-0"
+                      className="h-16 overflow-hidden shrink-0"
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
@@ -142,7 +142,7 @@ export function VideosTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No videos registered.
+                  <span className="text-muted-foreground font-medium">No videos found.</span>
                 </TableCell>
               </TableRow>
             )}
@@ -151,7 +151,7 @@ export function VideosTable<TData, TValue>({
       </div>
       {pagination && (
         <div className="flex items-center justify-between border-t px-4 py-3">
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground font-medium">
             Showing {(pagination.page - 1) * pagination.pageSize + 1} to{" "}
             {Math.min(pagination.page * pagination.pageSize, pagination.total)} of{" "}
             {pagination.total} videos
@@ -163,10 +163,10 @@ export function VideosTable<TData, TValue>({
               onClick={() => pagination.onPageChange(pagination.page - 1)}
               disabled={pagination.page === 1}
             >
-              <ChevronLeftIcon className="h-4 w-4" />
+              <ChevronLeftIcon className="size-4" />
               Previous
             </Button>
-            <div className="text-sm">
+            <div className="text-sm text-foreground font-medium">
               Page {pagination.page} of {pagination.totalPages}
             </div>
             <Button
@@ -176,7 +176,7 @@ export function VideosTable<TData, TValue>({
               disabled={pagination.page === pagination.totalPages}
             >
               Next
-              <ChevronRightIcon className="h-4 w-4" />
+              <ChevronRightIcon className="size-4" />
             </Button>
           </div>
         </div>
