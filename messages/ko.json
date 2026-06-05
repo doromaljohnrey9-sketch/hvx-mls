@@ -1,0 +1,183 @@
+{
+  "Index": {
+    "title": "Math Learning Studio",
+    "description": "기출문제 해설 영상 시스템",
+    "hero": {
+      "title": "체계적이고 검색 가능한 기출문제 해설 영상",
+      "description": "학교, 연도, 학기, 시험 종류 및 문항 번호로 검색하세요. 선생님이 승인한 600개 이상의 해설 영상을 시청할 수 있습니다.",
+      "getStarted": "지금 시작하기",
+      "login": "로그인",
+      "signup": "회원가입"
+    },
+    "features": {
+      "badge": "주요 기능",
+      "title": "기출문제 마스터를 위한 모든 것.",
+      "description": "학교, 연도, 학기, 문항 번호별로 정리된 600개 이상의 기출문제 해설 영상을 검색하고 시청하며 학습하세요.",
+      "feature1": {
+        "title": "스마트 검색",
+        "desc": "학교명, 연도, 학기, 시험 종류, 학년, 과목, 문항 번호별로 필터링하여 필요한 문제를 정확하게 찾으세요."
+      },
+      "feature2": {
+        "title": "승인 기반 액세스",
+        "desc": "선생님이 학생 계정을 승인하여 모든 영상 콘텐츠에 대한 안전하고 권한 있는 액세스를 보장합니다."
+      },
+      "feature3": {
+        "title": "모바일 최적화 재생",
+        "desc": "태블릿, 모바일, 데스크톱 등 모든 기기에서 해설 영상을 시청하세요. 터치 및 세로 보기에 최적화되어 있습니다."
+      }
+    },
+    "stats": {
+      "badge": "플랫폼 현황",
+      "title": "학생과 선생님을 위한 설계",
+      "box1": {
+        "count": "600+",
+        "desc": "제공되는 기출문제 해설 영상"
+      },
+      "box2": {
+        "title": "시험 세트 완료 현황 추적.",
+        "desc": "등록 완료, 진행 중 또는 업로드 대기 중인 시험 세트를 모니터링하세요.",
+        "complete": "완료",
+        "inProgress": "진행 중",
+        "sets": "{count} 세트"
+      },
+      "box3": {
+        "title": "학교별 정리",
+        "desc": "영상은 학교명, 연도, 학기, 시험 종류, 문항 번호별로 구조화되어 있어 찾기 쉽습니다."
+      },
+      "box4": {
+        "label": "대상 학교",
+        "count": "25",
+        "badge": "확장 중"
+      }
+    },
+    "steps": {
+      "badge": "시작하기",
+      "title": "세 가지 간단한 단계로 해설 영상 시청을 시작하세요.",
+      "step1": {
+        "title": "액세스 신청",
+        "desc": "이름, 지점, 학교, 학년 정보를 입력하여 계정을 생성하세요. 선생님이 검토 후 승인해 드립니다."
+      },
+      "step2": {
+        "title": "영상 검색",
+        "desc": "학교명, 연도, 학기, 시험 종류, 문항 번호별로 필터링하여 필요한 해설을 찾으세요."
+      },
+      "step3": {
+        "title": "시청 및 학습",
+        "desc": "모든 기기의 브라우저에서 즉시 영상을 재생하세요. 필요시 선생님에게 추가 질문을 할 수 있습니다."
+      }
+    },
+    "mission": {
+      "badge": "우리의 미션",
+      "title": "수동 영상 전달을 스마트 검색으로 대체",
+      "desc": "선생님이 더 이상 카카오톡으로 영상을 보내지 않아도 됩니다. 학생 스스로 해설 영상을 찾아 시청합니다. 체계적이고, 검색 가능하며, 안전합니다.",
+      "stat1": "해설 영상",
+      "stat2": "대상 학교",
+      "stat3": "승인 기반 액세스"
+    },
+    "featured": {
+      "label": "주요 학교:",
+      "school1": {
+        "name": "망포고등학교",
+        "desc": "2025년 1, 2학기 중간 및 기말고사 해설 영상."
+      },
+      "school2": {
+        "name": "수원고등학교",
+        "desc": "2024-2025년 기출문제에 대한 상세 풀이 제공."
+      },
+      "school3": {
+        "name": "모든 학교",
+        "desc": "모든 지역의 25개 이상 학교 해설 영상을 찾아보세요."
+      },
+      "videoCount": "{count}개 영상",
+      "videoCountPlus": "{count}+개 영상"
+    },
+    "cta": {
+      "badge": "지금 시작하기",
+      "title": "기출문제 해설 영상을 보고 싶으신가요?",
+      "desc": "회원가입 후 선생님의 승인을 받아 학교, 연도, 문항별로 정리된 해설 영상을 시청하세요."
+    },
+    "footer": {
+      "modules": "모듈",
+      "about": "소개",
+      "support": "지원",
+      "privacy": "개인정보 처리방침",
+      "terms": "이용약관",
+      "copyright": "©MLS 2024. All Rights Reserved."
+    }
+  },
+  "Auth": {
+    "common": {
+      "email": "이메일 주소",
+      "password": "비밀번호",
+      "confirmPassword": "비밀번호 확인",
+      "name": "성함",
+      "login": "로그인",
+      "signup": "회원가입",
+      "backToHome": "홈으로 돌아가기",
+      "terms": "이용약관",
+      "privacyPolicy": "개인정보 처리방침",
+      "agreementLogin": "로그인 시 {terms} 및 {privacy}에 동의하는 것으로 간주됩니다.",
+      "agreementSignup": "가입 시 {terms} 및 {privacy}에 동의하는 것으로 간주됩니다.",
+      "loggingIn": "로그인 중...",
+      "creatingAccount": "계정 생성 중...",
+      "sendingReset": "재설정 링크 전송 중...",
+      "resettingPassword": "비밀번호 재설정 중...",
+      "placeholderEmail": "example@email.com",
+      "placeholderPassword": "비밀번호를 입력하세요",
+      "placeholderNewPassword": "강력한 비밀번호를 만드세요",
+      "placeholderConfirmPassword": "비밀번호를 다시 입력하세요",
+      "placeholderName": "성함을 입력하세요",
+      "somethingWentWrong": "문제가 발생했습니다",
+      "tryAgain": "다시 시도해 주세요."
+    },
+    "login": {
+      "title": "다시 오신 것을 환영합니다",
+      "subtitle": "이메일과 비밀번호로 로그인하세요",
+      "forgotPassword": "비밀번호를 잊으셨나요?",
+      "noAccount": "당신에 대한 정보가 없으신가요?",
+      "success": "반갑습니다!",
+      "successDesc": "성공적으로 로그인되었습니다.",
+      "failed": "로그인 실패"
+    },
+    "register": {
+      "title": "계정 생성",
+      "subtitle": "시작하려면 상세 정보를 입력해 주세요.",
+      "accountInfo": "계정 정보",
+      "orgDetails": "소속 정보",
+      "optional": "선택 사항",
+      "branch": "지점",
+      "selectBranch": "지점 선택",
+      "school": "학교",
+      "selectSchool": "학교 선택",
+      "grade": "학년",
+      "selectGrade": "학년 선택",
+      "gradeLabel": "{n}학년",
+      "teacher": "담당 선생님",
+      "selectTeacher": "선생님 선택",
+      "requestApproval": "승인 요청",
+      "haveAccount": "이미 계정이 있으신가요?",
+      "success": "회원가입 성공",
+      "successDesc": "관리자의 승인을 기다려 주세요.",
+      "failed": "회원가입 실패",
+      "none": "없음"
+    },
+    "forgotPassword": {
+      "title": "비밀번호 찾기",
+      "subtitle": "비밀번호 재설정 링크를 받을 이메일을 입력하세요",
+      "rememberedPassword": "비밀번호가 생각나셨나요?",
+      "success": "재설정 이메일 전송됨",
+      "successDesc": "이메일로 전송된 재설정 링크를 확인해 주세요.",
+      "failed": "비밀번호 재설정 실패",
+      "failedDesc": "이메일 주소를 확인하고 다시 시도해 주세요."
+    },
+    "resetPassword": {
+      "title": "비밀번호 재설정",
+      "subtitle": "아래에 새 비밀번호를 입력하세요",
+      "submit": "제출",
+      "success": "비밀번호 재설정 성공",
+      "successDesc": "비밀번호가 성공적으로 업데이트되었습니다.",
+      "failed": "비밀번호 재설정 실패",
+      "failedDesc": "비밀번호 재설정 중 문제가 발생했습니다. 나중에 다시 시도해 주세요."
+    }
+  }
+}

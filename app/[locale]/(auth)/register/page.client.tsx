@@ -32,7 +32,10 @@ import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
 import { getTeachersQueryOptions } from "@/queries/teachers.query";
 
+import { useTranslations } from "next-intl";
+
 export const PageClient = () => {
+  const t = useTranslations("Auth");
   const router = useRouter();
   const supabase = getSupabaseClient();
 
@@ -98,22 +101,22 @@ export const PageClient = () => {
         });
 
         if (error) {
-          toast.error("Registration failed", {
+          toast.error(t("register.failed"), {
             description: error.message,
           });
           return;
         }
 
-        toast.success("Registration successful", {
-          description: "Your account is pending approval by an administrator.",
+        toast.success(t("register.success"), {
+          description: t("register.successDesc"),
         });
 
         form.reset();
         router.push(AUTH_ROUTES.LOGIN);
       } catch (error) {
         console.error(error);
-        toast.error("Something went wrong", {
-          description: "Please try again.",
+        toast.error(t("common.somethingWentWrong"), {
+          description: t("common.tryAgain"),
         });
       }
     });
@@ -128,7 +131,7 @@ export const PageClient = () => {
           className="absolute left-6 top-6 flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors z-10"
         >
           <ArrowLeft className="size-4" />
-          Back to home
+          {t("common.backToHome")}
         </Link>
         <div className="absolute inset-0 flex items-center justify-center">
           <AspectRatio ratio={16 / 9} className="w-full max-w-md"></AspectRatio>
@@ -141,18 +144,16 @@ export const PageClient = () => {
         <div className="w-full max-w-xl">
           <div className="mb-8">
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-              Create an account
+              {t("register.title")}
             </h1>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              Fill in your details to get started with us.
-            </p>
+            <p className="mt-1.5 text-sm text-muted-foreground">{t("register.subtitle")}</p>
           </div>
 
           <form onSubmit={form.handleSubmit(onFormSubmit)} className="space-y-6">
             {/* Account Information */}
             <div className="space-y-4">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Account Information
+                {t("register.accountInfo")}
               </h3>
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -161,7 +162,7 @@ export const PageClient = () => {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <div className="space-y-2 sm:col-span-2">
-                      <FieldLabel htmlFor="name">Full Name</FieldLabel>
+                      <FieldLabel htmlFor="name">{t("common.name")}</FieldLabel>
                       <InputGroup>
                         <InputGroupAddon>
                           <User className="h-4 w-4" />
@@ -170,7 +171,7 @@ export const PageClient = () => {
                           {...field}
                           id="name"
                           type="text"
-                          placeholder="Enter your full name"
+                          placeholder={t("common.placeholderName")}
                           aria-invalid={fieldState.invalid}
                           disabled={isPending}
                         />
@@ -185,7 +186,7 @@ export const PageClient = () => {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <div className="space-y-2 sm:col-span-2">
-                      <FieldLabel htmlFor="email">Email Address</FieldLabel>
+                      <FieldLabel htmlFor="email">{t("common.email")}</FieldLabel>
                       <InputGroup>
                         <InputGroupAddon>
                           <Mail className="h-4 w-4" />
@@ -194,7 +195,7 @@ export const PageClient = () => {
                           {...field}
                           id="email"
                           type="email"
-                          placeholder="you@example.com"
+                          placeholder={t("common.placeholderEmail")}
                           aria-invalid={fieldState.invalid}
                           disabled={isPending}
                         />
@@ -209,11 +210,11 @@ export const PageClient = () => {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
-                      <FieldLabel htmlFor="password">Password</FieldLabel>
+                      <FieldLabel htmlFor="password">{t("common.password")}</FieldLabel>
                       <PasswordInput
                         {...field}
                         id="password"
-                        placeholder="Create a strong password"
+                        placeholder={t("common.placeholderNewPassword")}
                         aria-invalid={fieldState.invalid}
                         disabled={isPending}
                       />
@@ -227,11 +228,11 @@ export const PageClient = () => {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
-                      <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
+                      <FieldLabel htmlFor="confirmPassword">{t("common.confirmPassword")}</FieldLabel>
                       <PasswordInput
                         {...field}
                         id="confirmPassword"
-                        placeholder="Re-enter password"
+                        placeholder={t("common.placeholderConfirmPassword")}
                         aria-invalid={fieldState.invalid}
                         disabled={isPending}
                       />
@@ -245,9 +246,9 @@ export const PageClient = () => {
             {/* Organization Details */}
             <div className="space-y-4">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Organization Details
+                {t("register.orgDetails")}
                 <span className="ml-1 font-normal normal-case text-muted-foreground/60">
-                  — optional
+                  — {t("register.optional")}
                 </span>
               </h3>
 
@@ -257,7 +258,7 @@ export const PageClient = () => {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
-                      <FieldLabel htmlFor="branchId">Branch</FieldLabel>
+                      <FieldLabel htmlFor="branchId">{t("register.branch")}</FieldLabel>
                       <Select
                         {...field}
                         value={field.value || "none"}
@@ -272,10 +273,10 @@ export const PageClient = () => {
                           className="w-full"
                           aria-invalid={fieldState.invalid}
                         >
-                          <SelectValue placeholder="Select branch" />
+                          <SelectValue placeholder={t("register.selectBranch")} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
+                          <SelectItem value="none">{t("register.none")}</SelectItem>
                           {branches?.map((branch) => (
                             <SelectItem key={branch.id} value={branch.id}>
                               {branch.name}
@@ -293,7 +294,7 @@ export const PageClient = () => {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
-                      <FieldLabel htmlFor="schoolId">School</FieldLabel>
+                      <FieldLabel htmlFor="schoolId">{t("register.school")}</FieldLabel>
                       <Select
                         {...field}
                         value={field.value || "none"}
@@ -305,10 +306,10 @@ export const PageClient = () => {
                           className="w-full"
                           aria-invalid={fieldState.invalid}
                         >
-                          <SelectValue placeholder="Select school" />
+                          <SelectValue placeholder={t("register.selectSchool")} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
+                          <SelectItem value="none">{t("register.none")}</SelectItem>
                           {schools
                             ?.filter(
                               (school) =>
@@ -331,7 +332,7 @@ export const PageClient = () => {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
-                      <FieldLabel htmlFor="grade">Grade</FieldLabel>
+                      <FieldLabel htmlFor="grade">{t("register.grade")}</FieldLabel>
                       <Select
                         {...field}
                         value={field.value ? field.value.toString() : "none"}
@@ -345,13 +346,13 @@ export const PageClient = () => {
                           className="w-full"
                           aria-invalid={fieldState.invalid}
                         >
-                          <SelectValue placeholder="Select grade" />
+                          <SelectValue placeholder={t("register.selectGrade")} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
-                          <SelectItem value="1">Grade 1</SelectItem>
-                          <SelectItem value="2">Grade 2</SelectItem>
-                          <SelectItem value="3">Grade 3</SelectItem>
+                          <SelectItem value="none">{t("register.none")}</SelectItem>
+                          <SelectItem value="1">{t("register.gradeLabel", { n: 1 })}</SelectItem>
+                          <SelectItem value="2">{t("register.gradeLabel", { n: 2 })}</SelectItem>
+                          <SelectItem value="3">{t("register.gradeLabel", { n: 3 })}</SelectItem>
                         </SelectContent>
                       </Select>
                       {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
@@ -364,7 +365,7 @@ export const PageClient = () => {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
-                      <FieldLabel htmlFor="assignedTeacher">Assigned Teacher</FieldLabel>
+                      <FieldLabel htmlFor="assignedTeacher">{t("register.teacher")}</FieldLabel>
                       <Select
                         {...field}
                         value={field.value || "none"}
@@ -376,10 +377,10 @@ export const PageClient = () => {
                           className="w-full"
                           aria-invalid={fieldState.invalid}
                         >
-                          <SelectValue placeholder="Select teacher" />
+                          <SelectValue placeholder={t("register.selectTeacher")} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
+                          <SelectItem value="none">{t("register.none")}</SelectItem>
                           {teachers?.map((teacher) => (
                             <SelectItem key={teacher.id} value={teacher.name}>
                               {teacher.name}
@@ -395,29 +396,32 @@ export const PageClient = () => {
             </div>
 
             <Button type="submit" disabled={isPending} className="w-full" size="lg">
-              {isPending ? "Creating account..." : "Request Approval"}
+              {isPending ? t("common.creatingAccount") : t("register.requestApproval")}
             </Button>
 
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
-                Already have an account?{" "}
+                {t("register.haveAccount")}{" "}
                 <Link
                   href={AUTH_ROUTES.LOGIN}
                   className="font-medium text-primary underline-offset-4 hover:underline"
                 >
-                  Log in
+                  {t("common.login")}
                 </Link>
               </p>
               <p className="mt-3 text-xs text-muted-foreground/60">
-                By signing up, you agree to our{" "}
-                <Link href="#" className="underline hover:text-muted-foreground">
-                  Terms
-                </Link>{" "}
-                and{" "}
-                <Link href="#" className="underline hover:text-muted-foreground">
-                  Privacy Policy
-                </Link>
-                .
+                {t.rich("common.agreementSignup", {
+                  terms: (chunks) => (
+                    <Link href="#" className="underline hover:text-muted-foreground">
+                      {t("common.terms")}
+                    </Link>
+                  ),
+                  privacy: (chunks) => (
+                    <Link href="#" className="underline hover:text-muted-foreground">
+                      {t("common.privacyPolicy")}
+                    </Link>
+                  ),
+                })}
               </p>
             </div>
           </form>

@@ -1,6 +1,183 @@
 {
   "Index": {
     "title": "Math Learning Studio",
-    "description": "Past-Exam Video Explainer Learning System MVP"
+    "description": "Past-Exam Video Explainer Learning System MVP",
+    "hero": {
+      "title": "Past-exam explainer videos, organized and searchable.",
+      "description": "Search by school, year, semester, exam type, and problem number. Watch 600+ explainer videos approved by your teachers.",
+      "getStarted": "Get Started Now",
+      "login": "Login",
+      "signup": "Sign Up"
+    },
+    "features": {
+      "badge": "Core Features",
+      "title": "Everything you need to master past exams.",
+      "description": "Search, watch, and learn from 600+ past-exam explainer videos organized by school, year, semester, and problem number.",
+      "feature1": {
+        "title": "Smart search",
+        "desc": "Filter by school name, year, semester, exam type, grade, subject, and problem number to find exactly what you need."
+      },
+      "feature2": {
+        "title": "Approval-based access",
+        "desc": "Teachers approve student accounts to ensure secure, authorized access to all video content."
+      },
+      "feature3": {
+        "title": "Mobile-first playback",
+        "desc": "Watch explainer videos on any device—tablet, mobile, or desktop. Optimized for touch and portrait viewing."
+      }
+    },
+    "stats": {
+      "badge": "Platform Stats",
+      "title": "Built for students and teachers",
+      "box1": {
+        "count": "600+",
+        "desc": "Past-exam explainer videos available"
+      },
+      "box2": {
+        "title": "Track exam set completion.",
+        "desc": "Monitor which exam sets are fully registered, partially complete, or pending upload.",
+        "complete": "Complete",
+        "inProgress": "In Progress",
+        "sets": "{count} sets"
+      },
+      "box3": {
+        "title": "Organized by School",
+        "desc": "Videos are structured by school name, year, semester, exam type, and problem number for easy lookup."
+      },
+      "box4": {
+        "label": "Schools Covered",
+        "count": "25",
+        "badge": "Growing"
+      }
+    },
+    "steps": {
+      "badge": "Get Started",
+      "title": "Start watching explainer videos in three simple steps.",
+      "step1": {
+        "title": "Sign up for access",
+        "desc": "Create your account with your name, branch, school, and grade. Your teacher will review and approve your request."
+      },
+      "step2": {
+        "title": "Search for videos",
+        "desc": "Filter by school name, year, semester, exam type, and problem number to find the exact explainer you need."
+      },
+      "step3": {
+        "title": "Watch and learn",
+        "desc": "Play videos instantly in your browser on any device. Ask your teacher follow-up questions if needed."
+      }
+    },
+    "mission": {
+      "badge": "Our Mission",
+      "title": "Replace manual video delivery with smart search",
+      "desc": "Teachers no longer send videos via KakaoTalk. Students find and watch explainer videos on their own. Organized, searchable, and secure.",
+      "stat1": "Explainer videos",
+      "stat2": "Schools covered",
+      "stat3": "Approval-based access"
+    },
+    "featured": {
+      "label": "Featured Schools:",
+      "school1": {
+        "name": "Mangpo High School",
+        "desc": "2025 1st & 2nd semester midterm and final exam explainers."
+      },
+      "school2": {
+        "name": "Suwon High School",
+        "desc": "Complete coverage of 2024-2025 past exams with detailed solutions."
+      },
+      "school3": {
+        "name": "All Schools",
+        "desc": "Browse explainer videos from 25+ schools across all regions."
+      },
+      "videoCount": "{count} videos",
+      "videoCountPlus": "{count}+ videos"
+    },
+    "cta": {
+      "badge": "Get Started",
+      "title": "Ready to access past-exam explainers?",
+      "desc": "Sign up, get approved by your teacher, and start watching explainer videos organized by school, year, and problem number."
+    },
+    "footer": {
+      "modules": "Modules",
+      "about": "About Us",
+      "support": "Support",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "copyright": "©MLS 2024. All Rights Reserved."
+    }
+  },
+  "Auth": {
+    "common": {
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "name": "Full Name",
+      "login": "Login",
+      "signup": "Sign up",
+      "backToHome": "Back to home",
+      "terms": "Terms",
+      "privacyPolicy": "Privacy Policy",
+      "agreementLogin": "By logging in, you agree to our {terms} and {privacy}.",
+      "agreementSignup": "By signing up, you agree to our {terms} and {privacy}.",
+      "loggingIn": "Logging in...",
+      "creatingAccount": "Creating account...",
+      "sendingReset": "Sending reset link...",
+      "resettingPassword": "Resetting password...",
+      "placeholderEmail": "you@example.com",
+      "placeholderPassword": "Enter your password",
+      "placeholderNewPassword": "Create a strong password",
+      "placeholderConfirmPassword": "Re-enter password",
+      "placeholderName": "Enter your full name",
+      "somethingWentWrong": "Something went wrong",
+      "tryAgain": "Please try again."
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Login with your email and password",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "success": "Welcome back!",
+      "successDesc": "You have been logged in successfully.",
+      "failed": "Login failed"
+    },
+    "register": {
+      "title": "Create an account",
+      "subtitle": "Fill in your details to get started with us.",
+      "accountInfo": "Account Information",
+      "orgDetails": "Organization Details",
+      "optional": "optional",
+      "branch": "Branch",
+      "selectBranch": "Select branch",
+      "school": "School",
+      "selectSchool": "Select school",
+      "grade": "Grade",
+      "selectGrade": "Select grade",
+      "gradeLabel": "Grade {n}",
+      "teacher": "Assigned Teacher",
+      "selectTeacher": "Select teacher",
+      "requestApproval": "Request Approval",
+      "haveAccount": "Already have an account?",
+      "success": "Registration successful",
+      "successDesc": "Your account is pending approval by an administrator.",
+      "failed": "Registration failed",
+      "none": "None"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email to receive a password reset link",
+      "rememberedPassword": "Remembered your password?",
+      "success": "Reset email sent",
+      "successDesc": "Please check your email for the password reset link.",
+      "failed": "Reset password failed",
+      "failedDesc": "Please check your email address and try again."
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "subtitle": "Enter your new password below",
+      "submit": "Submit",
+      "success": "Password reset successful",
+      "successDesc": "Your password has been updated successfully.",
+      "failed": "Reset password failed",
+      "failedDesc": "There was an issue resetting your password. Please try again later."
+    }
   }
 }

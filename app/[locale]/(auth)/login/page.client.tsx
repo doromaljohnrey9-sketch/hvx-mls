@@ -6,10 +6,10 @@ import { useRouter } from "nextjs-toploader/app";
 import { useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Lock, GraduationCap, ArrowLeft } from "lucide-react";
+import { Mail, ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { FieldError, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { PasswordInput } from "@/components/shared/password-input";
@@ -20,7 +20,10 @@ import { loginSchema, type LoginFormValues } from "@/schemas/auth.schema";
 
 import { AUTH_ROUTES, DEFAULT_AUTH_REDIRECT } from "@/constants/routes.constant";
 
+import { useTranslations } from "next-intl";
+
 export const PageClient = () => {
+  const t = useTranslations("Auth");
   const router = useRouter();
   const supabase = getSupabaseClient();
 
@@ -40,20 +43,20 @@ export const PageClient = () => {
         const { error } = await supabase.auth.signInWithPassword(values);
 
         if (error) {
-          toast.error("Login failed", {
+          toast.error(t("login.failed"), {
             description: error.message,
           });
           return;
         }
 
-        toast.success("Welcome back!", {
-          description: "You have been logged in successfully.",
+        toast.success(t("login.success"), {
+          description: t("login.successDesc"),
         });
         router.replace(DEFAULT_AUTH_REDIRECT);
       } catch (error) {
         console.error(error);
-        toast.error("Something went wrong", {
-          description: "Please try again.",
+        toast.error(t("common.somethingWentWrong"), {
+          description: t("common.tryAgain"),
         });
       }
     });
@@ -68,7 +71,7 @@ export const PageClient = () => {
           className="absolute left-6 top-6 flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors z-10"
         >
           <ArrowLeft className="size-4" />
-          Back to home
+          {t("common.backToHome")}
         </Link>
         <div className="absolute inset-0 flex items-center justify-center">
           <AspectRatio ratio={16 / 9} className="w-full max-w-md"></AspectRatio>
@@ -80,10 +83,10 @@ export const PageClient = () => {
       <div className="flex items-center justify-center px-4 py-10 sm:px-8">
         <div className="w-full max-w-sm">
           <div className="mb-8">
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Welcome back</h1>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              Login with your email and password
-            </p>
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+              {t("login.title")}
+            </h1>
+            <p className="mt-1.5 text-sm text-muted-foreground">{t("login.subtitle")}</p>
           </div>
 
           <form onSubmit={form.handleSubmit(onFormSubmit)} className="space-y-6">
@@ -93,7 +96,7 @@ export const PageClient = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <div className="space-y-2">
-                    <FieldLabel htmlFor="email">Email Address</FieldLabel>
+                    <FieldLabel htmlFor="email">{t("common.email")}</FieldLabel>
                     <InputGroup>
                       <InputGroupAddon>
                         <Mail className="h-4 w-4" />
@@ -102,7 +105,7 @@ export const PageClient = () => {
                         {...field}
                         id="email"
                         type="email"
-                        placeholder="you@example.com"
+                        placeholder={t("common.placeholderEmail")}
                         aria-invalid={fieldState.invalid}
                         disabled={isPending}
                       />
@@ -117,18 +120,18 @@ export const PageClient = () => {
                 render={({ field, fieldState }) => (
                   <div className="space-y-2">
                     <div className="flex items-center">
-                      <FieldLabel htmlFor="password">Password</FieldLabel>
+                      <FieldLabel htmlFor="password">{t("common.password")}</FieldLabel>
                       <Link
                         href={AUTH_ROUTES.FORGOT_PASSWORD}
                         className="ml-auto text-sm underline-offset-4 hover:underline"
                       >
-                        Forgot password?
+                        {t("login.forgotPassword")}
                       </Link>
                     </div>
                     <PasswordInput
                       {...field}
                       id="password"
-                      placeholder="Enter your password"
+                      placeholder={t("common.placeholderPassword")}
                       aria-invalid={fieldState.invalid}
                       disabled={isPending}
                     />
@@ -139,29 +142,32 @@ export const PageClient = () => {
             </div>
 
             <Button type="submit" disabled={isPending} className="w-full" size="lg">
-              {isPending ? "Logging in..." : "Login"}
+              {isPending ? t("common.loggingIn") : t("common.login")}
             </Button>
 
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
-                Don&apos;t have an account?{" "}
+                {t("login.noAccount")}{" "}
                 <Link
                   href={AUTH_ROUTES.REGISTER}
                   className="font-medium text-primary underline-offset-4 hover:underline"
                 >
-                  Sign up
+                  {t("common.signup")}
                 </Link>
               </p>
               <p className="mt-3 text-xs text-muted-foreground/60">
-                By logging in, you agree to our{" "}
-                <Link href="#" className="underline hover:text-muted-foreground">
-                  Terms
-                </Link>{" "}
-                and{" "}
-                <Link href="#" className="underline hover:text-muted-foreground">
-                  Privacy Policy
-                </Link>
-                .
+                {t.rich("common.agreementLogin", {
+                  terms: (chunks) => (
+                    <Link href="#" className="underline hover:text-muted-foreground">
+                      {t("common.terms")}
+                    </Link>
+                  ),
+                  privacy: (chunks) => (
+                    <Link href="#" className="underline hover:text-muted-foreground">
+                      {t("common.privacyPolicy")}
+                    </Link>
+                  ),
+                })}
               </p>
             </div>
           </form>
