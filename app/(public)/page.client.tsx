@@ -40,35 +40,37 @@ export const PageClient = () => {
       </nav>
 
       {/* HERO SECTION */}
-      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-16 lg:pt-28 pb-20 flex flex-col items-center text-center">
+      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-12 sm:pt-16 lg:pt-28 pb-16 sm:pb-20 flex flex-col items-center text-center">
         <div className="max-w-3xl flex flex-col items-center">
-          <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-foreground mb-6 leading-[1.05]">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-foreground mb-6 leading-[1.05]">
             Past-exam explainer videos, organized and searchable.
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed max-w-2xl">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-2xl">
             Search by school, year, semester, exam type, and problem number. Watch 600+ explainer
             videos approved by your teachers.
           </p>
 
-          <div className="flex items-center justify-center gap-4">
-            <Link href={user ? "/dashboard" : "/register"}>
-              <Button size="lg" className="rounded-full px-8 py-4 text-base font-medium">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+            <Link href={user ? "/dashboard" : "/register"} className="w-full sm:w-auto">
+              <Button size="lg" className="rounded-full px-8 py-4 text-base font-medium w-full">
                 Get Started Now
               </Button>
             </Link>
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-full px-8 py-4 text-base font-medium"
-            >
-              Learn More
-            </Button>
+            <Link href="/login" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full px-8 py-4 text-base font-medium w-full"
+              >
+                Login
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* FLOATING WHITE CONTAINER: FEATURES */}
-      <section className="max-w-[1400px] w-[calc(100%-2rem)] mx-auto mt-8 mb-24 bg-card rounded-[2.5rem] p-10 lg:p-16 shadow-sm border border-border">
+      <section className="max-w-[1400px] w-[calc(100%-2rem)] mx-auto mt-8 mb-24 bg-card rounded-[2.5rem] p-6 sm:p-10 lg:p-16 shadow-sm border border-border">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16 items-end">
           <div className="lg:col-span-7">
             <Badge
@@ -87,7 +89,7 @@ export const PageClient = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 mt-12">
           {/* Feature 1 */}
           <div>
             <div className="inline-flex size-12 rounded-xl items-center justify-center border border-border mb-6 bg-muted">
@@ -125,7 +127,7 @@ export const PageClient = () => {
       </section>
 
       {/* BENTO BOX SECTION */}
-      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16">
+      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-16">
         <div className="text-center mb-16">
           <Badge
             variant="secondary"
@@ -138,11 +140,11 @@ export const PageClient = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[minmax(280px,auto)]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[minmax(240px,auto)]">
           {/* Box 1 (Top Left) */}
           <Card className="bg-muted rounded-[2.5rem] p-10 flex flex-col justify-center border-0">
             <CardContent className="p-0">
-              <h3 className="text-[5rem] lg:text-[7rem] font-bold text-primary leading-none mb-4 tracking-tighter">
+              <h3 className="text-[4rem] md:text-[5rem] lg:text-[7rem] font-bold text-primary leading-none mb-4 tracking-tighter">
                 600+
               </h3>
               <p className="text-xl text-foreground max-w-[240px] font-medium leading-snug">
@@ -166,7 +168,7 @@ export const PageClient = () => {
 
               <Card className="bg-card p-5 rounded-3xl shadow-sm border border-border flex items-center justify-between gap-4 mt-8 h-32">
                 <CardContent className="p-0 flex items-center gap-4 w-full">
-                  <div className="relative size-20 flex-shrink-0">
+                  <div className="relative size-20 shrink-0">
                     <svg viewBox="0 0 36 36" className="size-full transform -rotate-90">
                       <path
                         className="text-muted"
@@ -253,7 +255,7 @@ export const PageClient = () => {
                     color: "hsl(var(--primary))",
                   },
                 }}
-                className="h-[40%] w-full"
+                className="h-[120px] md:h-[40%] w-full"
               >
                 <BarChart
                   data={[12, 18, 15, 25].map((value, index) => ({
@@ -276,7 +278,7 @@ export const PageClient = () => {
       </section>
 
       {/* DARK STEPS SECTION */}
-      <section className="bg-card text-card-foreground py-28 mt-12 w-full px-6 lg:px-12 relative overflow-hidden">
+      <section className="bg-card text-card-foreground py-16 sm:py-20 md:py-28 mt-12 w-full px-4 sm:px-6 lg:px-12 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[800px] h-full bg-muted/80 blur-[150px] rounded-full translate-x-1/2 opacity-50 pointer-events-none"></div>
 
         <div className="max-w-[1400px] mx-auto relative z-10">
@@ -286,11 +288,11 @@ export const PageClient = () => {
           >
             Get Started
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-20 max-w-xl leading-[1.1] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 sm:mb-16 md:mb-20 max-w-xl leading-[1.1] tracking-tight">
             Start watching explainer videos in three simple steps.
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {[
               {
                 num: "1",
@@ -328,7 +330,7 @@ export const PageClient = () => {
       </section>
 
       {/* STATS / MISSION SECTION */}
-      <section className="bg-background py-24 mb-12 px-6 text-center w-full shadow-sm border-t border-border">
+      <section className="bg-background py-16 sm:py-20 md:py-24 mb-12 px-4 sm:px-6 text-center w-full shadow-sm border-t border-border">
         <div className="max-w-[1200px] mx-auto">
           <Badge
             variant="secondary"
@@ -336,31 +338,31 @@ export const PageClient = () => {
           >
             Our Mission
           </Badge>
-          <h2 className="text-4xl text-foreground font-bold mx-auto max-w-xl leading-[1.1] tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl text-foreground font-bold mx-auto max-w-xl leading-[1.1] tracking-tight mb-4">
             Replace manual video delivery with smart search
           </h2>
-          <p className="text-muted-foreground mb-20">
+          <p className="text-muted-foreground mb-12 sm:mb-16 md:mb-20">
             Teachers no longer send videos via KakaoTalk. Students find and watch explainer videos
             on their own.
             <br />
             Organized, searchable, and secure.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 max-w-4xl mx-auto">
             <div>
-              <h3 className="text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
+              <h3 className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
                 600+
               </h3>
               <p className="text-muted-foreground font-medium text-sm">Explainer videos</p>
             </div>
             <div>
-              <h3 className="text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
+              <h3 className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
                 25+
               </h3>
               <p className="text-muted-foreground font-medium text-sm">Schools covered</p>
             </div>
             <div>
-              <h3 className="text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
+              <h3 className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
                 100%
               </h3>
               <p className="text-muted-foreground font-medium text-sm">Approval-based access</p>
@@ -370,14 +372,14 @@ export const PageClient = () => {
       </section>
 
       {/* POPULAR MODULES */}
-      <section className="max-w-[1200px] mx-auto px-6 pb-24 w-full">
+      <section className="max-w-[1200px] mx-auto px-4 sm:px-6 pb-16 sm:pb-24 w-full">
         <div className="text-center mb-12 text-foreground text-[10px] font-bold uppercase tracking-widest">
           Featured Schools:
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mx-auto">
           {/* Card 1 */}
-          <Card className="bg-muted rounded-[2rem] p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all">
+          <Card className="bg-muted rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all">
             <CardContent className="p-0">
               <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
                 <Layers className="size-6 text-primary" />
@@ -393,7 +395,7 @@ export const PageClient = () => {
             </CardContent>
           </Card>
           {/* Card 2 */}
-          <Card className="bg-muted rounded-[2rem] p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all">
+          <Card className="bg-muted rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all">
             <CardContent className="p-0">
               <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
                 <Building2 className="size-6 text-primary" />
@@ -409,7 +411,7 @@ export const PageClient = () => {
             </CardContent>
           </Card>
           {/* Card 3 */}
-          <Card className="bg-primary rounded-[2rem] p-10 group cursor-pointer border border-transparent hover:border-primary/80 transition-all relative overflow-hidden shadow-lg shadow-primary/20">
+          <Card className="bg-primary rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/80 transition-all relative overflow-hidden shadow-lg shadow-primary/20">
             <CardContent className="p-0 relative z-10">
               <div className="size-12 bg-primary-foreground/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6">
                 <Shield className="size-6 text-primary-foreground" />
@@ -428,7 +430,7 @@ export const PageClient = () => {
       </section>
 
       {/* BOTTOM CTA */}
-      <section className="max-w-[1400px] w-[calc(100%-3rem)] mx-auto mb-20 bg-card rounded-[2.5rem] p-12 md:p-20 text-card-foreground flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden">
+      <section className="max-w-[1400px] w-[calc(100%-2rem)] mx-auto mb-20 bg-card rounded-[2.5rem] p-8 sm:p-12 md:p-20 text-card-foreground flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 relative overflow-hidden">
         <div className="absolute right-0 bottom-0 w-[40%] h-full bg-muted/80 rounded-[100%] blur-[100px] pointer-events-none z-0"></div>
 
         <div className="max-w-md relative z-10">
@@ -446,22 +448,24 @@ export const PageClient = () => {
             school, year, and problem number.
           </p>
         </div>
-        <div className="flex items-center gap-4 w-full md:w-auto relative z-10">
-          <Link href={user ? "/dashboard" : "/register"}>
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto relative z-10">
+          <Link href={user ? "/dashboard" : "/register"} className="w-full">
             <Button
               size="lg"
-              className="rounded-full px-6 flex-1 md:flex-auto py-3.5 text-sm font-medium whitespace-nowrap"
+              className="rounded-full px-6 flex-1 md:flex-auto py-3.5 text-sm font-medium whitespace-nowrap w-full"
             >
               Get Started Now
             </Button>
           </Link>
-          <Button
-            variant="outline"
-            size="lg"
-            className="rounded-full px-6 py-3.5 text-sm font-medium flex items-center justify-center gap-2 whitespace-nowrap"
-          >
-            Learn More <ArrowUpRight className="size-4" />
-          </Button>
+          <Link href="/login" className="w-full sm:w-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              className="rounded-full px-6 py-3.5 text-sm font-medium whitespace-nowrap w-full"
+            >
+              Login
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -470,7 +474,7 @@ export const PageClient = () => {
         <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col items-center">
           <div className="flex items-start gap-2 mb-8">
             <Image src="/logo.png" alt="MLS Logo" width={24} height={24} className="rounded-sm" />
-            <span className="font-bold text-lg tracking-tight text-foreground leading-[1]">
+            <span className="font-bold text-lg tracking-tight text-foreground leading-none">
               MLS
             </span>
           </div>
