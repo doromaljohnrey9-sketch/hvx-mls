@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,6 +33,7 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
   const router = useRouter();
   const supabase = getSupabaseClient();
   const queryClient = useQueryClient();
+  const t = useTranslations("Sidebar");
 
   const { profile, isLoading } = useAuth();
 
@@ -41,7 +44,7 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
       router.push("/");
     } catch (error) {
       console.error("Sign out failed:", error);
-      toast.error("Sign out failed", { description: "Please try again." });
+      toast.error(t("logoutFailed"), { description: t("tryAgain") }); // I should add these keys
     }
   };
 
@@ -56,8 +59,8 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
                   <Image src="/logo.png" alt="MLS Logo" width={32} height={32} className="size-8" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">MLS</span>
-                  <span className="truncate text-xs">Math Learning Studio</span>
+                  <span className="truncate font-medium">{t("platform")}</span>
+                  <span className="truncate text-xs">{t("tagline")}</span>
                 </div>
               </Link>
             </SidebarMenuButton>

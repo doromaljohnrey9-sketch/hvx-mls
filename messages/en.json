@@ -179,5 +179,40 @@
       "failed": "Reset password failed",
       "failedDesc": "There was an issue resetting your password. Please try again later."
     }
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "totalUsers": "Total users",
+    "usersThisWeek": "+{count} this week",
+    "examSets": "Exam sets",
+    "publishedSets": "{count} published",
+    "videos": "Videos",
+    "acrossAllSets": "Across all sets",
+    "usersByRole": "USERS BY ROLE",
+    "examSetsByStatus": "EXAM SETS BY STATUS",
+    "roles": {
+      "student": "Student",
+      "teacher": "Teacher",
+      "admin": "Admin",
+      "staff": "Staff",
+      "branch_admin": "Branch Admin",
+      "super_admin": "Super Admin"
+    },
+    "statuses": {
+      "draft": "Draft",
+      "partial": "Partial",
+      "complete": "Complete",
+      "none": "None"
+    }
+  },
+  "Sidebar": {
+    "platform": "MLS",
+    "tagline": "Math Learning Studio",
+    "dashboard": "Dashboard",
+    "searchvideos": "Search Videos",
+    "students": "Students",
+    "logout": "Log out",
+    "logoutFailed": "Sign out failed",
+    "tryAgain": "Please try again."
   }
 }

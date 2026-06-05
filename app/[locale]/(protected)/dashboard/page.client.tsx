@@ -13,7 +13,10 @@ import {
 } from "@/constants/dashboard.constant";
 import { useDashboard } from "@/hooks/use-dashboard";
 
+import { useTranslations } from "next-intl";
+
 export const PageClient = () => {
+  const t = useTranslations("Dashboard");
   const { stats, isLoading } = useDashboard();
 
   if (isLoading) {
@@ -39,36 +42,36 @@ export const PageClient = () => {
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total users</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("totalUsers")}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.data?.totalUsers ?? 0}</div>
             <p className="text-xs text-muted-foreground">
-              +{stats.data?.usersThisWeek ?? 0} this week
+              {t("usersThisWeek", { count: stats.data?.usersThisWeek ?? 0 })}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Exam sets</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("examSets")}</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.data?.totalExamSets ?? 0}</div>
             <p className="text-xs text-muted-foreground">
-              {stats.data?.publishedExamSets ?? 0} published
+              {t("publishedSets", { count: stats.data?.publishedExamSets ?? 0 })}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Videos</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("videos")}</CardTitle>
             <Play className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.data?.totalVideos ?? 0}</div>
-            <p className="text-xs text-muted-foreground">Across all sets</p>
+            <p className="text-xs text-muted-foreground">{t("acrossAllSets")}</p>
           </CardContent>
         </Card>
       </div>
@@ -76,7 +79,7 @@ export const PageClient = () => {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>USERS BY ROLE</CardTitle>
+            <CardTitle>{t("usersByRole")}</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer config={DASHBOARD_CHART_CONFIG}>
@@ -93,10 +96,7 @@ export const PageClient = () => {
                   tickMargin={10}
                   axisLine={false}
                   tickFormatter={(value) => {
-                    const label =
-                      DASHBOARD_CHART_CONFIG[value as keyof typeof DASHBOARD_CHART_CONFIG]?.label ||
-                      value;
-                    return label.charAt(0).toUpperCase() + label.slice(1);
+                    return t(`roles.${value as any}`);
                   }}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
@@ -115,7 +115,7 @@ export const PageClient = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>EXAM SETS BY STATUS</CardTitle>
+            <CardTitle>{t("examSetsByStatus")}</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer config={DASHBOARD_CHART_CONFIG}>
@@ -132,10 +132,7 @@ export const PageClient = () => {
                   tickMargin={10}
                   axisLine={false}
                   tickFormatter={(value) => {
-                    const label =
-                      DASHBOARD_CHART_CONFIG[value as keyof typeof DASHBOARD_CHART_CONFIG]?.label ||
-                      value;
-                    return label.charAt(0).toUpperCase() + label.slice(1);
+                    return t(`statuses.${value as any}`);
                   }}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />

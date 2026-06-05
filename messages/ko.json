@@ -179,5 +179,40 @@
       "failed": "비밀번호 재설정 실패",
       "failedDesc": "비밀번호 재설정 중 문제가 발생했습니다. 나중에 다시 시도해 주세요."
     }
+  },
+  "Dashboard": {
+    "title": "대시보드",
+    "totalUsers": "총 사용자",
+    "usersThisWeek": "이번 주 +{count}명",
+    "examSets": "시험지 세트",
+    "publishedSets": "{count}개 게시됨",
+    "videos": "동영상",
+    "acrossAllSets": "모든 세트 포함",
+    "usersByRole": "역할별 사용자",
+    "examSetsByStatus": "상태별 시험지 세트",
+    "roles": {
+      "student": "학생",
+      "teacher": "선생님",
+      "admin": "관리자",
+      "staff": "스태프",
+      "branch_admin": "지점 관리자",
+      "super_admin": "최고 관리자"
+    },
+    "statuses": {
+      "draft": "초안",
+      "partial": "일부 완료",
+      "complete": "완료",
+      "none": "없음"
+    }
+  },
+  "Sidebar": {
+    "platform": "MLS",
+    "tagline": "Math Learning Studio",
+    "dashboard": "대시보드",
+    "searchvideos": "동영상 검색",
+    "students": "학생 관리",
+    "logout": "로그아웃",
+    "logoutFailed": "로그아웃 실패",
+    "tryAgain": "다시 시도해 주세요."
   }
 }

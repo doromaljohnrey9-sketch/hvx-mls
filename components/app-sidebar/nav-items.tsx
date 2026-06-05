@@ -23,8 +23,11 @@ interface NavItemsProps extends React.ComponentPropsWithoutRef<typeof SidebarGro
   userRole?: string;
 }
 
+import { useTranslations } from "next-intl";
+
 export const NavItems = ({ title, items, userRole, ...props }: NavItemsProps) => {
   const pathname = usePathname();
+  const t = useTranslations("Sidebar");
 
   // Filter items based on user role
   const filteredItems = items.filter((item) => {
@@ -33,9 +36,15 @@ export const NavItems = ({ title, items, userRole, ...props }: NavItemsProps) =>
     return item.roles.includes(userRole);
   });
 
+  const getLabel = (name: string) => {
+    const key = name.toLowerCase().replace(/\s+/g, "");
+    // Fallback to name if key doesn't exist (though it should)
+    return t.has(key as any) ? t(key as any) : name;
+  };
+
   return (
     <SidebarGroup {...props}>
-      {title && <SidebarGroupLabel>{title}</SidebarGroupLabel>}
+      {title && <SidebarGroupLabel>{t("platform")}</SidebarGroupLabel>}
       <SidebarGroupContent>
         <SidebarMenu>
           {filteredItems.map((item) => (
@@ -43,7 +52,7 @@ export const NavItems = ({ title, items, userRole, ...props }: NavItemsProps) =>
               <SidebarMenuButton asChild size="sm" isActive={pathname === item.url}>
                 <Link href={item.url}>
                   <item.icon />
-                  <span>{item.name}</span>
+                  <span>{getLabel(item.name)}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

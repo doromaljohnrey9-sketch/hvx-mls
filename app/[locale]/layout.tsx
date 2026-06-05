@@ -35,20 +35,18 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <NextIntlClientProvider messages={messages}>
-          <ReactQueryProvider>
-            <AppProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                {children}
-              </ThemeProvider>
-            </AppProvider>
-          </ReactQueryProvider>
-        </NextIntlClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider messages={messages}>
+            <ReactQueryProvider>
+              <AppProvider>{children}</AppProvider>
+            </ReactQueryProvider>
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
