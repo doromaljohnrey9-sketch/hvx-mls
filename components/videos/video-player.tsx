@@ -5,6 +5,7 @@ import { getVideoByIdQueryOptions } from "@/queries/videos.query";
 import { getPublicUrlSync } from "@/lib/supabase/storage.client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toSentenceCase } from "@/lib/utils";
 import {
   ArrowLeftIcon,
   BookOpenIcon,
@@ -114,7 +115,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
           {video.examSet.school.name} · {video.examSet.year} · {video.examSet.semester} Semester ·{" "}
-          {video.examSet.examType}
+          {toSentenceCase(video.examSet.examType)}
         </p>
       </div>
 
@@ -122,7 +123,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_272px] gap-5 items-start">
         {/* Left — video */}
         <div>
-          <div className="aspect-video w-full min-h-[360px] bg-background rounded-xl overflow-hidden border border-border/60">
+          <div className="aspect-video w-full min-h-[360px] bg-primary-foreground rounded-xl overflow-hidden border border-border/60 shadow-none">
             {isYouTube ? (
               <iframe
                 src={embedUrl}
@@ -133,7 +134,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
             ) : (
               <video
                 src={resolvedVideoUrl}
-                className="w-full h-full"
+                className="w-full h-full bg-primary-foreground"
                 controls
                 onError={(e) => console.error("Video error:", e)}
               />
@@ -169,7 +170,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
               <MetaRow
                 icon={<FileTextIcon className="size-3.5" />}
                 label="Exam type"
-                value={video.examSet.examType}
+                value={toSentenceCase(video.examSet.examType)}
               />
               <MetaRow
                 icon={<GraduationCapIcon className="size-3.5" />}

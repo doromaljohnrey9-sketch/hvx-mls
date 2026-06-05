@@ -150,23 +150,24 @@ export function UsersTable<TData, TValue>({
         </Table>
       </div>
       {pagination && (
-        <div className="flex items-center justify-between border-t px-4 py-3">
+        <div className="flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
           <div className="text-sm text-muted-foreground font-medium">
             Showing {(pagination.page - 1) * pagination.pageSize + 1} to{" "}
             {Math.min(pagination.page * pagination.pageSize, pagination.total)} of{" "}
             {pagination.total} users
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => pagination.onPageChange(pagination.page - 1)}
               disabled={pagination.page === 1}
+              className="px-3"
             >
               <ChevronLeftIcon className="size-4" />
-              Previous
+              <span className="hidden sm:inline">Previous</span>
             </Button>
-            <div className="text-sm text-foreground font-medium">
+            <div className="text-sm text-foreground font-medium whitespace-nowrap">
               Page {pagination.page} of {pagination.totalPages}
             </div>
             <Button
@@ -174,8 +175,9 @@ export function UsersTable<TData, TValue>({
               size="sm"
               onClick={() => pagination.onPageChange(pagination.page + 1)}
               disabled={pagination.page === pagination.totalPages}
+              className="px-3"
             >
-              Next
+              <span className="hidden sm:inline">Next</span>
               <ChevronRightIcon className="size-4" />
             </Button>
           </div>
