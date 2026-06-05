@@ -140,9 +140,6 @@ export const PageClient = () => {
       <div className="flex items-center justify-center px-4 py-10 sm:px-8">
         <div className="w-full max-w-xl">
           <div className="mb-8">
-            <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 lg:hidden">
-              <GraduationCap className="h-5 w-5 text-primary" />
-            </div>
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
               Create an account
             </h1>
