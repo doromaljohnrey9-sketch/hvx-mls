@@ -20,6 +20,8 @@ interface VideoActionsDropdownProps {
   onDelete?: (video: Video) => void;
 }
 
+import { useTranslations } from "next-intl";
+
 export function VideoActionsDropdown({
   video,
   userRole,
@@ -27,6 +29,7 @@ export function VideoActionsDropdown({
   onDelete,
 }: VideoActionsDropdownProps) {
   const router = useRouter();
+  const t = useTranslations("Videos.table");
   const canManage =
     userRole === "super_admin" || userRole === "branch_admin" || userRole === "teacher";
 
@@ -45,7 +48,7 @@ export function VideoActionsDropdown({
           }}
         >
           <PlayIcon className="size-4 mr-2" />
-          Watch
+          {t("watch")}
         </DropdownMenuItem>
         {canManage && onUpdate && (
           <>
@@ -56,7 +59,7 @@ export function VideoActionsDropdown({
               }}
             >
               <PencilIcon className="size-4 mr-2" />
-              Edit
+              {t("edit")}
             </DropdownMenuItem>
           </>
         )}
@@ -70,7 +73,7 @@ export function VideoActionsDropdown({
               className="text-destructive"
             >
               <Trash2Icon className="size-4 mr-2" />
-              Delete
+              {t("delete")}
             </DropdownMenuItem>
           </>
         )}

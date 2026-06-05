@@ -251,7 +251,7 @@ export const PageClient = () => {
               <ChartContainer
                 config={{
                   schools: {
-                    label: "Schools",
+                    label: t("stats.box4.label"),
                     color: "hsl(var(--primary))",
                   },
                 }}
@@ -348,13 +348,13 @@ export const PageClient = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 max-w-4xl mx-auto">
             <div>
               <h3 className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
-                600+
+                {t("stats.box1.count")}
               </h3>
               <p className="text-muted-foreground font-medium text-sm">{t("mission.stat1")}</p>
             </div>
             <div>
               <h3 className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
-                25+
+                {t("stats.box4.count")}+
               </h3>
               <p className="text-muted-foreground font-medium text-sm">{t("mission.stat2")}</p>
             </div>

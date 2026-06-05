@@ -17,23 +17,28 @@ import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { LanguageToggle } from "@/components/shared/language-toggle";
+import { useTranslations } from "next-intl";
 
 export const SiteHeader = () => {
+  const t = useTranslations("Breadcrumbs");
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar();
 
   const pathItems = useMemo(() => {
     const segments = pathname.split("/").filter(Boolean);
 
-    return segments.map((segment, index) => {
-      const title = segment.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
-      const path = "/" + segments.slice(0, index + 1).join("/");
+    // Skip the first segment if it's a locale (handled by next-intl automatically in some contexts, but here we parse manually)
+    const displaySegments = ["en", "ko"].includes(segments[0]) ? segments.slice(1) : segments;
+
+    return displaySegments.map((segment, index) => {
+      let title = t.has(segment) ? t(segment as any) : segment.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+      const path = "/" + displaySegments.slice(0, index + 1).join("/");
       return {
         title,
         path,
       };
     });
-  }, [pathname]);
+  }, [pathname, t]);
 
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">

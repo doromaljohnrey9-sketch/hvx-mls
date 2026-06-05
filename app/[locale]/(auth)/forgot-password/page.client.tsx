@@ -5,22 +5,23 @@ import { toast } from "sonner";
 import { useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, GraduationCap, ArrowLeft } from "lucide-react";
+import { Mail, ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { FieldError, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 import { getSupabaseClient } from "@/lib/supabase/client";
 
-import { type ForgotPasswordFormValues, forgotPasswordSchema } from "@/schemas/auth.schema";
+import { getAuthSchemas, type ForgotPasswordFormValues } from "@/schemas/auth.schema";
 import { AUTH_ROUTES } from "@/constants/routes.constant";
 
 import { useTranslations } from "next-intl";
 
 export const PageClient = () => {
   const t = useTranslations("Auth");
+  const { forgotPasswordSchema } = getAuthSchemas(t);
   const supabase = getSupabaseClient();
 
   const [isPending, startTransition] = useTransition();

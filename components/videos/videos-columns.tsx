@@ -22,13 +22,16 @@ import { toSentenceCase } from "@/lib/utils";
 
 import type { Video } from "@/types/video.types";
 
+import { useTranslations } from "next-intl";
+
 interface CreateVideosColumnsProps {
   userRole?: string;
   onUpdate?: (video: Video) => void;
   onDelete?: (video: Video) => void;
+  t: ReturnType<typeof useTranslations<"Videos">>;
 }
 
-export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVideosColumnsProps) {
+export function createVideosColumns({ userRole, onUpdate, onDelete, t }: CreateVideosColumnsProps) {
   const columns: ColumnDef<Video>[] = [
     {
       id: "spacer",
@@ -38,7 +41,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
     },
     {
       id: "watch",
-      header: () => <div className="text-sm font-semibold text-foreground">Watch</div>,
+      header: () => <div className="text-sm font-semibold text-foreground">{t("table.watch")}</div>,
       cell: ({ row }) => {
         const video = row.original;
         const router = useRouter();
@@ -51,7 +54,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
             }}
           >
             <PlayIcon className="size-4 mr-2" />
-            Watch
+            {t("table.watch")}
           </Button>
         );
       },
@@ -65,7 +68,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Title
+          {t("table.title")}
           <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
@@ -87,7 +90,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          School
+          {t("table.school")}
           <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
@@ -110,7 +113,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Year
+          {t("table.year")}
           <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
@@ -133,7 +136,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Semester
+          {t("table.semester")}
           <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
@@ -156,7 +159,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Exam Type
+          {t("table.examType")}
           <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
@@ -181,7 +184,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Grade
+          {t("table.grade")}
           <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
@@ -204,7 +207,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Subject
+          {t("table.subject")}
           <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
@@ -227,7 +230,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Problem No.
+          {t("table.problemNo")}
           <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
@@ -244,7 +247,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete }: CreateVide
     },
     {
       id: "actions",
-      header: () => <div className="text-sm font-semibold text-foreground">Actions</div>,
+      header: () => <div className="text-sm font-semibold text-foreground">{t("table.actions")}</div>,
       cell: ({ row }) => {
         const video = row.original;
         return (

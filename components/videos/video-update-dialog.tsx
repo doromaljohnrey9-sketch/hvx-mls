@@ -45,8 +45,11 @@ const videoUpdateSchema = {
   visibility: "public",
 };
 
+import { useTranslations } from "next-intl";
+
 export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDialogProps) {
   const queryClient = useQueryClient();
+  const t = useTranslations("Videos.management");
 
   const { data: examSets } = useQuery(getExamSetsQueryOptions()) as {
     data: ExamSetWithSchoolName[] | undefined;
@@ -89,15 +92,15 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
       });
     },
     onSuccess: () => {
-      toast.success("Video updated successfully");
+      toast.success(t("toasts.updateSuccess"));
       form.reset();
       onOpenChange(false);
       queryClient.invalidateQueries({ queryKey: ["videos"] });
       queryClient.invalidateQueries({ queryKey: ["videos", video.id] });
     },
     onError: (error: any) => {
-      toast.error("Failed to update video", {
-        description: error.response?.data?.error || error.message || "Please try again",
+      toast.error(t("toasts.updateError"), {
+        description: error.response?.data?.error || error.message || t("toasts.tryAgain"),
       });
     },
   });
@@ -110,21 +113,19 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Update Video</DialogTitle>
-          <DialogDescription>
-            Update the video details including exam set and problem number.
-          </DialogDescription>
+          <DialogTitle>{t("updateTitle")}</DialogTitle>
+          <DialogDescription>{t("updateDescription")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup className="space-y-4">
             <Field>
-              <FieldLabel>Exam Set</FieldLabel>
+              <FieldLabel>{t("fields.examSet")}</FieldLabel>
               <Select
                 value={form.watch("examSetId")}
                 onValueChange={(value) => form.setValue("examSetId", value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select exam set" />
+                  <SelectValue placeholder={t("placeholders.selectExamSet")} />
                 </SelectTrigger>
                 <SelectContent>
                   {examSets?.map((examSet) => (
@@ -139,11 +140,11 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
 
             <div className="grid grid-cols-2 gap-4">
               <Field>
-                <FieldLabel>Problem Number</FieldLabel>
+                <FieldLabel>{t("fields.problemNumber")}</FieldLabel>
                 <Input
                   {...form.register("problemNumber", { required: true })}
                   type="number"
-                  placeholder="1"
+                  placeholder={t("placeholders.problemNumber")}
                 />
                 {form.formState.errors.problemNumber && (
                   <FieldError errors={[form.formState.errors.problemNumber as any]} />
@@ -151,7 +152,7 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
               </Field>
 
               <Field>
-                <FieldLabel>Visibility</FieldLabel>
+                <FieldLabel>{t("fields.visibility")}</FieldLabel>
                 <Select
                   value={form.watch("visibility")}
                   onValueChange={(value: "public" | "private" | "hidden") =>
@@ -159,27 +160,27 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select visibility" />
+                    <SelectValue placeholder={t("placeholders.selectVisibility")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="public">Public</SelectItem>
-                    <SelectItem value="private">Private</SelectItem>
-                    <SelectItem value="hidden">Hidden</SelectItem>
+                    <SelectItem value="public">{t("options.public")}</SelectItem>
+                    <SelectItem value="private">{t("options.private")}</SelectItem>
+                    <SelectItem value="hidden">{t("options.hidden")}</SelectItem>
                   </SelectContent>
                 </Select>
               </Field>
             </div>
 
             <Field>
-              <FieldLabel>Title (Optional)</FieldLabel>
-              <Input {...form.register("title")} placeholder="Solution for problem 1" />
+              <FieldLabel>{t("fields.title")}</FieldLabel>
+              <Input {...form.register("title")} placeholder={t("placeholders.title")} />
             </Field>
 
             <Field>
-              <FieldLabel>Video URL</FieldLabel>
+              <FieldLabel>{t("fields.videoUrl")}</FieldLabel>
               <Input
                 {...form.register("videoUrl", { required: true })}
-                placeholder="https://youtube.com/watch?v=..."
+                placeholder={t("placeholders.videoUrl")}
               />
               {form.formState.errors.videoUrl && (
                 <FieldError errors={[form.formState.errors.videoUrl as any]} />
@@ -193,10 +194,10 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
               onClick={() => onOpenChange(false)}
               disabled={updateVideoMutation.isPending}
             >
-              Cancel
+              {t("cancel")}
             </Button>
             <Button type="submit" disabled={updateVideoMutation.isPending}>
-              {updateVideoMutation.isPending ? "Updating..." : "Update Video"}
+              {updateVideoMutation.isPending ? t("updating") : t("update")}
             </Button>
           </DialogFooter>
         </form>

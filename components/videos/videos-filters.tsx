@@ -36,6 +36,8 @@ interface VideosFiltersProps {
   onProblemNumberFilterChange: (value: string) => void;
 }
 
+import { useTranslations } from "next-intl";
+
 export function VideosFilters({
   search,
   schoolIdFilter,
@@ -58,6 +60,7 @@ export function VideosFilters({
   const { data: schools, isLoading: schoolsLoading } = useQuery(getSchoolsQueryOptions());
   const { data: subjects, isLoading: subjectsLoading } = useQuery(getSubjectsQueryOptions());
   const { profile } = useAuth();
+  const t = useTranslations("Videos.search");
 
   const canUploadVideo =
     profile?.role === "teacher" ||
@@ -89,7 +92,7 @@ export function VideosFilters({
         <div className="relative flex-1 max-w-sm">
           <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search videos..."
+            placeholder={t("placeholder")}
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={(e) => {
@@ -104,14 +107,14 @@ export function VideosFilters({
             className="absolute right-1 top-1/2 -translate-y-1/2 h-7"
             onClick={onSearchSubmit}
           >
-            Search
+            {t("search")}
           </Button>
         </div>
         <div className="flex items-center gap-2">
           {hasActiveFilters && (
             <Button variant="ghost" size="sm" onClick={clearFilters}>
               <XIcon className="size-4 mr-2" />
-              Clear Filters
+              {t("clearFilters")}
             </Button>
           )}
           {canUploadVideo && <VideoUploadDialog />}
@@ -125,10 +128,10 @@ export function VideosFilters({
             disabled={schoolsLoading}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Schools" className="truncate" />
+              <SelectValue placeholder={t("filters.allSchools")} className="truncate" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Schools</SelectItem>
+              <SelectItem value="all">{t("filters.allSchools")}</SelectItem>
               {schools?.map((school) => (
                 <SelectItem key={school.id} value={school.id}>
                   {school.name}
@@ -141,10 +144,10 @@ export function VideosFilters({
         <div className="w-full">
           <Select value={yearFilter} onValueChange={onYearFilterChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Years" className="truncate" />
+              <SelectValue placeholder={t("filters.allYears")} className="truncate" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Years</SelectItem>
+              <SelectItem value="all">{t("filters.allYears")}</SelectItem>
               <SelectItem value="2024">2024</SelectItem>
               <SelectItem value="2023">2023</SelectItem>
               <SelectItem value="2022">2022</SelectItem>
@@ -156,12 +159,12 @@ export function VideosFilters({
         <div className="w-full">
           <Select value={semesterFilter} onValueChange={onSemesterFilterChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Semesters" className="truncate" />
+              <SelectValue placeholder={t("filters.allSemesters")} className="truncate" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Semesters</SelectItem>
-              <SelectItem value="1">1st Semester</SelectItem>
-              <SelectItem value="2">2nd Semester</SelectItem>
+              <SelectItem value="all">{t("filters.allSemesters")}</SelectItem>
+              <SelectItem value="1">{t("filters.semester1")}</SelectItem>
+              <SelectItem value="2">{t("filters.semester2")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -169,12 +172,12 @@ export function VideosFilters({
         <div className="w-full">
           <Select value={examTypeFilter} onValueChange={onExamTypeFilterChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Types" className="truncate" />
+              <SelectValue placeholder={t("filters.allExamTypes")} className="truncate" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="midterm">Midterm</SelectItem>
-              <SelectItem value="final">Final</SelectItem>
+              <SelectItem value="all">{t("filters.allExamTypes")}</SelectItem>
+              <SelectItem value="midterm">{t("filters.midterm")}</SelectItem>
+              <SelectItem value="final">{t("filters.final")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -182,13 +185,13 @@ export function VideosFilters({
         <div className="w-full">
           <Select value={gradeFilter} onValueChange={onGradeFilterChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Grades" className="truncate" />
+              <SelectValue placeholder={t("filters.allGrades")} className="truncate" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Grades</SelectItem>
-              <SelectItem value="1">Grade 1</SelectItem>
-              <SelectItem value="2">Grade 2</SelectItem>
-              <SelectItem value="3">Grade 3</SelectItem>
+              <SelectItem value="all">{t("filters.allGrades")}</SelectItem>
+              <SelectItem value="1">{t("filters.grade1")}</SelectItem>
+              <SelectItem value="2">{t("filters.grade2")}</SelectItem>
+              <SelectItem value="3">{t("filters.grade3")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -200,10 +203,10 @@ export function VideosFilters({
             disabled={subjectsLoading}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="All Subjects" className="truncate" />
+              <SelectValue placeholder={t("filters.allSubjects")} className="truncate" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Subjects</SelectItem>
+              <SelectItem value="all">{t("filters.allSubjects")}</SelectItem>
               {subjects?.map((subject) => (
                 <SelectItem key={subject} value={subject}>
                   {subject}
@@ -215,7 +218,7 @@ export function VideosFilters({
 
         <div className="w-full">
           <Input
-            placeholder="Problem No."
+            placeholder={t("filters.problemNo")}
             value={problemNumberFilter}
             onChange={(e) => onProblemNumberFilterChange(e.target.value)}
             className="w-full"

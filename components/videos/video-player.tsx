@@ -49,8 +49,13 @@ function MetaRow({
   );
 }
 
+import { useTranslations } from "next-intl";
+
 export function VideoPlayer({ videoId }: VideoPlayerProps) {
   const router = useRouter();
+  const t = useTranslations("Videos.player");
+  const tFilters = useTranslations("Videos.search.filters");
+  const tManagement = useTranslations("Videos.management");
   const { data: video, isLoading, error } = useQuery(getVideoByIdQueryOptions(videoId));
 
   const resolvedVideoUrl = video
@@ -64,7 +69,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
           <div className="size-8 rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground animate-spin" />
-          <p className="text-sm text-muted-foreground">Loading video...</p>
+          <p className="text-sm text-muted-foreground">{t("loading")}</p>
         </div>
       </div>
     );
@@ -77,12 +82,12 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
           <PlayIcon className="size-6 text-destructive" />
         </div>
         <div className="text-center flex flex-col gap-1">
-          <p className="font-medium text-destructive">Failed to load video</p>
+          <p className="font-medium text-destructive">{t("failed")}</p>
           {error && <p className="text-sm text-muted-foreground">{String(error)}</p>}
         </div>
         <Button variant="outline" onClick={() => router.back()}>
           <ArrowLeftIcon className="size-4 mr-2" />
-          Go Back
+          {t("goBack")}
         </Button>
       </div>
     );
@@ -95,6 +100,14 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
   const isYouTube =
     resolvedVideoUrl?.includes("youtube.com") || resolvedVideoUrl?.includes("youtu.be");
 
+  const translatedSemester =
+    video.examSet.semester === "1st" ? tFilters("semester1") : tFilters("semester2");
+
+  const translatedExamType =
+    video.examSet.examType === "midterm" ? tFilters("midterm") : tFilters("final");
+
+  const translatedVisibility = tManagement(`options.${video.visibility}`);
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       {/* Back button */}
@@ -105,17 +118,17 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
         className="mb-6 -ml-2 text-muted-foreground hover:text-foreground"
       >
         <ArrowLeftIcon className="size-4 mr-2" />
-        Back
+        {t("back")}
       </Button>
 
       {/* Title + subtitle */}
       <div className="mb-5">
         <h1 className="text-2xl font-semibold tracking-tight">
-          {video.title || `Problem ${video.problemNumber}`}
+          {video.title || `${t("problem")} ${video.problemNumber}`}
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          {video.examSet.school.name} · {video.examSet.year} · {video.examSet.semester} Semester ·{" "}
-          {toSentenceCase(video.examSet.examType)}
+          {video.examSet.school.name} · {video.examSet.year} · {translatedSemester} ·{" "}
+          {translatedExamType}
         </p>
       </div>
 
@@ -148,54 +161,54 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
           <div className="rounded-xl border border-border/60 bg-card overflow-hidden">
             <div className="px-4 py-3 border-b border-border/50">
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Exam details
+                {t("examDetails")}
               </p>
             </div>
             <div className="px-4 py-1">
               <MetaRow
                 icon={<BuildingIcon className="size-3.5" />}
-                label="School"
+                label={t("labels.school")}
                 value={video.examSet.school.name}
               />
               <MetaRow
                 icon={<CalendarIcon className="size-3.5" />}
-                label="Year"
-                value={video.examSet.year}
+                label={t("labels.year")}
+                value={video.examSet.year.toString()}
               />
               <MetaRow
                 icon={<MoonIcon className="size-3.5" />}
-                label="Semester"
-                value={`${video.examSet.semester}`}
+                label={t("labels.semester")}
+                value={translatedSemester}
               />
               <MetaRow
                 icon={<FileTextIcon className="size-3.5" />}
-                label="Exam type"
-                value={toSentenceCase(video.examSet.examType)}
+                label={t("labels.examType")}
+                value={translatedExamType}
               />
               <MetaRow
                 icon={<GraduationCapIcon className="size-3.5" />}
-                label="Grade"
-                value={`Grade ${video.examSet.grade}`}
+                label={t("labels.grade")}
+                value={t("gradeSuffix", { grade: video.examSet.grade })}
               />
               <MetaRow
                 icon={<BookOpenIcon className="size-3.5" />}
-                label="Subject"
+                label={t("labels.subject")}
                 value={video.examSet.subject}
               />
               <MetaRow
                 icon={<HashIcon className="size-3.5" />}
-                label="Problem no."
-                value={video.problemNumber}
+                label={t("labels.problemNo")}
+                value={video.problemNumber.toString()}
               />
               <MetaRow
                 icon={<EyeIcon className="size-3.5" />}
-                label="Visibility"
+                label={t("labels.visibility")}
                 badge={
                   <Badge
                     variant={video.visibility === "public" ? "default" : "secondary"}
-                    className="text-xs capitalize"
+                    className="text-xs"
                   >
-                    {video.visibility}
+                    {translatedVisibility}
                   </Badge>
                 }
               />

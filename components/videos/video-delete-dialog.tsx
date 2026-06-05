@@ -22,22 +22,25 @@ interface VideoDeleteDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
+import { useTranslations } from "next-intl";
+
 export function VideoDeleteDialog({ video, open, onOpenChange }: VideoDeleteDialogProps) {
   const queryClient = useQueryClient();
+  const t = useTranslations("Videos.management");
 
   const deleteVideoMutation = useMutation({
     mutationFn: async () => {
       return videosService.delete(video.id);
     },
     onSuccess: () => {
-      toast.success("Video deleted successfully");
+      toast.success(t("toasts.deleteSuccess"));
       onOpenChange(false);
       queryClient.invalidateQueries({ queryKey: ["videos"] });
       queryClient.invalidateQueries({ queryKey: ["videos", video.id] });
     },
     onError: (error: any) => {
-      toast.error("Failed to delete video", {
-        description: error.response?.data?.error || error.message || "Please try again",
+      toast.error(t("toasts.deleteError"), {
+        description: error.response?.data?.error || error.message || t("toasts.tryAgain"),
       });
     },
   });
@@ -48,12 +51,11 @@ export function VideoDeleteDialog({ video, open, onOpenChange }: VideoDeleteDial
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent drop-shadow-lg>
         <DialogHeader>
-          <DialogTitle>Delete Video</DialogTitle>
+          <DialogTitle>{t("deleteTitle")}</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete the video for problem {video.problemNumber}? This action
-            cannot be undone.
+            {t("deleteDescription", { problemNumber: video.problemNumber })}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="mt-6">
@@ -63,7 +65,7 @@ export function VideoDeleteDialog({ video, open, onOpenChange }: VideoDeleteDial
             onClick={() => onOpenChange(false)}
             disabled={deleteVideoMutation.isPending}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             type="button"
@@ -71,7 +73,7 @@ export function VideoDeleteDialog({ video, open, onOpenChange }: VideoDeleteDial
             onClick={handleDelete}
             disabled={deleteVideoMutation.isPending}
           >
-            {deleteVideoMutation.isPending ? "Deleting..." : "Delete Video"}
+            {deleteVideoMutation.isPending ? t("deleting") : t("delete")}
           </Button>
         </DialogFooter>
       </DialogContent>

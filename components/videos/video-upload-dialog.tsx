@@ -53,10 +53,13 @@ const videoUploadSchema = {
   },
 };
 
+import { useTranslations } from "next-intl";
+
 export function VideoUploadDialog() {
   const [open, setOpen] = useState(false);
   const [createNewExamSet, setCreateNewExamSet] = useState(false);
   const queryClient = useQueryClient();
+  const t = useTranslations("Videos.management");
 
   const { data: schools } = useQuery(getSchoolsQueryOptions());
   const { data: examSets } = useQuery(getExamSetsQueryOptions()) as {
@@ -97,14 +100,14 @@ export function VideoUploadDialog() {
       });
     },
     onSuccess: () => {
-      toast.success("Video uploaded successfully");
+      toast.success(t("toasts.uploadSuccess"));
       form.reset();
       setOpen(false);
       queryClient.invalidateQueries({ queryKey: ["videos"] });
     },
     onError: (error: any) => {
-      toast.error("Failed to upload video", {
-        description: error.response?.data?.error || error.message || "Please try again",
+      toast.error(t("toasts.uploadError"), {
+        description: error.response?.data?.error || error.message || t("toasts.tryAgain"),
       });
     },
   });
@@ -113,25 +116,25 @@ export function VideoUploadDialog() {
     createVideoMutation.mutate(data);
   };
 
+  const tFilters = useTranslations("Videos.search.filters");
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="w-full">
           <PlusIcon className="h-4 w-4 mr-2" />
-          Add Video
+          {t("addVideo")}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Upload Video</DialogTitle>
-          <DialogDescription>
-            Add a new exam solution video with the required metadata.
-          </DialogDescription>
+          <DialogTitle>{t("uploadTitle")}</DialogTitle>
+          <DialogDescription>{t("uploadDescription")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup className="space-y-4">
             <Field>
-              <FieldLabel>Exam Set</FieldLabel>
+              <FieldLabel>{t("fields.examSet")}</FieldLabel>
               <Select
                 value={createNewExamSet ? "new" : form.watch("examSetId")}
                 onValueChange={(value) => {
@@ -144,17 +147,20 @@ export function VideoUploadDialog() {
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select or create exam set" />
+                  <SelectValue placeholder={t("placeholders.selectOrCreateExamSet")} />
                 </SelectTrigger>
                 <SelectContent
                   position="popper"
-                  className="w-[var(--radix-select-trigger-width)] min-w-0"
+                  className="w-(--radix-select-trigger-width) min-w-0"
                 >
-                  <SelectItem value="new">+ Create New Exam Set</SelectItem>
+                  <SelectItem value="new">{t("placeholders.createExamSet")}</SelectItem>
                   {examSets?.map((examSet) => (
                     <SelectItem key={examSet.id} value={examSet.id} className="wrap-break-word">
-                      {examSet.schoolName} - {examSet.year} {examSet.semester} {examSet.examType} G
-                      {examSet.grade} - {examSet.subject} - {examSet.title}
+                      {examSet.schoolName} - {examSet.year}{" "}
+                      {examSet.semester === "1st" ? tFilters("semester1") : tFilters("semester2")}{" "}
+                      {examSet.examType === "midterm" ? tFilters("midterm") : tFilters("final")}{" "}
+                      {t("gradeSuffixShort", { grade: examSet.grade })} - {examSet.subject} -{" "}
+                      {examSet.title}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -163,16 +169,16 @@ export function VideoUploadDialog() {
 
             {createNewExamSet && (
               <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
-                <h4 className="font-medium">New Exam Set Details</h4>
+                <h4 className="font-medium">{t("newExamSetDetails")}</h4>
                 <div className="grid grid-cols-2 gap-4">
                   <Field>
-                    <FieldLabel>School</FieldLabel>
+                    <FieldLabel>{t("fields.school")}</FieldLabel>
                     <Select
                       {...form.register("newExamSet.schoolId")}
                       onValueChange={(value) => form.setValue("newExamSet.schoolId", value)}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select school" />
+                        <SelectValue placeholder={t("placeholders.selectSchool")} />
                       </SelectTrigger>
                       <SelectContent>
                         {schools?.map((school) => (
@@ -188,13 +194,13 @@ export function VideoUploadDialog() {
                   </Field>
 
                   <Field>
-                    <FieldLabel>Year</FieldLabel>
+                    <FieldLabel>{t("fields.year")}</FieldLabel>
                     <Select
                       {...form.register("newExamSet.year")}
                       onValueChange={(value) => form.setValue("newExamSet.year", value)}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select year" />
+                        <SelectValue placeholder={t("placeholders.selectYear")} />
                       </SelectTrigger>
                       <SelectContent>
                         {[2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030].map(
@@ -209,82 +215,85 @@ export function VideoUploadDialog() {
                   </Field>
 
                   <Field>
-                    <FieldLabel>Semester</FieldLabel>
+                    <FieldLabel>{t("fields.semester")}</FieldLabel>
                     <Select
                       {...form.register("newExamSet.semester")}
                       onValueChange={(value) => form.setValue("newExamSet.semester", value)}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select semester" />
+                        <SelectValue placeholder={t("placeholders.selectSemester")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="1st">1st Semester</SelectItem>
-                        <SelectItem value="2nd">2nd Semester</SelectItem>
+                        <SelectItem value="1st">{tFilters("semester1")}</SelectItem>
+                        <SelectItem value="2nd">{tFilters("semester2")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </Field>
 
                   <Field>
-                    <FieldLabel>Exam Type</FieldLabel>
+                    <FieldLabel>{t("fields.examType")}</FieldLabel>
                     <Select
                       {...form.register("newExamSet.examType")}
                       onValueChange={(value) => form.setValue("newExamSet.examType", value)}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
+                        <SelectValue placeholder={t("placeholders.selectType")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="midterm">Midterm</SelectItem>
-                        <SelectItem value="final">Final</SelectItem>
+                        <SelectItem value="midterm">{tFilters("midterm")}</SelectItem>
+                        <SelectItem value="final">{tFilters("final")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </Field>
 
                   <Field>
-                    <FieldLabel>Grade</FieldLabel>
+                    <FieldLabel>{t("fields.grade")}</FieldLabel>
                     <Select
                       {...form.register("newExamSet.grade")}
                       onValueChange={(value) => form.setValue("newExamSet.grade", value)}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select grade" />
+                        <SelectValue placeholder={t("placeholders.selectGrade")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="1">Grade 1</SelectItem>
-                        <SelectItem value="2">Grade 2</SelectItem>
-                        <SelectItem value="3">Grade 3</SelectItem>
+                        <SelectItem value="1">{tFilters("grade1")}</SelectItem>
+                        <SelectItem value="2">{tFilters("grade2")}</SelectItem>
+                        <SelectItem value="3">{tFilters("grade3")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </Field>
 
                   <Field>
-                    <FieldLabel>Subject</FieldLabel>
-                    <Input {...form.register("newExamSet.subject")} placeholder="Mathematics" />
+                    <FieldLabel>{t("fields.subject")}</FieldLabel>
+                    <Input
+                      {...form.register("newExamSet.subject")}
+                      placeholder={t("placeholders.subject")}
+                    />
                   </Field>
 
                   <Field>
-                    <FieldLabel>Status</FieldLabel>
+                    <FieldLabel>{t("fields.status")}</FieldLabel>
                     <Select
                       {...form.register("newExamSet.status")}
                       onValueChange={(value) => form.setValue("newExamSet.status", value)}
                       defaultValue="published"
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
+                        <SelectValue placeholder={t("placeholders.selectStatus")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="draft">Draft</SelectItem>
-                        <SelectItem value="published">Published</SelectItem>
-                        <SelectItem value="hidden">Hidden</SelectItem>
+                        <SelectItem value="draft">{t("options.draft")}</SelectItem>
+                        <SelectItem value="published">{t("options.published")}</SelectItem>
+                        <SelectItem value="hidden">{t("options.hidden")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </Field>
 
                   <Field className="col-span-2">
-                    <FieldLabel>Exam Set Title</FieldLabel>
+                    <FieldLabel>{t("fields.examSetTitle")}</FieldLabel>
                     <Input
                       {...form.register("newExamSet.title")}
-                      placeholder="2024 1st Semester Midterm Exam"
+                      placeholder={t("placeholders.examSetTitle")}
                     />
                   </Field>
                 </div>
@@ -292,17 +301,17 @@ export function VideoUploadDialog() {
             )}
 
             <Field>
-              <FieldLabel>Title (Optional)</FieldLabel>
-              <Input {...form.register("title")} placeholder="Solution for problem 1" />
+              <FieldLabel>{t("fields.title")}</FieldLabel>
+              <Input {...form.register("title")} placeholder={t("placeholders.title")} />
             </Field>
 
             <div className="grid grid-cols-2 gap-4">
               <Field>
-                <FieldLabel>Problem Number</FieldLabel>
+                <FieldLabel>{t("fields.problemNumber")}</FieldLabel>
                 <Input
                   {...form.register("problemNumber", { required: true })}
                   type="number"
-                  placeholder="1"
+                  placeholder={t("placeholders.problemNumber")}
                 />
                 {form.formState.errors.problemNumber && (
                   <FieldError errors={[form.formState.errors.problemNumber as any]} />
@@ -310,29 +319,29 @@ export function VideoUploadDialog() {
               </Field>
 
               <Field>
-                <FieldLabel>Visibility</FieldLabel>
+                <FieldLabel>{t("fields.visibility")}</FieldLabel>
                 <Select
                   {...form.register("visibility")}
                   onValueChange={(value) => form.setValue("visibility", value)}
                   defaultValue="public"
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select visibility" />
+                    <SelectValue placeholder={t("placeholders.selectVisibility")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="public">Public</SelectItem>
-                    <SelectItem value="private">Private</SelectItem>
-                    <SelectItem value="hidden">Hidden</SelectItem>
+                    <SelectItem value="public">{t("options.public")}</SelectItem>
+                    <SelectItem value="private">{t("options.private")}</SelectItem>
+                    <SelectItem value="hidden">{t("options.hidden")}</SelectItem>
                   </SelectContent>
                 </Select>
               </Field>
             </div>
 
             <Field>
-              <FieldLabel>Video URL</FieldLabel>
+              <FieldLabel>{t("fields.videoUrl")}</FieldLabel>
               <Input
                 {...form.register("videoUrl", { required: true })}
-                placeholder="https://youtube.com/watch?v=..."
+                placeholder={t("placeholders.videoUrl")}
               />
               {form.formState.errors.videoUrl && (
                 <FieldError errors={[form.formState.errors.videoUrl as any]} />
@@ -346,10 +355,10 @@ export function VideoUploadDialog() {
               onClick={() => setOpen(false)}
               disabled={createVideoMutation.isPending}
             >
-              Cancel
+              {t("cancel")}
             </Button>
             <Button type="submit" disabled={createVideoMutation.isPending}>
-              {createVideoMutation.isPending ? "Uploading..." : "Upload Video"}
+              {createVideoMutation.isPending ? t("uploading") : t("upload")}
             </Button>
           </DialogFooter>
         </form>

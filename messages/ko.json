@@ -1,4 +1,12 @@
 {
+  "Breadcrumbs": {
+    "home": "홈",
+    "dashboard": "대시보드",
+    "admin": "관리자",
+    "videos": "동영상",
+    "search": "검색",
+    "students": "학생"
+  },
   "Index": {
     "title": "Math Learning Studio",
     "description": "기출문제 해설 영상 시스템",
@@ -178,6 +186,16 @@
       "successDesc": "비밀번호가 성공적으로 업데이트되었습니다.",
       "failed": "비밀번호 재설정 실패",
       "failedDesc": "비밀번호 재설정 중 문제가 발생했습니다. 나중에 다시 시도해 주세요."
+    },
+    "validation": {
+      "invalidEmail": "올바른 이메일 주소를 입력해 주세요",
+      "passwordMin": "비밀번호는 최소 6자 이상이어야 합니다",
+      "nameMin": "이름은 최소 2자 이상이어야 합니다",
+      "invalidBranch": "올바른 지점을 선택해 주세요",
+      "invalidSchool": "올바른 학교를 선택해 주세요",
+      "positiveGrade": "학년은 양수여야 합니다",
+      "teacherMin": "선생님 이름은 최소 1자 이상이어야 합니다",
+      "passwordsDoNotMatch": "비밀번호가 일치하지 않습니다"
     }
   },
   "Dashboard": {
@@ -189,7 +207,8 @@
     "videos": "동영상",
     "acrossAllSets": "모든 세트 포함",
     "usersByRole": "역할별 사용자",
-    "examSetsByStatus": "상태별 시험지 세트",
+    "examSetsByStatus": "시험 세트 상태별",
+    "count": "수",
     "roles": {
       "student": "학생",
       "teacher": "선생님",
@@ -202,7 +221,54 @@
       "draft": "초안",
       "partial": "일부 완료",
       "complete": "완료",
-      "none": "없음"
+      "none": "없음",
+      "pending": "대기 중",
+      "denied": "거절됨",
+      "blocked": "차단됨",
+      "published": "게시됨",
+      "hidden": "숨김"
+    }
+  },
+  "UserManagement": {
+    "title": "사용자 관리",
+    "subtitle": "사용자 역할, 권한 및 계정 상태를 관리합니다.",
+    "searchPlaceholder": "이름 또는 이메일로 검색...",
+    "search": "검색",
+    "filters": {
+      "all": "전체",
+      "role": "역할",
+      "status": "상태",
+      "approved": "승인됨",
+      "pending": "대기 중",
+      "rejected": "거절됨",
+      "blocked": "차단됨"
+    },
+    "table": {
+      "name": "이름",
+      "email": "이메일",
+      "role": "역할",
+      "status": "상태",
+      "joined": "가입일",
+      "branch": "지점",
+      "school": "학교",
+      "approvedBy": "승인자",
+      "approvedAt": "승인일",
+      "actions": "작업",
+      "approve": "승인",
+      "reject": "거절",
+      "view": "상세 보기",
+      "updateRole": "역할 업데이트",
+      "noUsers": "사용자를 찾을 수 없습니다.",
+      "showing": "총 {total}명의 사용자 중 {start}-{end} 표시",
+      "previous": "이전",
+      "next": "다음",
+      "pageOf": "{totalPages}페이지 중 {page}페이지"
+    },
+    "toasts": {
+      "updated": "사용자 정보 업데이트됨",
+      "updatedDesc": "사용자의 역할/상태가 업데이트되었습니다.",
+      "failed": "업데이트 실패",
+      "failedDesc": "사용자 정보를 업데이트할 수 없습니다."
     }
   },
   "Sidebar": {
@@ -214,5 +280,139 @@
     "logout": "로그아웃",
     "logoutFailed": "로그아웃 실패",
     "tryAgain": "다시 시도해 주세요."
+  },
+  "Videos": {
+    "player": {
+      "loading": "동영상을 불러오는 중...",
+      "failed": "동영상을 불러오지 못했습니다",
+      "goBack": "뒤로 가기",
+      "back": "뒤로",
+      "examDetails": "시험 상세 정보",
+      "problem": "문제",
+      "semesterSuffix": "학기",
+      "gradeSuffix": "{grade}학년",
+      "labels": {
+        "school": "학교",
+        "year": "연도",
+        "semester": "학기",
+        "examType": "시험 종류",
+        "grade": "학년",
+        "subject": "과목",
+        "problemNo": "문제 번호",
+        "visibility": "공개 여부"
+      }
+    },
+    "search": {
+      "title": "동영상 검색",
+      "subtitle": "시험 풀이 동영상을 검색하고 시청하세요.",
+      "addVideo": "동영상 추가",
+      "placeholder": "제목 또는 문제 번호로 검색...",
+      "noResults": "동영상을 찾을 수 없습니다.",
+      "search": "검색",
+      "clearFilters": "필터 초기화",
+      "filters": {
+        "allSchools": "모든 학교",
+        "allYears": "모든 연도",
+        "allSemesters": "모든 학기",
+        "allExamTypes": "모든 시험 종류",
+        "allGrades": "모든 학년",
+        "allSubjects": "모든 과목",
+        "semester1": "1학기",
+        "semester2": "2학기",
+        "midterm": "중간고사",
+        "final": "기말고사",
+        "grade1": "1학년",
+        "grade2": "2학년",
+        "grade3": "3학년",
+        "problemNo": "문제 번호"
+      }
+    },
+    "table": {
+      "problem": "문제",
+      "exam": "시험",
+      "visibility": "공개 여부",
+      "actions": "작업",
+      "edit": "수정",
+      "delete": "삭제",
+      "noVideos": "동영상을 찾을 수 없습니다.",
+      "showing": "총 {total}개의 동영상 중 {start}-{end} 표시",
+      "previous": "이전",
+      "next": "다음",
+      "pageOf": "{totalPages}페이지 중 {page}페이지",
+      "watch": "보기",
+      "title": "제목",
+      "school": "학교",
+      "year": "연도",
+      "semester": "학기",
+      "examType": "시험 종류",
+      "grade": "학년",
+      "subject": "과목",
+      "problemNo": "문제 번호"
+    },
+    "management": {
+      "addVideo": "동영상 추가",
+      "uploadTitle": "동영상 업로드",
+      "uploadDescription": "필요한 메타데이터와 함께 새로운 시험 풀이 동영상을 추가합니다.",
+      "updateTitle": "동영상 수정",
+      "updateDescription": "시험 세트 및 문제 번호를 포함한 동영상 상세 정보를 수정합니다.",
+      "deleteTitle": "동영상 삭제",
+      "deleteDescription": "{problemNumber}번 문제의 동영상을 정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      "newExamSetDetails": "새 시험 세트 상세 정보",
+      "cancel": "취소",
+      "save": "변경 사항 저장",
+      "upload": "동영상 업로드",
+      "update": "동영상 수정",
+      "delete": "동영상 삭제",
+      "uploading": "업로드 중...",
+      "updating": "수정 중...",
+      "deleting": "삭제 중...",
+      "fields": {
+        "examSet": "시험 세트",
+        "problemNumber": "문제 번호",
+        "visibility": "공개 여부",
+        "title": "제목 (선택 사항)",
+        "videoUrl": "동영상 URL",
+        "school": "학교",
+        "year": "연도",
+        "semester": "학기",
+        "examType": "시험 종류",
+        "grade": "학년",
+        "status": "상태"
+      },
+      "placeholders": {
+        "selectExamSet": "시험 세트 선택",
+        "selectOrCreateExamSet": "시험 세트 선택 또는 생성",
+        "createExamSet": "+ 새 시험 세트 생성",
+        "selectSchool": "학교 선택",
+        "selectYear": "연도 선택",
+        "selectSemester": "학기 선택",
+        "selectType": "종류 선택",
+        "selectGrade": "학년 선택",
+        "selectStatus": "상태 선택",
+        "selectVisibility": "공개 여부 선택",
+        "problemNumber": "예: 15",
+        "title": "예: 15번 문제 풀이",
+        "videoUrl": "예: https://www.youtube.com/watch?v=...",
+        "examSetTitle": "2024년 1학기 중간고사",
+        "subject": "예: 수학"
+      },
+      "gradeSuffixShort": "{grade}학년",
+      "options": {
+        "public": "공개",
+        "private": "비공개",
+        "hidden": "숨김",
+        "draft": "초안",
+        "published": "게시됨"
+      },
+      "toasts": {
+        "uploadSuccess": "동영상이 성공적으로 업로드되었습니다",
+        "uploadError": "동영상 업로드에 실패했습니다",
+        "updateSuccess": "동영상이 성공적으로 수정되었습니다",
+        "updateError": "동영상 수정에 실패했습니다",
+        "deleteSuccess": "동영상이 성공적으로 삭제되었습니다",
+        "deleteError": "동영상 삭제에 실패했습니다",
+        "tryAgain": "다시 시도해 주세요"
+      }
+    }
   }
 }

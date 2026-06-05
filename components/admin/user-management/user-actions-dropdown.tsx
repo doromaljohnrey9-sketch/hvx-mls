@@ -28,27 +28,16 @@ interface UserActionsDropdownProps {
   statusLabels: Record<string, string>;
 }
 
-const ROLE_LABELS: Record<string, string> = {
-  student: "Student",
-  teacher: "Teacher",
-  branch_admin: "Branch Admin",
-  super_admin: "Super Admin",
-};
-
-const APPROVAL_STATUS_LABELS: Record<string, string> = {
-  pending: "Pending",
-  approved: "Approved",
-  rejected: "Rejected",
-  blocked: "Blocked",
-};
+import { useTranslations } from "next-intl";
 
 export function UserActionsDropdown({
   user,
   updateUser,
   isSelf,
-  roleLabels = ROLE_LABELS,
-  statusLabels = APPROVAL_STATUS_LABELS,
+  roleLabels,
+  statusLabels,
 }: UserActionsDropdownProps) {
+  const t = useTranslations("UserManagement");
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(user.role);
   const [selectedStatus, setSelectedStatus] = useState<ApprovalStatus | null>(user.approvalStatus);
   const [isOpen, setIsOpen] = useState(false);
@@ -74,12 +63,9 @@ export function UserActionsDropdown({
         id: user.id,
         updates,
       });
-      if (updates.role) {
-        toast.success(`User role updated to ${roleLabels[updates.role]}`);
-      }
-      if (updates.approvalStatus) {
-        toast.success(`User status updated to ${statusLabels[updates.approvalStatus]}`);
-      }
+      toast.success(t("toasts.updated"), {
+        description: t("toasts.updatedDesc"),
+      });
     }
     setIsOpen(false);
   };
@@ -97,7 +83,7 @@ export function UserActionsDropdown({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>Role</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("table.role")}</DropdownMenuLabel>
         {availableRoles.map((role) => (
           <DropdownMenuCheckboxItem
             key={role}
@@ -109,7 +95,7 @@ export function UserActionsDropdown({
           </DropdownMenuCheckboxItem>
         ))}
         <DropdownMenuSeparator />
-        <DropdownMenuLabel>Status</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("table.status")}</DropdownMenuLabel>
         {availableStatuses.map((status) => (
           <DropdownMenuCheckboxItem
             key={status}
@@ -123,7 +109,7 @@ export function UserActionsDropdown({
         <DropdownMenuSeparator />
         <div className="flex items-center justify-end gap-2 p-2">
           <Button size="sm" onClick={handleConfirm} disabled={updateUser.isPending}>
-            Confirm
+            {t("table.approve")}
           </Button>
         </div>
       </DropdownMenuContent>

@@ -25,7 +25,7 @@ import { PasswordInput } from "@/components/shared/password-input";
 
 import { getSupabaseClient } from "@/lib/supabase/client";
 
-import { registerSchema, type RegisterFormValues } from "@/schemas/auth.schema";
+import { getAuthSchemas, type RegisterFormValues } from "@/schemas/auth.schema";
 
 import { AUTH_ROUTES } from "@/constants/routes.constant";
 import { getBranchesQueryOptions } from "@/queries/branches.query";
@@ -36,6 +36,7 @@ import { useTranslations } from "next-intl";
 
 export const PageClient = () => {
   const t = useTranslations("Auth");
+  const { registerSchema } = getAuthSchemas(t);
   const router = useRouter();
   const supabase = getSupabaseClient();
 

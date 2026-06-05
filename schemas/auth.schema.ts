@@ -1,68 +1,75 @@
+import { useTranslations } from "next-intl";
 import { z } from "zod";
 
-const emailSchema = z.email("Please enter a valid email address");
-const passwordSchema = z.string().min(6, "Password must be at least 6 characters long");
-const nameSchema = z.string().min(2, "Name must be at least 2 characters long");
-const branchIdSchema = z
-  .union([z.string().uuid("Please select a valid branch"), z.literal("none"), z.null()])
-  .optional();
-const schoolIdSchema = z
-  .union([z.string().uuid("Please select a valid school"), z.literal("none"), z.null()])
-  .optional();
-const gradeSchema = z
-  .union([
-    z.number().int().positive("Grade must be a positive number"),
-    z.literal("none"),
-    z.null(),
-  ])
-  .optional();
-const assignedTeacherSchema = z
-  .union([
-    z.string().min(1, "Teacher name must be at least 1 character"),
-    z.literal("none"),
-    z.null(),
-  ])
-  .optional();
+export const getAuthSchemas = (t: ReturnType<typeof useTranslations<"Auth">>) => {
+  const emailSchema = z.string().email(t("validation.invalidEmail"));
+  const passwordSchema = z.string().min(6, t("validation.passwordMin"));
+  const nameSchema = z.string().min(2, t("validation.nameMin"));
+  const branchIdSchema = z
+    .union([z.string().uuid(t("validation.invalidBranch")), z.literal("none"), z.null()])
+    .optional();
+  const schoolIdSchema = z
+    .union([z.string().uuid(t("validation.invalidSchool")), z.literal("none"), z.null()])
+    .optional();
+  const gradeSchema = z
+    .union([
+      z.number().int().positive(t("validation.positiveGrade")),
+      z.literal("none"),
+      z.null(),
+    ])
+    .optional();
+  const assignedTeacherSchema = z
+    .union([
+      z.string().min(1, t("validation.teacherMin")),
+      z.literal("none"),
+      z.null(),
+    ])
+    .optional();
 
-export const loginSchema = z.object({
-  email: emailSchema,
-  password: passwordSchema,
-});
-
-export type LoginFormValues = z.infer<typeof loginSchema>;
-
-export const registerSchema = z
-  .object({
-    name: nameSchema,
+  const loginSchema = z.object({
     email: emailSchema,
     password: passwordSchema,
-    confirmPassword: passwordSchema,
-    branchId: branchIdSchema,
-    schoolId: schoolIdSchema,
-    grade: gradeSchema,
-    assignedTeacher: assignedTeacherSchema,
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
   });
 
-export type RegisterFormValues = z.infer<typeof registerSchema>;
+  const registerSchema = z
+    .object({
+      name: nameSchema,
+      email: emailSchema,
+      password: passwordSchema,
+      confirmPassword: passwordSchema,
+      branchId: branchIdSchema,
+      schoolId: schoolIdSchema,
+      grade: gradeSchema,
+      assignedTeacher: assignedTeacherSchema,
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("validation.passwordsDoNotMatch"),
+      path: ["confirmPassword"],
+    });
 
-export const forgotPasswordSchema = z.object({
-  email: emailSchema,
-});
-
-export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
-
-export const resetPasswordSchema = z
-  .object({
-    password: passwordSchema,
-    confirmPassword: passwordSchema,
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
+  const forgotPasswordSchema = z.object({
+    email: emailSchema,
   });
 
-export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
+  const resetPasswordSchema = z
+    .object({
+      password: passwordSchema,
+      confirmPassword: passwordSchema,
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("validation.passwordsDoNotMatch"),
+      path: ["confirmPassword"],
+    });
+
+  return {
+    loginSchema,
+    registerSchema,
+    forgotPasswordSchema,
+    resetPasswordSchema,
+  };
+};
+
+export type LoginFormValues = z.infer<ReturnType<typeof getAuthSchemas>["loginSchema"]>;
+export type RegisterFormValues = z.infer<ReturnType<typeof getAuthSchemas>["registerSchema"]>;
+export type ForgotPasswordFormValues = z.infer<ReturnType<typeof getAuthSchemas>["forgotPasswordSchema"]>;
+export type ResetPasswordFormValues = z.infer<ReturnType<typeof getAuthSchemas>["resetPasswordSchema"]>;

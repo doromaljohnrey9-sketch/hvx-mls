@@ -9,6 +9,7 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import {
   Table,
@@ -41,6 +42,7 @@ export function UsersTable<TData, TValue>({
   isLoading,
   pagination,
 }: UsersTableProps<TData, TValue>) {
+  const t = useTranslations("UserManagement.table");
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
@@ -142,7 +144,7 @@ export function UsersTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  <span className="text-muted-foreground font-medium">No users found.</span>
+                  <span className="text-muted-foreground font-medium">{t("noUsers")}</span>
                 </TableCell>
               </TableRow>
             )}
@@ -152,9 +154,11 @@ export function UsersTable<TData, TValue>({
       {pagination && (
         <div className="flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
           <div className="text-sm text-muted-foreground font-medium">
-            Showing {(pagination.page - 1) * pagination.pageSize + 1} to{" "}
-            {Math.min(pagination.page * pagination.pageSize, pagination.total)} of{" "}
-            {pagination.total} users
+            {t("showing", {
+              start: (pagination.page - 1) * pagination.pageSize + 1,
+              end: Math.min(pagination.page * pagination.pageSize, pagination.total),
+              total: pagination.total,
+            })}
           </div>
           <div className="flex items-center justify-center gap-2">
             <Button
@@ -165,10 +169,13 @@ export function UsersTable<TData, TValue>({
               className="px-3"
             >
               <ChevronLeftIcon className="size-4" />
-              <span className="hidden sm:inline">Previous</span>
+              <span className="hidden sm:inline">{t("previous")}</span>
             </Button>
             <div className="text-sm text-foreground font-medium whitespace-nowrap">
-              Page {pagination.page} of {pagination.totalPages}
+              {t("pageOf", {
+                page: pagination.page,
+                totalPages: pagination.totalPages,
+              })}
             </div>
             <Button
               variant="outline"
@@ -177,7 +184,7 @@ export function UsersTable<TData, TValue>({
               disabled={pagination.page === pagination.totalPages}
               className="px-3"
             >
-              <span className="hidden sm:inline">Next</span>
+              <span className="hidden sm:inline">{t("next")}</span>
               <ChevronRightIcon className="size-4" />
             </Button>
           </div>

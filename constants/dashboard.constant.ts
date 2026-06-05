@@ -1,50 +1,38 @@
 export const DASHBOARD_CHART_CONFIG = {
   student: {
-    label: "Student",
     color: "#8b5cf6",
   },
   teacher: {
-    label: "Teacher",
     color: "#10b981",
   },
   admin: {
-    label: "Admin",
     color: "#f59e0b",
   },
   staff: {
-    label: "Staff",
     color: "#ef4444",
   },
   pending: {
-    label: "Pending",
     color: "#6b7280",
   },
   denied: {
-    label: "Denied",
     color: "#6b7280",
   },
   blocked: {
-    label: "Blocked",
     color: "#6b7280",
   },
   branch_admin: {
-    label: "Branch Admin",
     color: "#f59e0b",
   },
   super_admin: {
-    label: "Super Admin",
     color: "#f59e0b",
   },
   none: {
-    label: "None",
     color: "#6b7280",
   },
   partial: {
-    label: "Partial",
     color: "#f59e0b",
   },
   complete: {
-    label: "Complete",
     color: "#10b981",
   },
 } as const;
