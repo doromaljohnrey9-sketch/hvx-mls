@@ -47,8 +47,9 @@ const videoUploadSchema = {
     semester: "",
     examType: "",
     grade: "",
-    subject: "",
+    subject: "Mathematics",
     title: "",
+    status: "Published",
   },
 };
 
@@ -79,6 +80,7 @@ export function VideoUploadDialog() {
           grade: parseInt(data.newExamSet.grade),
           subject: data.newExamSet.subject,
           title: data.newExamSet.title,
+          status: data.newExamSet.status as "draft" | "published" | "hidden",
         });
         if (!newExamSet) {
           throw new Error("Failed to create exam set");
@@ -144,10 +146,13 @@ export function VideoUploadDialog() {
                 <SelectTrigger>
                   <SelectValue placeholder="Select or create exam set" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent
+                  position="popper"
+                  className="w-[var(--radix-select-trigger-width)] min-w-0"
+                >
                   <SelectItem value="new">+ Create New Exam Set</SelectItem>
                   {examSets?.map((examSet) => (
-                    <SelectItem key={examSet.id} value={examSet.id}>
+                    <SelectItem key={examSet.id} value={examSet.id} className="wrap-break-word">
                       {examSet.schoolName} - {examSet.year} {examSet.semester} {examSet.examType} G
                       {examSet.grade} - {examSet.subject} - {examSet.title}
                     </SelectItem>
@@ -184,7 +189,23 @@ export function VideoUploadDialog() {
 
                   <Field>
                     <FieldLabel>Year</FieldLabel>
-                    <Input {...form.register("newExamSet.year")} type="number" placeholder="2024" />
+                    <Select
+                      {...form.register("newExamSet.year")}
+                      onValueChange={(value) => form.setValue("newExamSet.year", value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select year" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {[2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030].map(
+                          (year) => (
+                            <SelectItem key={year} value={year.toString()}>
+                              {year}
+                            </SelectItem>
+                          )
+                        )}
+                      </SelectContent>
+                    </Select>
                   </Field>
 
                   <Field>
@@ -239,6 +260,24 @@ export function VideoUploadDialog() {
                   <Field>
                     <FieldLabel>Subject</FieldLabel>
                     <Input {...form.register("newExamSet.subject")} placeholder="Mathematics" />
+                  </Field>
+
+                  <Field>
+                    <FieldLabel>Status</FieldLabel>
+                    <Select
+                      {...form.register("newExamSet.status")}
+                      onValueChange={(value) => form.setValue("newExamSet.status", value)}
+                      defaultValue="published"
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="draft">Draft</SelectItem>
+                        <SelectItem value="published">Published</SelectItem>
+                        <SelectItem value="hidden">Hidden</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </Field>
 
                   <Field className="col-span-2">

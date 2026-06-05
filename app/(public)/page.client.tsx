@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, RefreshCw, Shield, Building2, Layers } from "lucide-react";
 import { Bar, BarChart } from "recharts";
 
@@ -20,10 +21,8 @@ export const PageClient = () => {
       {/* NAVIGATION */}
       <nav className="w-full bg-card max-w-[1400px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-foreground rounded-sm transform rotate-45 flex items-center justify-center overflow-hidden">
-            <div className="w-full h-1/2 bg-primary transform -rotate-45 translate-y-1"></div>
-          </div>
-          <span className="font-bold text-xl tracking-tight text-foreground">HEMS</span>
+          <Image src="/logo.png" alt="MLS Logo" width={32} height={32} className="rounded-sm" />
+          <span className="font-bold text-xl tracking-tight text-foreground">MLS</span>
         </div>
 
         <div className="flex items-center gap-4 text-sm font-medium">
@@ -470,11 +469,9 @@ export const PageClient = () => {
       <footer className="w-full bg-background pt-16 pb-8 border-t border-border">
         <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col items-center">
           <div className="flex items-start gap-2 mb-8">
-            <div className="size-4 bg-foreground rounded-sm transform rotate-45 flex items-center justify-center overflow-hidden">
-              <div className="w-full h-1/2 bg-primary transform -rotate-45 translate-y-[2px]"></div>
-            </div>
+            <Image src="/logo.png" alt="MLS Logo" width={24} height={24} className="rounded-sm" />
             <span className="font-bold text-lg tracking-tight text-foreground leading-[1]">
-              HEMS
+              MLS
             </span>
           </div>
 
@@ -497,7 +494,7 @@ export const PageClient = () => {
           </div>
 
           <div className="text-center text-[11px] text-muted-foreground w-full pt-4 border-t border-border">
-            ©HEMS 2024. All Rights Reserved.
+            ©MLS 2024. All Rights Reserved.
           </div>
         </div>
       </footer>
