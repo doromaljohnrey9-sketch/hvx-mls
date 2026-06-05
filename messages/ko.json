@@ -1,0 +1,418 @@
+{
+  "Breadcrumbs": {
+    "home": "홈",
+    "dashboard": "대시보드",
+    "admin": "관리자",
+    "videos": "동영상",
+    "search": "검색",
+    "students": "학생"
+  },
+  "Index": {
+    "title": "Math Learning Studio",
+    "description": "기출문제 해설 영상 시스템",
+    "hero": {
+      "title": "체계적이고 검색 가능한 기출문제 해설 영상",
+      "description": "학교, 연도, 학기, 시험 종류 및 문항 번호로 검색하세요. 선생님이 승인한 600개 이상의 해설 영상을 시청할 수 있습니다.",
+      "getStarted": "지금 시작하기",
+      "login": "로그인",
+      "signup": "회원가입"
+    },
+    "features": {
+      "badge": "주요 기능",
+      "title": "기출문제 마스터를 위한 모든 것.",
+      "description": "학교, 연도, 학기, 문항 번호별로 정리된 600개 이상의 기출문제 해설 영상을 검색하고 시청하며 학습하세요.",
+      "feature1": {
+        "title": "스마트 검색",
+        "desc": "학교명, 연도, 학기, 시험 종류, 학년, 과목, 문항 번호별로 필터링하여 필요한 문제를 정확하게 찾으세요."
+      },
+      "feature2": {
+        "title": "승인 기반 액세스",
+        "desc": "선생님이 학생 계정을 승인하여 모든 영상 콘텐츠에 대한 안전하고 권한 있는 액세스를 보장합니다."
+      },
+      "feature3": {
+        "title": "모바일 최적화 재생",
+        "desc": "태블릿, 모바일, 데스크톱 등 모든 기기에서 해설 영상을 시청하세요. 터치 및 세로 보기에 최적화되어 있습니다."
+      }
+    },
+    "stats": {
+      "badge": "플랫폼 현황",
+      "title": "학생과 선생님을 위한 설계",
+      "box1": {
+        "count": "600+",
+        "desc": "제공되는 기출문제 해설 영상"
+      },
+      "box2": {
+        "title": "시험 세트 완료 현황 추적.",
+        "desc": "등록 완료, 진행 중 또는 업로드 대기 중인 시험 세트를 모니터링하세요.",
+        "complete": "완료",
+        "inProgress": "진행 중",
+        "sets": "{count} 세트"
+      },
+      "box3": {
+        "title": "학교별 정리",
+        "desc": "영상은 학교명, 연도, 학기, 시험 종류, 문항 번호별로 구조화되어 있어 찾기 쉽습니다."
+      },
+      "box4": {
+        "label": "대상 학교",
+        "count": "25",
+        "badge": "확장 중"
+      }
+    },
+    "steps": {
+      "badge": "시작하기",
+      "title": "세 가지 간단한 단계로 해설 영상 시청을 시작하세요.",
+      "step1": {
+        "title": "액세스 신청",
+        "desc": "이름, 지점, 학교, 학년 정보를 입력하여 계정을 생성하세요. 선생님이 검토 후 승인해 드립니다."
+      },
+      "step2": {
+        "title": "영상 검색",
+        "desc": "학교명, 연도, 학기, 시험 종류, 문항 번호별로 필터링하여 필요한 해설을 찾으세요."
+      },
+      "step3": {
+        "title": "시청 및 학습",
+        "desc": "모든 기기의 브라우저에서 즉시 영상을 재생하세요. 필요시 선생님에게 추가 질문을 할 수 있습니다."
+      }
+    },
+    "mission": {
+      "badge": "우리의 미션",
+      "title": "수동 영상 전달을 스마트 검색으로 대체",
+      "desc": "선생님이 더 이상 카카오톡으로 영상을 보내지 않아도 됩니다. 학생 스스로 해설 영상을 찾아 시청합니다. 체계적이고, 검색 가능하며, 안전합니다.",
+      "stat1": "해설 영상",
+      "stat2": "대상 학교",
+      "stat3": "승인 기반 액세스"
+    },
+    "featured": {
+      "label": "주요 학교:",
+      "school1": {
+        "name": "망포고등학교",
+        "desc": "2025년 1, 2학기 중간 및 기말고사 해설 영상."
+      },
+      "school2": {
+        "name": "수원고등학교",
+        "desc": "2024-2025년 기출문제에 대한 상세 풀이 제공."
+      },
+      "school3": {
+        "name": "모든 학교",
+        "desc": "모든 지역의 25개 이상 학교 해설 영상을 찾아보세요."
+      },
+      "videoCount": "{count}개 영상",
+      "videoCountPlus": "{count}+개 영상"
+    },
+    "cta": {
+      "badge": "지금 시작하기",
+      "title": "기출문제 해설 영상을 보고 싶으신가요?",
+      "desc": "회원가입 후 선생님의 승인을 받아 학교, 연도, 문항별로 정리된 해설 영상을 시청하세요."
+    },
+    "footer": {
+      "modules": "모듈",
+      "about": "소개",
+      "support": "지원",
+      "privacy": "개인정보 처리방침",
+      "terms": "이용약관",
+      "copyright": "©MLS 2024. All Rights Reserved."
+    }
+  },
+  "Auth": {
+    "common": {
+      "email": "이메일 주소",
+      "password": "비밀번호",
+      "confirmPassword": "비밀번호 확인",
+      "name": "성함",
+      "login": "로그인",
+      "signup": "회원가입",
+      "backToHome": "홈으로 돌아가기",
+      "terms": "이용약관",
+      "privacyPolicy": "개인정보 처리방침",
+      "agreementLogin": "로그인 시 {terms} 및 {privacy}에 동의하는 것으로 간주됩니다.",
+      "agreementSignup": "가입 시 {terms} 및 {privacy}에 동의하는 것으로 간주됩니다.",
+      "loggingIn": "로그인 중...",
+      "creatingAccount": "계정 생성 중...",
+      "sendingReset": "재설정 링크 전송 중...",
+      "resettingPassword": "비밀번호 재설정 중...",
+      "placeholderEmail": "example@email.com",
+      "placeholderPassword": "비밀번호를 입력하세요",
+      "placeholderNewPassword": "강력한 비밀번호를 만드세요",
+      "placeholderConfirmPassword": "비밀번호를 다시 입력하세요",
+      "placeholderName": "성함을 입력하세요",
+      "somethingWentWrong": "문제가 발생했습니다",
+      "tryAgain": "다시 시도해 주세요."
+    },
+    "login": {
+      "title": "다시 오신 것을 환영합니다",
+      "subtitle": "이메일과 비밀번호로 로그인하세요",
+      "forgotPassword": "비밀번호를 잊으셨나요?",
+      "noAccount": "당신에 대한 정보가 없으신가요?",
+      "success": "반갑습니다!",
+      "successDesc": "성공적으로 로그인되었습니다.",
+      "failed": "로그인 실패"
+    },
+    "register": {
+      "title": "계정 생성",
+      "subtitle": "시작하려면 상세 정보를 입력해 주세요.",
+      "accountInfo": "계정 정보",
+      "orgDetails": "소속 정보",
+      "optional": "선택 사항",
+      "branch": "지점",
+      "selectBranch": "지점 선택",
+      "school": "학교",
+      "selectSchool": "학교 선택",
+      "grade": "학년",
+      "selectGrade": "학년 선택",
+      "gradeLabel": "{n}학년",
+      "teacher": "담당 선생님",
+      "selectTeacher": "선생님 선택",
+      "requestApproval": "승인 요청",
+      "haveAccount": "이미 계정이 있으신가요?",
+      "success": "회원가입 성공",
+      "successDesc": "관리자의 승인을 기다려 주세요.",
+      "failed": "회원가입 실패",
+      "none": "없음"
+    },
+    "forgotPassword": {
+      "title": "비밀번호 찾기",
+      "subtitle": "비밀번호 재설정 링크를 받을 이메일을 입력하세요",
+      "rememberedPassword": "비밀번호가 생각나셨나요?",
+      "success": "재설정 이메일 전송됨",
+      "successDesc": "이메일로 전송된 재설정 링크를 확인해 주세요.",
+      "failed": "비밀번호 재설정 실패",
+      "failedDesc": "이메일 주소를 확인하고 다시 시도해 주세요."
+    },
+    "resetPassword": {
+      "title": "비밀번호 재설정",
+      "subtitle": "아래에 새 비밀번호를 입력하세요",
+      "submit": "제출",
+      "success": "비밀번호 재설정 성공",
+      "successDesc": "비밀번호가 성공적으로 업데이트되었습니다.",
+      "failed": "비밀번호 재설정 실패",
+      "failedDesc": "비밀번호 재설정 중 문제가 발생했습니다. 나중에 다시 시도해 주세요."
+    },
+    "validation": {
+      "invalidEmail": "올바른 이메일 주소를 입력해 주세요",
+      "passwordMin": "비밀번호는 최소 6자 이상이어야 합니다",
+      "nameMin": "이름은 최소 2자 이상이어야 합니다",
+      "invalidBranch": "올바른 지점을 선택해 주세요",
+      "invalidSchool": "올바른 학교를 선택해 주세요",
+      "positiveGrade": "학년은 양수여야 합니다",
+      "teacherMin": "선생님 이름은 최소 1자 이상이어야 합니다",
+      "passwordsDoNotMatch": "비밀번호가 일치하지 않습니다"
+    }
+  },
+  "Dashboard": {
+    "title": "대시보드",
+    "totalUsers": "총 사용자",
+    "usersThisWeek": "이번 주 +{count}명",
+    "examSets": "시험지 세트",
+    "publishedSets": "{count}개 게시됨",
+    "videos": "동영상",
+    "acrossAllSets": "모든 세트 포함",
+    "usersByRole": "역할별 사용자",
+    "examSetsByStatus": "시험 세트 상태별",
+    "count": "수",
+    "roles": {
+      "student": "학생",
+      "teacher": "선생님",
+      "admin": "관리자",
+      "staff": "스태프",
+      "branch_admin": "지점 관리자",
+      "super_admin": "최고 관리자"
+    },
+    "statuses": {
+      "draft": "초안",
+      "partial": "일부 완료",
+      "complete": "완료",
+      "none": "없음",
+      "pending": "대기 중",
+      "denied": "거절됨",
+      "blocked": "차단됨",
+      "published": "게시됨",
+      "hidden": "숨김"
+    }
+  },
+  "UserManagement": {
+    "title": "사용자 관리",
+    "subtitle": "사용자 역할, 권한 및 계정 상태를 관리합니다.",
+    "searchPlaceholder": "이름 또는 이메일로 검색...",
+    "search": "검색",
+    "filters": {
+      "all": "전체",
+      "role": "역할",
+      "status": "상태",
+      "approved": "승인됨",
+      "pending": "대기 중",
+      "rejected": "거절됨",
+      "blocked": "차단됨"
+    },
+    "table": {
+      "name": "이름",
+      "email": "이메일",
+      "role": "역할",
+      "status": "상태",
+      "joined": "가입일",
+      "branch": "지점",
+      "school": "학교",
+      "approvedBy": "승인자",
+      "approvedAt": "승인일",
+      "actions": "작업",
+      "approve": "승인",
+      "reject": "거절",
+      "view": "상세 보기",
+      "updateRole": "역할 업데이트",
+      "noUsers": "사용자를 찾을 수 없습니다.",
+      "showing": "총 {total}명의 사용자 중 {start}-{end} 표시",
+      "previous": "이전",
+      "next": "다음",
+      "pageOf": "{totalPages}페이지 중 {page}페이지"
+    },
+    "toasts": {
+      "updated": "사용자 정보 업데이트됨",
+      "updatedDesc": "사용자의 역할/상태가 업데이트되었습니다.",
+      "failed": "업데이트 실패",
+      "failedDesc": "사용자 정보를 업데이트할 수 없습니다."
+    }
+  },
+  "Sidebar": {
+    "platform": "MLS",
+    "tagline": "Math Learning Studio",
+    "dashboard": "대시보드",
+    "searchvideos": "동영상 검색",
+    "students": "학생 관리",
+    "logout": "로그아웃",
+    "logoutFailed": "로그아웃 실패",
+    "tryAgain": "다시 시도해 주세요."
+  },
+  "Videos": {
+    "player": {
+      "loading": "동영상을 불러오는 중...",
+      "failed": "동영상을 불러오지 못했습니다",
+      "goBack": "뒤로 가기",
+      "back": "뒤로",
+      "examDetails": "시험 상세 정보",
+      "problem": "문제",
+      "semesterSuffix": "학기",
+      "gradeSuffix": "{grade}학년",
+      "labels": {
+        "school": "학교",
+        "year": "연도",
+        "semester": "학기",
+        "examType": "시험 종류",
+        "grade": "학년",
+        "subject": "과목",
+        "problemNo": "문제 번호",
+        "visibility": "공개 여부"
+      }
+    },
+    "search": {
+      "title": "동영상 검색",
+      "subtitle": "시험 풀이 동영상을 검색하고 시청하세요.",
+      "addVideo": "동영상 추가",
+      "placeholder": "제목 또는 문제 번호로 검색...",
+      "noResults": "동영상을 찾을 수 없습니다.",
+      "search": "검색",
+      "clearFilters": "필터 초기화",
+      "filters": {
+        "allSchools": "모든 학교",
+        "allYears": "모든 연도",
+        "allSemesters": "모든 학기",
+        "allExamTypes": "모든 시험 종류",
+        "allGrades": "모든 학년",
+        "allSubjects": "모든 과목",
+        "semester1": "1학기",
+        "semester2": "2학기",
+        "midterm": "중간고사",
+        "final": "기말고사",
+        "grade1": "1학년",
+        "grade2": "2학년",
+        "grade3": "3학년",
+        "problemNo": "문제 번호"
+      }
+    },
+    "table": {
+      "problem": "문제",
+      "exam": "시험",
+      "visibility": "공개 여부",
+      "actions": "작업",
+      "edit": "수정",
+      "delete": "삭제",
+      "noVideos": "동영상을 찾을 수 없습니다.",
+      "showing": "총 {total}개의 동영상 중 {start}-{end} 표시",
+      "previous": "이전",
+      "next": "다음",
+      "pageOf": "{totalPages}페이지 중 {page}페이지",
+      "watch": "보기",
+      "title": "제목",
+      "school": "학교",
+      "year": "연도",
+      "semester": "학기",
+      "examType": "시험 종류",
+      "grade": "학년",
+      "subject": "과목",
+      "problemNo": "문제 번호"
+    },
+    "management": {
+      "addVideo": "동영상 추가",
+      "uploadTitle": "동영상 업로드",
+      "uploadDescription": "필요한 메타데이터와 함께 새로운 시험 풀이 동영상을 추가합니다.",
+      "updateTitle": "동영상 수정",
+      "updateDescription": "시험 세트 및 문제 번호를 포함한 동영상 상세 정보를 수정합니다.",
+      "deleteTitle": "동영상 삭제",
+      "deleteDescription": "{problemNumber}번 문제의 동영상을 정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      "newExamSetDetails": "새 시험 세트 상세 정보",
+      "cancel": "취소",
+      "save": "변경 사항 저장",
+      "upload": "동영상 업로드",
+      "update": "동영상 수정",
+      "delete": "동영상 삭제",
+      "uploading": "업로드 중...",
+      "updating": "수정 중...",
+      "deleting": "삭제 중...",
+      "fields": {
+        "examSet": "시험 세트",
+        "problemNumber": "문제 번호",
+        "visibility": "공개 여부",
+        "title": "제목 (선택 사항)",
+        "videoUrl": "동영상 URL",
+        "school": "학교",
+        "year": "연도",
+        "semester": "학기",
+        "examType": "시험 종류",
+        "grade": "학년",
+        "status": "상태"
+      },
+      "placeholders": {
+        "selectExamSet": "시험 세트 선택",
+        "selectOrCreateExamSet": "시험 세트 선택 또는 생성",
+        "createExamSet": "+ 새 시험 세트 생성",
+        "selectSchool": "학교 선택",
+        "selectYear": "연도 선택",
+        "selectSemester": "학기 선택",
+        "selectType": "종류 선택",
+        "selectGrade": "학년 선택",
+        "selectStatus": "상태 선택",
+        "selectVisibility": "공개 여부 선택",
+        "problemNumber": "예: 15",
+        "title": "예: 15번 문제 풀이",
+        "videoUrl": "예: https://www.youtube.com/watch?v=...",
+        "examSetTitle": "2024년 1학기 중간고사",
+        "subject": "예: 수학"
+      },
+      "gradeSuffixShort": "{grade}학년",
+      "options": {
+        "public": "공개",
+        "private": "비공개",
+        "hidden": "숨김",
+        "draft": "초안",
+        "published": "게시됨"
+      },
+      "toasts": {
+        "uploadSuccess": "동영상이 성공적으로 업로드되었습니다",
+        "uploadError": "동영상 업로드에 실패했습니다",
+        "updateSuccess": "동영상이 성공적으로 수정되었습니다",
+        "updateError": "동영상 수정에 실패했습니다",
+        "deleteSuccess": "동영상이 성공적으로 삭제되었습니다",
+        "deleteError": "동영상 삭제에 실패했습니다",
+        "tryAgain": "다시 시도해 주세요"
+      }
+    }
+  }
+}

@@ -26,8 +26,11 @@ interface NavUserProps {
   handleSignOut: () => Promise<void>;
 }
 
+import { useTranslations } from "next-intl";
+
 export const NavUser = ({ profile, handleSignOut, isLoading }: NavUserProps) => {
   const { isMobile } = useSidebar();
+  const t = useTranslations("Sidebar");
 
   if (isLoading) {
     return <Skeleton className="h-10 w-full rounded-lg" />;
@@ -75,7 +78,7 @@ export const NavUser = ({ profile, handleSignOut, isLoading }: NavUserProps) => 
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
               <LogOut />
-              Log out
+              {t("logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

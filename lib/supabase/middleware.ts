@@ -20,8 +20,12 @@ import { profiles } from "@/drizzle/schemas";
  * - Students accessing /dashboard → redirect to /search
  * - Approved users accessing /pending → redirect to /dashboard (students to /search)
  */
-export async function updateSession(request: NextRequest, protectedRoutes: string[]) {
-  const response = NextResponse.next({ request });
+export async function updateSession(
+  request: NextRequest,
+  protectedRoutes: string[],
+  initResponse?: NextResponse
+) {
+  const response = initResponse || NextResponse.next({ request });
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,

@@ -35,6 +35,8 @@ interface VideosTableProps<TData, TValue> {
   };
 }
 
+import { useTranslations } from "next-intl";
+
 export function VideosTable<TData, TValue>({
   columns,
   data,
@@ -42,6 +44,7 @@ export function VideosTable<TData, TValue>({
   pagination,
 }: VideosTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const t = useTranslations("Videos.table");
 
   const table = useReactTable({
     data,
@@ -76,7 +79,7 @@ export function VideosTable<TData, TValue>({
                       {headerDef}
                       <span className="opacity-60">
                         {sorted === "asc" ? (
-                          <ChevronUpIcon className="size-4" />
+                           <ChevronUpIcon className="size-4" />
                         ) : sorted === "desc" ? (
                           <ChevronDownIcon className="size-4" />
                         ) : (
@@ -142,7 +145,7 @@ export function VideosTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  <span className="text-muted-foreground font-medium">No videos found.</span>
+                  <span className="text-muted-foreground font-medium">{t("noVideos")}</span>
                 </TableCell>
               </TableRow>
             )}
@@ -150,32 +153,36 @@ export function VideosTable<TData, TValue>({
         </Table>
       </div>
       {pagination && (
-        <div className="flex items-center justify-between border-t px-4 py-3">
+        <div className="flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
           <div className="text-sm text-muted-foreground font-medium">
-            Showing {(pagination.page - 1) * pagination.pageSize + 1} to{" "}
-            {Math.min(pagination.page * pagination.pageSize, pagination.total)} of{" "}
-            {pagination.total} videos
+            {t("showing", {
+              start: (pagination.page - 1) * pagination.pageSize + 1,
+              end: Math.min(pagination.page * pagination.pageSize, pagination.total),
+              total: pagination.total,
+            })}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => pagination.onPageChange(pagination.page - 1)}
               disabled={pagination.page === 1}
+              className="px-3"
             >
               <ChevronLeftIcon className="size-4" />
-              Previous
+              <span className="hidden sm:inline">{t("previous")}</span>
             </Button>
-            <div className="text-sm text-foreground font-medium">
-              Page {pagination.page} of {pagination.totalPages}
+            <div className="text-sm text-foreground font-medium whitespace-nowrap">
+              {t("pageOf", { page: pagination.page, totalPages: pagination.totalPages })}
             </div>
             <Button
               variant="outline"
               size="sm"
               onClick={() => pagination.onPageChange(pagination.page + 1)}
               disabled={pagination.page === pagination.totalPages}
+              className="px-3"
             >
-              Next
+              <span className="hidden sm:inline">{t("next")}</span>
               <ChevronRightIcon className="size-4" />
             </Button>
           </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useVideoSearch } from "@/hooks/use-video-search";
 import { useAuth } from "@/hooks/use-auth";
+import { useTranslations } from "next-intl";
 import { VideosPageHeader } from "@/components/videos/videos-page-header";
 import { VideosTable } from "@/components/videos/videos-table";
 import { VideosFilters } from "@/components/videos/videos-filters";
@@ -43,6 +44,8 @@ export function VideosPageClient() {
     handlePageChange,
   } = useVideoSearch();
 
+  const t = useTranslations("Videos");
+
   const columns = createVideosColumns({
     userRole: profile?.role,
     onUpdate: (video) => {
@@ -53,6 +56,7 @@ export function VideosPageClient() {
       setSelectedVideoForDelete(video);
       setIsDeleteDialogOpen(true);
     },
+    t,
   });
 
   return (

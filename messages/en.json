@@ -1,0 +1,418 @@
+{
+  "Breadcrumbs": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "videos": "Videos",
+    "search": "Search",
+    "students": "Students"
+  },
+  "Index": {
+    "title": "Math Learning Studio",
+    "description": "Past-Exam Video Explainer Learning System MVP",
+    "hero": {
+      "title": "Past-exam explainer videos, organized and searchable.",
+      "description": "Search by school, year, semester, exam type, and problem number. Watch 600+ explainer videos approved by your teachers.",
+      "getStarted": "Get Started Now",
+      "login": "Login",
+      "signup": "Sign Up"
+    },
+    "features": {
+      "badge": "Core Features",
+      "title": "Everything you need to master past exams.",
+      "description": "Search, watch, and learn from 600+ past-exam explainer videos organized by school, year, semester, and problem number.",
+      "feature1": {
+        "title": "Smart search",
+        "desc": "Filter by school name, year, semester, exam type, grade, subject, and problem number to find exactly what you need."
+      },
+      "feature2": {
+        "title": "Approval-based access",
+        "desc": "Teachers approve student accounts to ensure secure, authorized access to all video content."
+      },
+      "feature3": {
+        "title": "Mobile-first playback",
+        "desc": "Watch explainer videos on any device—tablet, mobile, or desktop. Optimized for touch and portrait viewing."
+      }
+    },
+    "stats": {
+      "badge": "Platform Stats",
+      "title": "Built for students and teachers",
+      "box1": {
+        "count": "600+",
+        "desc": "Past-exam explainer videos available"
+      },
+      "box2": {
+        "title": "Track exam set completion.",
+        "desc": "Monitor which exam sets are fully registered, partially complete, or pending upload.",
+        "complete": "Complete",
+        "inProgress": "In Progress",
+        "sets": "{count} sets"
+      },
+      "box3": {
+        "title": "Organized by School",
+        "desc": "Videos are structured by school name, year, semester, exam type, and problem number for easy lookup."
+      },
+      "box4": {
+        "label": "Schools Covered",
+        "count": "25",
+        "badge": "Growing"
+      }
+    },
+    "steps": {
+      "badge": "Get Started",
+      "title": "Start watching explainer videos in three simple steps.",
+      "step1": {
+        "title": "Sign up for access",
+        "desc": "Create your account with your name, branch, school, and grade. Your teacher will review and approve your request."
+      },
+      "step2": {
+        "title": "Search for videos",
+        "desc": "Filter by school name, year, semester, exam type, and problem number to find the exact explainer you need."
+      },
+      "step3": {
+        "title": "Watch and learn",
+        "desc": "Play videos instantly in your browser on any device. Ask your teacher follow-up questions if needed."
+      }
+    },
+    "mission": {
+      "badge": "Our Mission",
+      "title": "Replace manual video delivery with smart search",
+      "desc": "Teachers no longer send videos via KakaoTalk. Students find and watch explainer videos on their own. Organized, searchable, and secure.",
+      "stat1": "Explainer videos",
+      "stat2": "Schools covered",
+      "stat3": "Approval-based access"
+    },
+    "featured": {
+      "label": "Featured Schools:",
+      "school1": {
+        "name": "Mangpo High School",
+        "desc": "2025 1st & 2nd semester midterm and final exam explainers."
+      },
+      "school2": {
+        "name": "Suwon High School",
+        "desc": "Complete coverage of 2024-2025 past exams with detailed solutions."
+      },
+      "school3": {
+        "name": "All Schools",
+        "desc": "Browse explainer videos from 25+ schools across all regions."
+      },
+      "videoCount": "{count} videos",
+      "videoCountPlus": "{count}+ videos"
+    },
+    "cta": {
+      "badge": "Get Started",
+      "title": "Ready to access past-exam explainers?",
+      "desc": "Sign up, get approved by your teacher, and start watching explainer videos organized by school, year, and problem number."
+    },
+    "footer": {
+      "modules": "Modules",
+      "about": "About Us",
+      "support": "Support",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "copyright": "©MLS 2024. All Rights Reserved."
+    }
+  },
+  "Auth": {
+    "common": {
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "name": "Full Name",
+      "login": "Login",
+      "signup": "Sign up",
+      "backToHome": "Back to home",
+      "terms": "Terms",
+      "privacyPolicy": "Privacy Policy",
+      "agreementLogin": "By logging in, you agree to our {terms} and {privacy}.",
+      "agreementSignup": "By signing up, you agree to our {terms} and {privacy}.",
+      "loggingIn": "Logging in...",
+      "creatingAccount": "Creating account...",
+      "sendingReset": "Sending reset link...",
+      "resettingPassword": "Resetting password...",
+      "placeholderEmail": "you@example.com",
+      "placeholderPassword": "Enter your password",
+      "placeholderNewPassword": "Create a strong password",
+      "placeholderConfirmPassword": "Re-enter password",
+      "placeholderName": "Enter your full name",
+      "somethingWentWrong": "Something went wrong",
+      "tryAgain": "Please try again."
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Login with your email and password",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "success": "Welcome back!",
+      "successDesc": "You have been logged in successfully.",
+      "failed": "Login failed"
+    },
+    "register": {
+      "title": "Create an account",
+      "subtitle": "Fill in your details to get started with us.",
+      "accountInfo": "Account Information",
+      "orgDetails": "Organization Details",
+      "optional": "optional",
+      "branch": "Branch",
+      "selectBranch": "Select branch",
+      "school": "School",
+      "selectSchool": "Select school",
+      "grade": "Grade",
+      "selectGrade": "Select grade",
+      "gradeLabel": "Grade {n}",
+      "teacher": "Assigned Teacher",
+      "selectTeacher": "Select teacher",
+      "requestApproval": "Request Approval",
+      "haveAccount": "Already have an account?",
+      "success": "Registration successful",
+      "successDesc": "Your account is pending approval by an administrator.",
+      "failed": "Registration failed",
+      "none": "None"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email to receive a password reset link",
+      "rememberedPassword": "Remembered your password?",
+      "success": "Reset email sent",
+      "successDesc": "Please check your email for the password reset link.",
+      "failed": "Reset password failed",
+      "failedDesc": "Please check your email address and try again."
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "subtitle": "Enter your new password below",
+      "submit": "Submit",
+      "success": "Password reset successful",
+      "successDesc": "Your password has been updated successfully.",
+      "failed": "Reset password failed",
+      "failedDesc": "There was an issue resetting your password. Please try again later."
+    },
+    "validation": {
+      "invalidEmail": "Please enter a valid email address",
+      "passwordMin": "Password must be at least 6 characters long",
+      "nameMin": "Name must be at least 2 characters long",
+      "invalidBranch": "Please select a valid branch",
+      "invalidSchool": "Please select a valid school",
+      "positiveGrade": "Grade must be a positive number",
+      "teacherMin": "Teacher name must be at least 1 character",
+      "passwordsDoNotMatch": "Passwords do not match"
+    }
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "totalUsers": "Total users",
+    "usersThisWeek": "+{count} this week",
+    "examSets": "Exam sets",
+    "publishedSets": "{count} published",
+    "videos": "Videos",
+    "acrossAllSets": "Across all sets",
+    "usersByRole": "USERS BY ROLE",
+    "examSetsByStatus": "EXAM SETS BY STATUS",
+    "count": "Count",
+    "roles": {
+      "student": "Student",
+      "teacher": "Teacher",
+      "admin": "Admin",
+      "staff": "Staff",
+      "branch_admin": "Branch Admin",
+      "super_admin": "Super Admin"
+    },
+    "statuses": {
+      "draft": "Draft",
+      "partial": "Partial",
+      "complete": "Complete",
+      "none": "None",
+      "pending": "Pending",
+      "denied": "Denied",
+      "blocked": "Blocked",
+      "published": "Published",
+      "hidden": "Hidden"
+    }
+  },
+  "UserManagement": {
+    "title": "User Management",
+    "subtitle": "Manage user roles, permissions, and account status.",
+    "searchPlaceholder": "Search by name or email...",
+    "search": "Search",
+    "filters": {
+      "all": "All",
+      "role": "Role",
+      "status": "Status",
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "blocked": "Blocked"
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "joined": "Joined",
+      "branch": "Branch",
+      "school": "School",
+      "approvedBy": "Approved By",
+      "approvedAt": "Approved At",
+      "actions": "Actions",
+      "approve": "Approve",
+      "reject": "Reject",
+      "view": "View Details",
+      "updateRole": "Update Role",
+      "noUsers": "No users found.",
+      "showing": "Showing {start} to {end} of {total} users",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {totalPages}"
+    },
+    "toasts": {
+      "updated": "User updated",
+      "updatedDesc": "The user's role/status has been updated.",
+      "failed": "Update failed",
+      "failedDesc": "Could not update user."
+    }
+  },
+  "Sidebar": {
+    "platform": "MLS",
+    "tagline": "Math Learning Studio",
+    "dashboard": "Dashboard",
+    "searchvideos": "Search Videos",
+    "students": "Students",
+    "logout": "Log out",
+    "logoutFailed": "Sign out failed",
+    "tryAgain": "Please try again."
+  },
+  "Videos": {
+    "player": {
+      "loading": "Loading video...",
+      "failed": "Failed to load video",
+      "goBack": "Go Back",
+      "back": "Back",
+      "examDetails": "Exam details",
+      "problem": "Problem",
+      "semesterSuffix": " Semester",
+      "gradeSuffix": "Grade {grade}",
+      "labels": {
+        "school": "School",
+        "year": "Year",
+        "semester": "Semester",
+        "examType": "Exam type",
+        "grade": "Grade",
+        "subject": "Subject",
+        "problemNo": "Problem no.",
+        "visibility": "Visibility"
+      }
+    },
+    "search": {
+      "title": "Video Search",
+      "subtitle": "Search and watch exam solution videos.",
+      "placeholder": "Search by title or problem number...",
+      "noResults": "No videos found.",
+      "search": "Search",
+      "clearFilters": "Clear Filters",
+      "filters": {
+        "allSchools": "All Schools",
+        "allYears": "All Years",
+        "allSemesters": "All Semesters",
+        "allExamTypes": "All Types",
+        "allGrades": "All Grades",
+        "allSubjects": "All Subjects",
+        "semester1": "1st Semester",
+        "semester2": "2nd Semester",
+        "midterm": "Midterm",
+        "final": "Final",
+        "grade1": "Grade 1",
+        "grade2": "Grade 2",
+        "grade3": "Grade 3",
+        "problemNo": "Problem No."
+      }
+    },
+    "table": {
+      "problem": "Problem",
+      "exam": "Exam",
+      "visibility": "Visibility",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "noVideos": "No videos found.",
+      "showing": "Showing {start} to {end} of {total} videos",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {totalPages}",
+      "watch": "Watch",
+      "title": "Title",
+      "school": "School",
+      "year": "Year",
+      "semester": "Semester",
+      "examType": "Exam Type",
+      "grade": "Grade",
+      "subject": "Subject",
+      "problemNo": "Problem No."
+    },
+    "management": {
+      "addVideo": "Add Video",
+      "uploadTitle": "Upload Video",
+      "uploadDescription": "Upload a new exam solution video.",
+      "newExamSetDetails": "New Exam Set Details",
+      "fields": {
+        "examSet": "Exam Set",
+        "problemNumber": "Problem Number",
+        "videoUrl": "Video URL",
+        "visibility": "Visibility",
+        "school": "School",
+        "year": "Year",
+        "semester": "Semester",
+        "examType": "Exam Type",
+        "grade": "Grade",
+        "subject": "Subject",
+        "status": "Status",
+        "title": "Title",
+        "examSetTitle": "Exam Set Title"
+      },
+      "placeholders": {
+        "selectOrCreateExamSet": "Select or create exam set",
+        "createExamSet": "Create new exam set",
+        "selectSchool": "Select school",
+        "selectYear": "Select year",
+        "selectSemester": "Select semester",
+        "selectType": "Select type",
+        "selectGrade": "Select grade",
+        "selectStatus": "Select status",
+        "selectVisibility": "Select visibility",
+        "examSetTitle": "e.g. 2025 Mnago High Math 1 Midterm",
+        "title": "e.g. Problem 15 Solution",
+        "problemNumber": "e.g. 15",
+        "videoUrl": "e.g. https://www.youtube.com/watch?v=...",
+        "subject": "e.g. Mathematics"
+      },
+      "gradeSuffixShort": "G{grade}",
+      "options": {
+        "public": "Public",
+        "private": "Private",
+        "hidden": "Hidden",
+        "draft": "Draft",
+        "published": "Published"
+      },
+      "toasts": {
+        "uploadSuccess": "Video uploaded successfully",
+        "uploadError": "Failed to upload video",
+        "updateSuccess": "Video updated successfully",
+        "updateError": "Failed to update video",
+        "deleteSuccess": "Video deleted successfully",
+        "deleteError": "Failed to delete video",
+        "tryAgain": "Please try again"
+      },
+      "updateTitle": "Update Video",
+      "updateDescription": "Update the details for this video.",
+      "deleteTitle": "Are you sure?",
+      "deleteDescription": "This action cannot be undone. This will permanently delete the video.",
+      "cancel": "Cancel",
+      "save": "Save Changes",
+      "upload": "Upload Video",
+      "update": "Update Video",
+      "delete": "Delete Video",
+      "uploading": "Uploading...",
+      "deleting": "Deleting...",
+      "updating": "Updating..."
+    }
+  }
+}

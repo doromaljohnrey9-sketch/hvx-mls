@@ -2,56 +2,62 @@
 
 import Link from "next/link";
 import { toast } from "sonner";
+import { useRouter } from "nextjs-toploader/app";
 import { useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, GraduationCap, ArrowLeft } from "lucide-react";
+import { Mail, ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { FieldError, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { PasswordInput } from "@/components/shared/password-input";
 
 import { getSupabaseClient } from "@/lib/supabase/client";
 
-import { type ForgotPasswordFormValues, forgotPasswordSchema } from "@/schemas/auth.schema";
-import { AUTH_ROUTES } from "@/constants/routes.constant";
+import { getAuthSchemas, type LoginFormValues } from "@/schemas/auth.schema";
+
+import { AUTH_ROUTES, DEFAULT_AUTH_REDIRECT } from "@/constants/routes.constant";
+
+import { useTranslations } from "next-intl";
 
 export const PageClient = () => {
+  const t = useTranslations("Auth");
+  const { loginSchema } = getAuthSchemas(t);
+  const router = useRouter();
   const supabase = getSupabaseClient();
 
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<ForgotPasswordFormValues>({
-    resolver: zodResolver(forgotPasswordSchema),
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
+      password: "",
     },
   });
 
-  const onFormSubmit = (values: ForgotPasswordFormValues) => {
+  const onFormSubmit = (values: LoginFormValues) => {
     startTransition(async () => {
       try {
-        const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
-          redirectTo: `${window.location.origin}/reset-password`,
-        });
+        const { error } = await supabase.auth.signInWithPassword(values);
 
         if (error) {
-          toast.error("Reset password failed", {
-            description: "Please check your email address and try again.",
+          toast.error(t("login.failed"), {
+            description: error.message,
           });
           return;
         }
 
-        toast.success("Reset email sent", {
-          description: "Please check your email for the password reset link.",
+        toast.success(t("login.success"), {
+          description: t("login.successDesc"),
         });
-
-        form.reset();
+        router.replace(DEFAULT_AUTH_REDIRECT);
       } catch (error) {
         console.error(error);
-        toast.error("Something went wrong", {
-          description: "There was an issue sending the reset email. Please try again later.",
+        toast.error(t("common.somethingWentWrong"), {
+          description: t("common.tryAgain"),
         });
       }
     });
@@ -66,7 +72,7 @@ export const PageClient = () => {
           className="absolute left-6 top-6 flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors z-10"
         >
           <ArrowLeft className="size-4" />
-          Back to home
+          {t("common.backToHome")}
         </Link>
         <div className="absolute inset-0 flex items-center justify-center">
           <AspectRatio ratio={16 / 9} className="w-full max-w-md"></AspectRatio>
@@ -78,15 +84,10 @@ export const PageClient = () => {
       <div className="flex items-center justify-center px-4 py-10 sm:px-8">
         <div className="w-full max-w-sm">
           <div className="mb-8">
-            <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 lg:hidden">
-              <GraduationCap className="h-5 w-5 text-primary" />
-            </div>
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-              Forgot Password
+              {t("login.title")}
             </h1>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              Enter your email to receive a password reset link
-            </p>
+            <p className="mt-1.5 text-sm text-muted-foreground">{t("login.subtitle")}</p>
           </div>
 
           <form onSubmit={form.handleSubmit(onFormSubmit)} className="space-y-6">
@@ -96,7 +97,7 @@ export const PageClient = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <div className="space-y-2">
-                    <FieldLabel htmlFor="email">Email Address</FieldLabel>
+                    <FieldLabel htmlFor="email">{t("common.email")}</FieldLabel>
                     <InputGroup>
                       <InputGroupAddon>
                         <Mail className="h-4 w-4" />
@@ -105,7 +106,7 @@ export const PageClient = () => {
                         {...field}
                         id="email"
                         type="email"
-                        placeholder="you@example.com"
+                        placeholder={t("common.placeholderEmail")}
                         aria-invalid={fieldState.invalid}
                         disabled={isPending}
                       />
@@ -114,32 +115,60 @@ export const PageClient = () => {
                   </div>
                 )}
               />
+              <Controller
+                name="password"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <div className="space-y-2">
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor="password">{t("common.password")}</FieldLabel>
+                      <Link
+                        href={AUTH_ROUTES.FORGOT_PASSWORD}
+                        className="ml-auto text-sm underline-offset-4 hover:underline"
+                      >
+                        {t("login.forgotPassword")}
+                      </Link>
+                    </div>
+                    <PasswordInput
+                      {...field}
+                      id="password"
+                      placeholder={t("common.placeholderPassword")}
+                      aria-invalid={fieldState.invalid}
+                      disabled={isPending}
+                    />
+                    {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
+                  </div>
+                )}
+              />
             </div>
 
             <Button type="submit" disabled={isPending} className="w-full" size="lg">
-              {isPending ? "Sending reset link..." : "Reset Password"}
+              {isPending ? t("common.loggingIn") : t("common.login")}
             </Button>
 
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
-                Remembered your password?{" "}
+                {t("login.noAccount")}{" "}
                 <Link
-                  href={AUTH_ROUTES.LOGIN}
+                  href={AUTH_ROUTES.REGISTER}
                   className="font-medium text-primary underline-offset-4 hover:underline"
                 >
-                  Login
+                  {t("common.signup")}
                 </Link>
               </p>
               <p className="mt-3 text-xs text-muted-foreground/60">
-                By clicking continue, you agree to our{" "}
-                <Link href="#" className="underline hover:text-muted-foreground">
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link href="#" className="underline hover:text-muted-foreground">
-                  Privacy Policy
-                </Link>
-                .
+                {t.rich("common.agreementLogin", {
+                  terms: (chunks) => (
+                    <Link href="#" className="underline hover:text-muted-foreground">
+                      {t("common.terms")}
+                    </Link>
+                  ),
+                  privacy: (chunks) => (
+                    <Link href="#" className="underline hover:text-muted-foreground">
+                      {t("common.privacyPolicy")}
+                    </Link>
+                  ),
+                })}
               </p>
             </div>
           </form>

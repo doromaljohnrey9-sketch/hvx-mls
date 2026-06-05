@@ -23,20 +23,31 @@ import type { AdminUser, AdminUserUpdate } from "@/types/admin.types";
 import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 import { formatDate } from "@/lib/utils";
 
+import { useTranslations } from "next-intl";
+
 interface CreateUsersColumnsProps {
   updateUser: {
     mutate: (data: { id: string; updates: AdminUserUpdate }) => void;
     isPending?: boolean;
   };
   currentUserId?: string;
+  t: ReturnType<typeof useTranslations<"UserManagement">>;
+  tRoles: ReturnType<typeof useTranslations<"Dashboard.roles">>;
+  tFilters: ReturnType<typeof useTranslations<"UserManagement.filters">>;
 }
 
-export function createUsersColumns({ updateUser, currentUserId }: CreateUsersColumnsProps) {
+export function createUsersColumns({
+  updateUser,
+  currentUserId,
+  t,
+  tRoles,
+  tFilters,
+}: CreateUsersColumnsProps) {
   const ROLE_LABELS: Record<string, string> = {
-    student: "Student",
-    teacher: "Teacher",
-    branch_admin: "Branch Admin",
-    super_admin: "Super Admin",
+    student: tRoles("student"),
+    teacher: tRoles("teacher"),
+    branch_admin: tRoles("branch_admin"),
+    super_admin: tRoles("super_admin"),
   };
 
   const ROLE_ICONS: Record<string, React.ReactNode> = {
@@ -47,10 +58,10 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
   };
 
   const APPROVAL_STATUS_LABELS: Record<string, string> = {
-    pending: "Pending",
-    approved: "Approved",
-    rejected: "Rejected",
-    blocked: "Blocked",
+    pending: tFilters("pending"),
+    approved: tFilters("approved"),
+    rejected: tFilters("rejected"),
+    blocked: tFilters("blocked"),
   };
 
   const STATUS_ICONS: Record<string, React.ReactNode> = {
@@ -75,7 +86,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Name
+          {t("table.name")}
           <ArrowUpDownIcon className="ml-2 size-4" />
         </Button>
       ),
@@ -103,7 +114,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Role
+          {t("table.role")}
           <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -126,7 +137,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Status
+          {t("table.status")}
           <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -155,7 +166,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Branch
+          {t("table.branch")}
           <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -178,7 +189,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          School
+          {t("table.school")}
           <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -201,7 +212,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Joined
+          {t("table.joined")}
           <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -226,7 +237,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Approved By
+          {t("table.approvedBy")}
           <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -249,7 +260,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="h-8 px-2"
         >
-          Approved At
+          {t("table.approvedAt")}
           <ArrowUpDownIcon className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -268,7 +279,7 @@ export function createUsersColumns({ updateUser, currentUserId }: CreateUsersCol
     },
     {
       id: "actions",
-      header: () => <div className="text-sm font-semibold text-foreground">Actions</div>,
+      header: () => <div className="text-sm font-semibold text-foreground">{t("table.actions")}</div>,
       cell: ({ row }) => {
         const user = row.original;
         const hasAction = user.role !== "super_admin" && user.role !== "branch_admin";

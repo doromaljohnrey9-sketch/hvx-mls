@@ -7,7 +7,13 @@ import { UsersFilters } from "@/components/admin/user-management/users-filters";
 import { createUsersColumns } from "@/components/admin/user-management/users-columns";
 import { useAuth } from "@/hooks/use-auth";
 
+import { useTranslations } from "next-intl";
+
 export function AdminUsersPageClient() {
+  const t = useTranslations("UserManagement");
+  const tRoles = useTranslations("Dashboard.roles");
+  const tFilters = useTranslations("UserManagement.filters");
+
   const { user } = useAuth();
   const {
     users,
@@ -26,7 +32,13 @@ export function AdminUsersPageClient() {
     handlePageChange,
   } = useAdminUserManagement();
 
-  const columns = createUsersColumns({ updateUser: updateUser, currentUserId: user?.id });
+  const columns = createUsersColumns({
+    updateUser: updateUser,
+    currentUserId: user?.id,
+    t,
+    tRoles,
+    tFilters,
+  });
 
   return (
     <div className="flex-1 min-w-0 space-y-6 p-8">
