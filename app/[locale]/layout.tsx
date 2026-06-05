@@ -5,7 +5,7 @@ import { AppProvider } from "@/components/providers/app-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 
-import "./styles/globals.css";
+import "../styles/globals.css";
 import { buildMetadata } from "@/lib/seo";
 
 const geistSans = Geist({
@@ -20,13 +20,17 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = buildMetadata({});
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReactQueryProvider>
           <AppProvider>
