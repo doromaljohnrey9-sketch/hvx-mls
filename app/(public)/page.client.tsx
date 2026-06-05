@@ -44,11 +44,11 @@ export const PageClient = () => {
       <section className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-16 lg:pt-28 pb-20 flex flex-col items-center text-center">
         <div className="max-w-3xl flex flex-col items-center">
           <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-foreground mb-6 leading-[1.05]">
-            Past-exam explainer videos, organized and searchable.
+            Master past exams save automatically all your modules.
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed max-w-2xl">
-            Search by school, year, semester, exam type, and problem number. Watch 600+ explainer
-            videos approved by your teachers.
+            Supports HEMS students with simple navigation, powerful video explainers, and effective
+            revision tools.
           </p>
 
           <div className="flex items-center justify-center gap-4">
@@ -62,7 +62,7 @@ export const PageClient = () => {
               size="lg"
               className="rounded-full px-8 py-4 text-base font-medium"
             >
-              Learn More
+              Explore Modules
             </Button>
           </div>
         </div>
@@ -76,15 +76,15 @@ export const PageClient = () => {
               variant="secondary"
               className="text-[10px] font-bold uppercase tracking-widest mb-4"
             >
-              Core Features
+              Revision Enhancement
             </Badge>
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
-              Everything you need to master past exams.
+              Experience that grows with your scale.
             </h2>
           </div>
           <div className="lg:col-span-5 text-muted-foreground leading-relaxed text-sm max-w-sm">
-            Search, watch, and learn from 600+ past-exam explainer videos organized by school, year,
-            semester, and problem number.
+            Design an academic operating system that works for your schedule and streamlined video
+            workflow management.
           </div>
         </div>
 
@@ -94,10 +94,10 @@ export const PageClient = () => {
             <div className="inline-flex size-12 rounded-xl items-center justify-center border border-border mb-6 bg-muted">
               <RefreshCw className="size-5 text-foreground" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">Smart search</h3>
+            <h3 className="text-xl font-bold text-foreground mb-3">Instant access</h3>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-[280px]">
-              Filter by school name, year, semester, exam type, grade, subject, and problem number
-              to find exactly what you need.
+              Create an academic experience and automate repeat revision workflows by scheduling
+              recurring playlists.
             </p>
           </div>
           {/* Feature 2 */}
@@ -105,10 +105,10 @@ export const PageClient = () => {
             <div className="inline-flex size-12 rounded-xl items-center justify-center border border-border mb-6 bg-muted">
               <Building2 className="size-5 text-foreground" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">Approval-based access</h3>
+            <h3 className="text-xl font-bold text-foreground mb-3">Multiple modules</h3>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-[280px]">
-              Teachers approve student accounts to ensure secure, authorized access to all video
-              content.
+              Run your operations with insights from your account and generate yield on modules
+              stored in your personalized library.
             </p>
           </div>
           {/* Feature 3 */}
@@ -116,10 +116,10 @@ export const PageClient = () => {
             <div className="inline-flex size-12 rounded-xl items-center justify-center border border-border mb-6 bg-muted">
               <Shield className="size-5 text-foreground" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">Mobile-first playback</h3>
+            <h3 className="text-xl font-bold text-foreground mb-3">Unmatched security</h3>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-[280px]">
-              Watch explainer videos on any device—tablet, mobile, or desktop. Optimized for touch
-              and portrait viewing.
+              Securely manage your data with organization-wide MFA, strict video-locking, and
+              account-level viewing controls.
             </p>
           </div>
         </div>
@@ -132,10 +132,10 @@ export const PageClient = () => {
             variant="secondary"
             className="text-[10px] font-bold uppercase tracking-widest mb-3"
           >
-            Platform Stats
+            Why Us
           </Badge>
           <h2 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
-            Built for students and teachers
+            Why they prefer HEMS
           </h2>
         </div>
 
@@ -144,10 +144,10 @@ export const PageClient = () => {
           <Card className="bg-muted rounded-[2.5rem] p-10 flex flex-col justify-center border-0">
             <CardContent className="p-0">
               <h3 className="text-[5rem] lg:text-[7rem] font-bold text-primary leading-none mb-4 tracking-tighter">
-                600+
+                3k+
               </h3>
               <p className="text-xl text-foreground max-w-[240px] font-medium leading-snug">
-                Past-exam explainer videos available
+                Businesses already running on HEMS platform
               </p>
             </CardContent>
           </Card>
@@ -157,11 +157,10 @@ export const PageClient = () => {
             <CardContent className="p-0 flex flex-col justify-between h-full">
               <div>
                 <h3 className="text-2xl text-foreground font-medium mb-3">
-                  Track exam set completion.
+                  Monitor video production.
                 </h3>
                 <p className="text-muted-foreground text-sm max-w-[240px]">
-                  Monitor which exam sets are fully registered, partially complete, or pending
-                  upload.
+                  Track exam set recording status and manage the publishing pipeline easily.
                 </p>
               </div>
 
@@ -178,7 +177,7 @@ export const PageClient = () => {
                       />
                       <path
                         className="text-primary drop-shadow-sm"
-                        strokeDasharray="85, 100"
+                        strokeDasharray="78, 100"
                         strokeWidth="4"
                         strokeLinecap="round"
                         stroke="currentColor"
@@ -188,7 +187,7 @@ export const PageClient = () => {
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                       <span className="text-lg font-bold text-foreground leading-none mb-0.5">
-                        85%
+                        78%
                       </span>
                     </div>
                   </div>
@@ -196,18 +195,18 @@ export const PageClient = () => {
                   <div className="flex-1 flex flex-col gap-3">
                     <div>
                       <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">
-                        <span>Complete</span> <span className="text-foreground">45 sets</span>
+                        <span>Published</span> <span className="text-foreground">240 sets</span>
                       </div>
                       <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                        <div className="w-[85%] h-full bg-foreground rounded-full"></div>
+                        <div className="w-[78%] h-full bg-foreground rounded-full"></div>
                       </div>
                     </div>
                     <div>
                       <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">
-                        <span>In Progress</span> <span className="text-primary">8 sets</span>
+                        <span>In Draft</span> <span className="text-primary">46 sets</span>
                       </div>
                       <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                        <div className="w-[15%] h-full bg-primary rounded-full"></div>
+                        <div className="w-[22%] h-full bg-primary rounded-full"></div>
                       </div>
                     </div>
                   </div>
@@ -220,11 +219,11 @@ export const PageClient = () => {
           <Card className="bg-muted rounded-[2.5rem] p-10 flex flex-col justify-center border-0">
             <CardContent className="p-0">
               <h3 className="text-3xl text-foreground font-bold mb-4 tracking-tight">
-                Organized by School
+                Structured Curriculums
               </h3>
               <p className="text-muted-foreground leading-relaxed max-w-[250px] text-sm md:text-base">
-                Videos are structured by school name, year, semester, exam type, and problem number
-                for easy lookup.
+                Say goodbye to fragmented studying. Every module is meticulously organized by topic,
+                difficulty, and year format.
               </p>
             </CardContent>
           </Card>
@@ -235,36 +234,36 @@ export const PageClient = () => {
               <div className="flex justify-between items-start mb-8">
                 <div>
                   <div className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-widest">
-                    Schools Covered
+                    Active Study Time
                   </div>
                   <div className="text-4xl font-bold text-foreground">
-                    25<span className="text-xl text-muted-foreground font-medium ml-1">+</span>
+                    124<span className="text-xl text-muted-foreground font-medium ml-1">hrs</span>
                   </div>
                 </div>
                 <Badge variant="secondary" className="text-xs font-bold">
                   <ArrowUpRight className="size-3.5 mr-1.5" strokeWidth={3} />
-                  Growing
+                  Top 5%
                 </Badge>
               </div>
 
               <ChartContainer
                 config={{
-                  schools: {
-                    label: "Schools",
+                  hours: {
+                    label: "Hours",
                     color: "hsl(var(--primary))",
                   },
                 }}
                 className="h-[40%] w-full"
               >
                 <BarChart
-                  data={[12, 18, 15, 25].map((value, index) => ({
-                    month: index + 1,
-                    schools: value,
+                  data={[40, 65, 45, 80].map((value, index) => ({
+                    day: index + 1,
+                    hours: value,
                   }))}
                 >
                   <Bar
-                    dataKey="schools"
-                    fill="var(--color-schools)"
+                    dataKey="hours"
+                    fill="var(--color-hours)"
                     radius={[4, 4, 0, 0]}
                     barSize={50}
                   />
@@ -285,28 +284,28 @@ export const PageClient = () => {
             variant="secondary"
             className="text-[10px] font-bold uppercase tracking-widest mb-4"
           >
-            Get Started
+            Step
           </Badge>
           <h2 className="text-4xl md:text-5xl font-bold mb-20 max-w-xl leading-[1.1] tracking-tight">
-            Start watching explainer videos in three simple steps.
+            Maximize your returns with a Reserve account that generates.
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
                 num: "1",
-                title: "Sign up for access",
-                desc: "Create your account with your name, branch, school, and grade. Your teacher will review and approve your request.",
+                title: "Open your account",
+                desc: "Sign up to HEMS platform and set up your student modules directly from the dashboard.",
               },
               {
                 num: "2",
-                title: "Search for videos",
-                desc: "Filter by school name, year, semester, exam type, and problem number to find the exact explainer you need.",
+                title: "Transfer your money",
+                desc: "Move money from one account to another and start earning higher grades on finals.",
               },
               {
                 num: "3",
-                title: "Watch and learn",
-                desc: "Play videos instantly in your browser on any device. Ask your teacher follow-up questions if needed.",
+                title: "Watch your balance grow",
+                desc: "Accessed instantly and remain insulated from market and academic volatility.",
               },
             ].map((step, i) => (
               <Card
@@ -338,33 +337,32 @@ export const PageClient = () => {
             Our Mission
           </Badge>
           <h2 className="text-4xl text-foreground font-bold mx-auto max-w-xl leading-[1.1] tracking-tight mb-4">
-            Replace manual video delivery with smart search
+            We've helped innovative companies
           </h2>
           <p className="text-muted-foreground mb-20">
-            Teachers no longer send videos via KakaoTalk. Students find and watch explainer videos
-            on their own.
+            Hundreds of all sizes and across all industries
             <br />
-            Organized, searchable, and secure.
+            have made a big improvements with us.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
             <div>
               <h3 className="text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
-                600+
+                24%
               </h3>
-              <p className="text-muted-foreground font-medium text-sm">Explainer videos</p>
+              <p className="text-muted-foreground font-medium text-sm">Revenue business</p>
             </div>
             <div>
               <h3 className="text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
-                25+
+                180K
               </h3>
-              <p className="text-muted-foreground font-medium text-sm">Schools covered</p>
+              <p className="text-muted-foreground font-medium text-sm">In annual revenue</p>
             </div>
             <div>
               <h3 className="text-[3.5rem] md:text-[4rem] font-bold text-foreground mb-2 tracking-tighter">
-                100%
+                10+
               </h3>
-              <p className="text-muted-foreground font-medium text-sm">Approval-based access</p>
+              <p className="text-muted-foreground font-medium text-sm">Months of runway</p>
             </div>
           </div>
         </div>
@@ -373,7 +371,7 @@ export const PageClient = () => {
       {/* POPULAR MODULES */}
       <section className="max-w-[1200px] mx-auto px-6 pb-24 w-full">
         <div className="text-center mb-12 text-foreground text-[10px] font-bold uppercase tracking-widest">
-          Featured Schools:
+          Browse Archive:
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mx-auto">
@@ -383,12 +381,12 @@ export const PageClient = () => {
               <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
                 <Layers className="size-6 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">Mangpo High School</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Mathematics</h3>
               <p className="text-muted-foreground text-sm mb-8">
-                2025 1st & 2nd semester midterm and final exam explainers.
+                Calculus, Linear Algebra, and Discrete Math video solutions.
               </p>
               <div className="flex justify-between items-end">
-                <span className="text-sm font-medium text-primary">120 videos</span>
+                <span className="text-sm font-medium text-primary">1,240 videos</span>
                 <ArrowUpRight className="size-5 text-foreground opacity-50 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
               </div>
             </CardContent>
@@ -399,12 +397,12 @@ export const PageClient = () => {
               <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
                 <Building2 className="size-6 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">Suwon High School</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Physics</h3>
               <p className="text-muted-foreground text-sm mb-8">
-                Complete coverage of 2024-2025 past exams with detailed solutions.
+                Mechanics, Electromagnetism, and Quantum Mechanics.
               </p>
               <div className="flex justify-between items-end">
-                <span className="text-sm font-medium text-primary">95 videos</span>
+                <span className="text-sm font-medium text-primary">850 videos</span>
                 <ArrowUpRight className="size-5 text-foreground opacity-50 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
               </div>
             </CardContent>
@@ -415,12 +413,12 @@ export const PageClient = () => {
               <div className="size-12 bg-primary-foreground/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6">
                 <Shield className="size-6 text-primary-foreground" />
               </div>
-              <h3 className="text-2xl font-bold text-primary-foreground mb-2">All Schools</h3>
+              <h3 className="text-2xl font-bold text-primary-foreground mb-2">Comp Sci</h3>
               <p className="text-primary-foreground/80 text-sm mb-8">
-                Browse explainer videos from 25+ schools across all regions.
+                Algorithms, Data Structures, and Systems Programming.
               </p>
               <div className="flex justify-between items-end">
-                <span className="text-sm font-medium text-primary-foreground">600+ videos</span>
+                <span className="text-sm font-medium text-primary-foreground">2,100+ videos</span>
                 <ArrowUpRight className="size-5 text-primary-foreground opacity-90 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
               </div>
             </CardContent>
@@ -437,14 +435,14 @@ export const PageClient = () => {
             variant="secondary"
             className="text-[10px] font-bold uppercase tracking-widest mb-4"
           >
-            Get Started
+            Try It Now
           </Badge>
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-6 text-card-foreground">
-            Ready to access past-exam explainers?
+            Ready to level up your exam process?
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed mb-0">
-            Sign up, get approved by your teacher, and start watching explainer videos organized by
-            school, year, and problem number.
+            Supports HEMS students with simple module navigation, powerful video explainers, and
+            effective revision tools.
           </p>
         </div>
         <div className="flex items-center gap-4 w-full md:w-auto relative z-10">
