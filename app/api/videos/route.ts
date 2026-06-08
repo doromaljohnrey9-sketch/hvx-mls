@@ -61,6 +61,8 @@ export async function GET(request: NextRequest) {
         id: problemVideos.id,
         examSetId: problemVideos.examSetId,
         problemNumber: problemVideos.problemNumber,
+        questionType: problemVideos.questionType,
+        part: problemVideos.part,
         videoUrl: problemVideos.videoUrl,
         filePath: problemVideos.filePath,
         duration: problemVideos.duration,
@@ -104,6 +106,8 @@ export async function GET(request: NextRequest) {
       id: row.id,
       examSetId: row.examSetId,
       problemNumber: row.problemNumber,
+      questionType: row.questionType as "multiple_choice" | "essay",
+      part: row.part,
       videoUrl: row.videoUrl,
       filePath: row.filePath,
       duration: row.duration,
@@ -161,7 +165,17 @@ export async function POST(request: NextRequest) {
     if (authError) return authError;
 
     const body = await request.json();
-    const { examSetId, problemNumber, videoUrl, filePath, duration, title, visibility } = body;
+    const {
+      examSetId,
+      problemNumber,
+      questionType,
+      part,
+      videoUrl,
+      filePath,
+      duration,
+      title,
+      visibility,
+    } = body;
 
     if (!examSetId || !problemNumber || !videoUrl) {
       return apiResponse({
@@ -176,7 +190,12 @@ export async function POST(request: NextRequest) {
       .select()
       .from(problemVideos)
       .where(
-        and(eq(problemVideos.examSetId, examSetId), eq(problemVideos.problemNumber, problemNumber))
+        and(
+          eq(problemVideos.examSetId, examSetId),
+          eq(problemVideos.problemNumber, problemNumber),
+          eq(problemVideos.part, part ?? 1),
+          eq(problemVideos.questionType, questionType ?? "multiple_choice")
+        )
       )
       .limit(1);
 
@@ -193,6 +212,8 @@ export async function POST(request: NextRequest) {
       .values({
         examSetId,
         problemNumber,
+        questionType: questionType ?? "multiple_choice",
+        part: part ?? 1,
         videoUrl,
         filePath: filePath || null,
         duration: duration || null,

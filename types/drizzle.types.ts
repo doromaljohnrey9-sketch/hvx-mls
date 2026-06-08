@@ -40,3 +40,4 @@ export type ExamSetStatus = SelectExamSet["status"];
 // Video types derived from enums
 export type VideoVisibility = SelectProblemVideo["visibility"];
 export type VideoUploadStatus = SelectProblemVideo["uploadStatus"];
+export type QuestionType = SelectProblemVideo["questionType"];

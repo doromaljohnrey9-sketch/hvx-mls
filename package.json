@@ -21,6 +21,8 @@
     "db:studio": "drizzle-kit studio --config=./config/drizzle.config.ts",
     "db:pull": "drizzle-kit pull --config=./config/drizzle.config.ts",
     "db:seed": "tsx drizzle/seed.ts",
+    "db:seed:videos": "tsx --env-file=.env drizzle/videos-seed.ts",
+    "db:seed:videos:clear": "tsx --env-file=.env drizzle/videos-seed.ts --clear=all",
     "test:unit": "vitest --config=./config/vitest.config.mts",
     "test:e2e": "playwright test --config=./config/playwright.config.ts",
     "test:e2e:ui": "playwright test --config=./config/playwright.config.ts --ui",
