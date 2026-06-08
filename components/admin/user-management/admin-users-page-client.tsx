@@ -6,6 +6,7 @@ import { UsersTable } from "@/components/admin/user-management/users-table";
 import { UsersFilters } from "@/components/admin/user-management/users-filters";
 import { createUsersColumns } from "@/components/admin/user-management/users-columns";
 import { useAuth } from "@/hooks/use-auth";
+import { toast } from "sonner";
 
 import { useTranslations } from "next-intl";
 
@@ -19,6 +20,7 @@ export function AdminUsersPageClient() {
     users,
     isLoading,
     updateUser,
+    createUser,
     search,
     roleFilter,
     approvalStatusFilter,
@@ -40,9 +42,19 @@ export function AdminUsersPageClient() {
     tFilters,
   });
 
+  const handleCreateUser = (data: any) => {
+    createUser.mutate(data, {
+      onSuccess: () => {
+        toast.success(t("toasts.created"), {
+          description: t("toasts.createdDesc"),
+        });
+      },
+    });
+  };
+
   return (
     <div className="flex-1 min-w-0 space-y-6 p-8">
-      <UsersPageHeader />
+      <UsersPageHeader onCreateUser={handleCreateUser} />
       <UsersFilters
         search={search}
         roleFilter={roleFilter}

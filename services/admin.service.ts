@@ -18,6 +18,28 @@ export const adminService = {
     }
   },
 
+  createUser: async (data: {
+    email: string;
+    name: string;
+    role?: UserRole;
+    branchId?: string;
+    schoolId?: string;
+    grade?: number;
+    assignedTeacher?: string;
+    approvalStatus?: ApprovalStatus;
+  }): Promise<SelectProfile | null> => {
+    try {
+      const response = await axiosInstance.post<{ success: boolean; data: SelectProfile }>(
+        API_ROUTES.ADMIN.STUDENTS,
+        data
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to create user:", error);
+      return null;
+    }
+  },
+
   updateStudentRole: async (userId: string, role: UserRole): Promise<boolean> => {
     try {
       await axiosInstance.patch(API_ROUTES.ADMIN.STUDENTS, { userId, role });

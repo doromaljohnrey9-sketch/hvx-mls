@@ -234,6 +234,33 @@
     "subtitle": "Manage user roles, permissions, and account status.",
     "searchPlaceholder": "Search by name or email...",
     "search": "Search",
+    "createUser": "Create User",
+    "createUserTitle": "Create New User",
+    "createUserDescription": "Fill in the details to create a new user account.",
+    "fields": {
+      "email": "Email",
+      "name": "Name",
+      "role": "Role",
+      "approvalStatus": "Approval Status",
+      "branch": "Branch",
+      "school": "School",
+      "grade": "Grade",
+      "assignedTeacher": "Assigned Teacher"
+    },
+    "placeholders": {
+      "email": "you@example.com",
+      "name": "Enter full name",
+      "role": "Select role",
+      "approvalStatus": "Select status",
+      "branch": "Select branch",
+      "school": "Select school",
+      "grade": "e.g. 1",
+      "assignedTeacher": "Teacher name",
+      "noBranch": "No branch",
+      "noSchool": "No school"
+    },
+    "cancel": "Cancel",
+    "create": "Create User",
     "filters": {
       "all": "All",
       "role": "Role",
@@ -265,6 +292,8 @@
       "pageOf": "Page {page} of {totalPages}"
     },
     "toasts": {
+      "created": "User created",
+      "createdDesc": "The user has been created successfully.",
       "updated": "User updated",
       "updatedDesc": "The user's role/status has been updated.",
       "failed": "Update failed",

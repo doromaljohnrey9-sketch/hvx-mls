@@ -126,6 +126,134 @@ export async function GET(request: NextRequest) {
 }
 
 /**
+ * POST /api/admin/students
+ * Create a new user. Teacher+ only.
+ * Body: { email: string, name: string, role?: UserRole, branchId?: string, schoolId?: string, grade?: number, assignedTeacher?: string, approvalStatus?: ApprovalStatus }
+ */
+export async function POST(request: NextRequest) {
+  try {
+    const rateLimited = await rateLimit("api");
+    if (rateLimited) return rateLimited;
+
+    const { profile, error } = await requireRole(ADMIN_ROLES);
+    if (error) return error;
+
+    const body = await request.json();
+    const { email, name, role, branchId, schoolId, grade, assignedTeacher, approvalStatus } =
+      body as {
+        email: string;
+        name: string;
+        role?: UserRole;
+        branchId?: string;
+        schoolId?: string;
+        grade?: number;
+        assignedTeacher?: string;
+        approvalStatus?: ApprovalStatus;
+      };
+
+    if (!email || !name) {
+      return apiResponse({
+        status: HttpStatus.BAD_REQUEST,
+        message: "Email and name are required.",
+      });
+    }
+
+    // Validate role if provided
+    if (role) {
+      const allowedRoles = ["student", "teacher", "branch_admin", "super_admin"];
+      if (!allowedRoles.includes(role)) {
+        return apiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          message: "Invalid role.",
+        });
+      }
+    }
+
+    // Validate approvalStatus if provided
+    if (approvalStatus) {
+      const allowedStatuses = ["pending", "approved", "rejected", "blocked"];
+      if (!allowedStatuses.includes(approvalStatus)) {
+        return apiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          message: "Invalid approval status.",
+        });
+      }
+    }
+
+    // Check if email already exists
+    const existingUsers = await db
+      .select()
+      .from(profiles)
+      .where(eq(profiles.email, email))
+      .limit(1);
+    if (existingUsers.length > 0) {
+      return apiResponse({
+        status: HttpStatus.CONFLICT,
+        message: "A user with this email already exists.",
+      });
+    }
+
+    // Branch Admin can only create users in their own branch
+    if (
+      profile!.role !== "super_admin" &&
+      profile!.branchId &&
+      branchId &&
+      branchId !== profile!.branchId
+    ) {
+      return apiResponse({
+        status: HttpStatus.FORBIDDEN,
+        message: "Cannot create users for other branches.",
+      });
+    }
+
+    // Build insert object
+    const insertData: {
+      email: string;
+      name: string;
+      role?: UserRole;
+      branchId?: string;
+      schoolId?: string;
+      grade?: number;
+      assignedTeacher?: string;
+      approvalStatus?: ApprovalStatus;
+      approvedBy?: string;
+      approvedAt?: Date;
+    } = {
+      email,
+      name,
+    };
+
+    if (role) insertData.role = role;
+    if (branchId) insertData.branchId = branchId;
+    if (schoolId) insertData.schoolId = schoolId;
+    if (grade) insertData.grade = grade;
+    if (assignedTeacher) insertData.assignedTeacher = assignedTeacher;
+    if (approvalStatus) {
+      insertData.approvalStatus = approvalStatus;
+      if (approvalStatus === "approved") {
+        insertData.approvedBy = profile!.id;
+        insertData.approvedAt = new Date();
+      }
+    }
+
+    // Insert the new user
+    const result = await db.insert(profiles).values(insertData).returning();
+    const newUser = result[0];
+
+    return apiResponse({
+      data: newUser,
+      status: HttpStatus.CREATED,
+    });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return apiResponse({
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: "An error occurred while creating the user.",
+    });
+  }
+}
+
+/**
  * PATCH /api/admin/students
  * Update a student's role or approval status. Teacher+ only.
  * Body: { userId: string, role?: UserRole, approvalStatus?: ApprovalStatus }

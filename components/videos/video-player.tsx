@@ -93,12 +93,24 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
     );
   }
 
-  const embedUrl = resolvedVideoUrl
-    ? resolvedVideoUrl.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")
-    : undefined;
-
   const isYouTube =
     resolvedVideoUrl?.includes("youtube.com") || resolvedVideoUrl?.includes("youtu.be");
+
+  const isGoogleDrive = resolvedVideoUrl?.includes("drive.google.com");
+
+  const getDriveEmbedUrl = (url: string) => {
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) {
+      return `https://drive.google.com/file/d/${match[1]}/preview`;
+    }
+    return url;
+  };
+
+  const embedUrl = isYouTube
+    ? resolvedVideoUrl?.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")
+    : isGoogleDrive
+      ? getDriveEmbedUrl(resolvedVideoUrl!)
+      : undefined;
 
   const translatedSemester =
     video.examSet.semester === "1st" ? tFilters("semester1") : tFilters("semester2");
@@ -137,7 +149,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
         {/* Left — video */}
         <div>
           <div className="aspect-video w-full min-h-[360px] bg-primary-foreground rounded-xl overflow-hidden border border-border/60 shadow-none">
-            {isYouTube ? (
+            {isYouTube || isGoogleDrive ? (
               <iframe
                 src={embedUrl}
                 className="w-full h-full"
