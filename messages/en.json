@@ -233,7 +233,7 @@
   },
   "UserManagement": {
     "title": "User Management",
-    "subtitle": "Manage user roles, permissions, and account status.",
+    "subtitle": "Manage and create user roles, permissions, and account status.",
     "searchPlaceholder": "Search by name or email...",
     "search": "Search",
     "createUser": "Create User",
