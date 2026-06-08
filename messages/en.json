@@ -226,7 +226,9 @@
       "denied": "Denied",
       "blocked": "Blocked",
       "published": "Published",
-      "hidden": "Hidden"
+      "hidden": "Hidden",
+      "approved": "Approved",
+      "rejected": "Rejected"
     }
   },
   "UserManagement": {

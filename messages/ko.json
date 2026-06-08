@@ -226,7 +226,9 @@
       "denied": "거절됨",
       "blocked": "차단됨",
       "published": "게시됨",
-      "hidden": "숨김"
+      "hidden": "숨김",
+      "approved": "승인됨",
+      "rejected": "거절됨"
     }
   },
   "UserManagement": {

@@ -54,7 +54,7 @@ export function AdminUsersPageClient() {
 
   return (
     <div className="flex-1 min-w-0 space-y-6 p-8">
-      <UsersPageHeader onCreateUser={handleCreateUser} />
+      <UsersPageHeader />
       <UsersFilters
         search={search}
         roleFilter={roleFilter}
@@ -63,6 +63,7 @@ export function AdminUsersPageClient() {
         onSearchSubmit={handleSearchSubmit}
         onRoleFilterChange={handleRoleFilterChange}
         onApprovalStatusFilterChange={handleApprovalStatusFilterChange}
+        onCreateUser={handleCreateUser}
       />
       <UsersTable
         columns={columns}

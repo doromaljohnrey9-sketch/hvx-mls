@@ -36,8 +36,8 @@ const userCreateSchema = {
   email: "",
   name: "",
   role: "student",
-  branchId: "",
-  schoolId: "",
+  branchId: "none",
+  schoolId: "none",
   grade: "",
   assignedTeacher: "",
   approvalStatus: "pending",
@@ -59,8 +59,8 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
       email: data.email,
       name: data.name,
       role: data.role as UserRole,
-      branchId: data.branchId || undefined,
-      schoolId: data.schoolId || undefined,
+      branchId: data.branchId === "none" ? undefined : data.branchId,
+      schoolId: data.schoolId === "none" ? undefined : data.schoolId,
       grade: data.grade ? parseInt(data.grade) : undefined,
       assignedTeacher: data.assignedTeacher || undefined,
       approvalStatus: data.approvalStatus as ApprovalStatus,
@@ -161,7 +161,7 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
                   <SelectValue placeholder={t("placeholders.branch")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">{t("placeholders.noBranch")}</SelectItem>
+                  <SelectItem value="none">{t("placeholders.noBranch")}</SelectItem>
                   {branches?.map((branch) => (
                     <SelectItem key={branch.id} value={branch.id}>
                       {branch.name}
@@ -181,7 +181,7 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
                   <SelectValue placeholder={t("placeholders.school")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">{t("placeholders.noSchool")}</SelectItem>
+                  <SelectItem value="none">{t("placeholders.noSchool")}</SelectItem>
                   {schools?.map((school) => (
                     <SelectItem key={school.id} value={school.id}>
                       {school.name}
@@ -211,11 +211,7 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
             </div>
           </FieldGroup>
           <DialogFooter className="mt-6">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setOpen(false)}
-            >
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               {t("cancel")}
             </Button>
             <Button type="submit">{t("create")}</Button>
