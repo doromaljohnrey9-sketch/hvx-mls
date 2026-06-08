@@ -238,7 +238,7 @@
     "search": "검색",
     "createUser": "사용자 생성",
     "createUserTitle": "새 사용자 생성",
-    "createUserDescription": "새 사용자 계정을 생성하려면 세부 정보를 입력하세요. 사용자에게 확인 이메일이 발송됩니다.",
+    "createUserDescription": "새 사용자 계정을 생성하려면 세부 정보를 입력하세요.",
     "fields": {
       "email": "이메일",
       "name": "이름",
@@ -261,9 +261,10 @@
       "branch": "지점 선택",
       "school": "학교 선택",
       "grade": "예: 1",
-      "assignedTeacher": "교사 이름",
+      "assignedTeacher": "교사 선택",
       "noBranch": "지점 없음",
-      "noSchool": "학교 없음"
+      "noSchool": "학교 없음",
+      "noTeacher": "교사 없음"
     },
     "cancel": "취소",
     "create": "사용자 생성",
@@ -299,7 +300,7 @@
     },
     "toasts": {
       "created": "사용자 생성됨",
-      "createdDesc": "사용자가 성공적으로 생성되었습니다. 사용자에게 확인 이메일이 발송됩니다.",
+      "createdDesc": "사용자가 성공적으로 생성되었습니다.",
       "updated": "사용자 정보 업데이트됨",
       "updatedDesc": "사용자의 역할/상태가 업데이트되었습니다.",
       "failed": "업데이트 실패",

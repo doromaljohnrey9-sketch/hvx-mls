@@ -29,6 +29,7 @@ import { PasswordInput } from "@/components/shared/password-input";
 
 import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
+import { getTeachersQueryOptions } from "@/queries/teachers.query";
 import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 
 import { useTranslations } from "next-intl";
@@ -42,20 +43,30 @@ const userCreateSchema = {
   branchId: "none",
   schoolId: "none",
   grade: "",
-  assignedTeacher: "",
-  approvalStatus: "pending",
+  assignedTeacher: "none",
+  approvalStatus: "approved",
 };
 
 export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) => void }) {
   const [open, setOpen] = useState(false);
   const t = useTranslations("UserManagement");
 
-  const { data: branches } = useQuery(getBranchesQueryOptions());
-  const { data: schools } = useQuery(getSchoolsQueryOptions());
-
   const form = useForm({
     defaultValues: userCreateSchema,
   });
+
+  const { data: branches } = useQuery(getBranchesQueryOptions());
+  const { data: schools } = useQuery(getSchoolsQueryOptions());
+  const { data: teachers } = useQuery(
+    getTeachersQueryOptions(
+      form.watch("branchId") && form.watch("branchId") !== "none"
+        ? form.watch("branchId")
+        : undefined,
+      form.watch("schoolId") && form.watch("schoolId") !== "none"
+        ? form.watch("schoolId")
+        : undefined
+    )
+  );
 
   const onSubmit = (data: any) => {
     if (data.password !== data.confirmPassword) {
@@ -76,7 +87,7 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
       branchId: data.branchId === "none" ? undefined : data.branchId,
       schoolId: data.schoolId === "none" ? undefined : data.schoolId,
       grade: data.grade ? parseInt(data.grade) : undefined,
-      assignedTeacher: data.assignedTeacher || undefined,
+      assignedTeacher: data.assignedTeacher === "none" ? undefined : data.assignedTeacher,
       approvalStatus: data.approvalStatus as ApprovalStatus,
     };
     onCreateUser(payload);
@@ -241,10 +252,22 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
 
               <Field>
                 <FieldLabel>{t("fields.assignedTeacher")}</FieldLabel>
-                <Input
+                <Select
                   {...form.register("assignedTeacher")}
-                  placeholder={t("placeholders.assignedTeacher")}
-                />
+                  onValueChange={(value) => form.setValue("assignedTeacher", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={t("placeholders.assignedTeacher")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">{t("placeholders.noTeacher")}</SelectItem>
+                    {teachers?.map((teacher) => (
+                      <SelectItem key={teacher.id} value={teacher.name}>
+                        {teacher.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </Field>
             </div>
           </FieldGroup>

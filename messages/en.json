@@ -238,7 +238,7 @@
     "search": "Search",
     "createUser": "Create User",
     "createUserTitle": "Create New User",
-    "createUserDescription": "Fill in the details to create a new user account. The user will receive a confirmation email.",
+    "createUserDescription": "Fill in the details to create a new user account.",
     "fields": {
       "email": "Email",
       "name": "Name",
@@ -261,9 +261,10 @@
       "branch": "Select branch",
       "school": "Select school",
       "grade": "e.g. 1",
-      "assignedTeacher": "Teacher name",
+      "assignedTeacher": "Select teacher",
       "noBranch": "No branch",
-      "noSchool": "No school"
+      "noSchool": "No school",
+      "noTeacher": "No teacher"
     },
     "cancel": "Cancel",
     "create": "Create User",
@@ -299,7 +300,7 @@
     },
     "toasts": {
       "created": "User created",
-      "createdDesc": "The user has been created successfully. They will receive a confirmation email.",
+      "createdDesc": "The user has been created successfully.",
       "updated": "User updated",
       "updatedDesc": "The user's role/status has been updated.",
       "failed": "Update failed",
