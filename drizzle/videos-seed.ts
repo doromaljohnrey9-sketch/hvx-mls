@@ -343,7 +343,7 @@ async function seedVideos(clear: ClearLevel) {
         grade: examSetData.grade,
         subject: examSetData.subject,
         title: examSetData.title,
-        status: examSetData.status || "draft",
+        status: examSetData.status || "published",
       });
     }
   }
@@ -477,7 +477,7 @@ async function seedVideos(clear: ClearLevel) {
       filePath: video.filePath,
       duration: video.duration,
       title: video.title,
-      visibility: video.visibility || "private",
+      visibility: video.visibility || "public",
       uploadStatus: video.uploadStatus || "completed",
     });
 

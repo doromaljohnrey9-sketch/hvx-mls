@@ -59,9 +59,8 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
   const { data: video, isLoading, error } = useQuery(getVideoByIdQueryOptions(videoId));
 
   const resolvedVideoUrl = video
-    ? video.filePath
-      ? getPublicUrlSync(DEFAULT_VIDEO_BUCKET, video.filePath)
-      : video.videoUrl
+    ? video.videoUrl ||
+      (video.filePath ? getPublicUrlSync(DEFAULT_VIDEO_BUCKET, video.filePath) : undefined)
     : undefined;
 
   if (isLoading) {
@@ -120,6 +119,21 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
 
   const translatedVisibility = tManagement(`options.${video.visibility}`);
 
+  const handleVideoPlay = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const videoElement = e.currentTarget;
+    if (videoElement.requestFullscreen) {
+      videoElement.requestFullscreen().catch((err) => {
+        console.log("Fullscreen request failed:", err);
+      });
+    } else if ((videoElement as any).webkitRequestFullscreen) {
+      (videoElement as any).webkitRequestFullscreen();
+    } else if ((videoElement as any).mozRequestFullScreen) {
+      (videoElement as any).mozRequestFullScreen();
+    } else if ((videoElement as any).msRequestFullscreen) {
+      (videoElement as any).msRequestFullscreen();
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       {/* Back button */}
@@ -161,6 +175,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
                 src={resolvedVideoUrl}
                 className="w-full h-full bg-primary-foreground"
                 controls
+                onPlay={handleVideoPlay}
                 onError={(e) => console.error("Video error:", e)}
               />
             )}

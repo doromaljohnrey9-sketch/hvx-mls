@@ -121,7 +121,7 @@ export function VideoUploadDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">
+        <Button>
           <PlusIcon className="h-4 w-4 mr-2" />
           {t("addVideo")}
         </Button>
