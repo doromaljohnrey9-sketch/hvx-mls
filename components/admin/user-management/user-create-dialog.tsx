@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { PasswordInput } from "@/components/shared/password-input";
 
 import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
@@ -35,6 +36,8 @@ import { useTranslations } from "next-intl";
 const userCreateSchema = {
   email: "",
   name: "",
+  password: "",
+  confirmPassword: "",
   role: "student",
   branchId: "none",
   schoolId: "none",
@@ -55,8 +58,19 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
   });
 
   const onSubmit = (data: any) => {
+    if (data.password !== data.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (data.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
     const payload = {
       email: data.email,
+      password: data.password,
       name: data.name,
       role: data.role as UserRole,
       branchId: data.branchId === "none" ? undefined : data.branchId,
@@ -110,6 +124,30 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
                 <FieldError errors={[form.formState.errors.name as any]} />
               )}
             </Field>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Field>
+                <FieldLabel>{t("fields.password")}</FieldLabel>
+                <PasswordInput
+                  {...form.register("password", { required: true, minLength: 6 })}
+                  placeholder={t("placeholders.password")}
+                />
+                {form.formState.errors.password && (
+                  <FieldError errors={[form.formState.errors.password as any]} />
+                )}
+              </Field>
+
+              <Field>
+                <FieldLabel>{t("fields.confirmPassword")}</FieldLabel>
+                <PasswordInput
+                  {...form.register("confirmPassword", { required: true })}
+                  placeholder={t("placeholders.confirmPassword")}
+                />
+                {form.formState.errors.confirmPassword && (
+                  <FieldError errors={[form.formState.errors.confirmPassword as any]} />
+                )}
+              </Field>
+            </div>
 
             <div className="grid grid-cols-2 gap-4">
               <Field>

@@ -238,10 +238,12 @@
     "search": "Search",
     "createUser": "Create User",
     "createUserTitle": "Create New User",
-    "createUserDescription": "Fill in the details to create a new user account.",
+    "createUserDescription": "Fill in the details to create a new user account. The user will receive a confirmation email.",
     "fields": {
       "email": "Email",
       "name": "Name",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
       "role": "Role",
       "approvalStatus": "Approval Status",
       "branch": "Branch",
@@ -252,6 +254,8 @@
     "placeholders": {
       "email": "you@example.com",
       "name": "Enter full name",
+      "password": "Create a strong password",
+      "confirmPassword": "Re-enter password",
       "role": "Select role",
       "approvalStatus": "Select status",
       "branch": "Select branch",
@@ -295,7 +299,7 @@
     },
     "toasts": {
       "created": "User created",
-      "createdDesc": "The user has been created successfully.",
+      "createdDesc": "The user has been created successfully. They will receive a confirmation email.",
       "updated": "User updated",
       "updatedDesc": "The user's role/status has been updated.",
       "failed": "Update failed",

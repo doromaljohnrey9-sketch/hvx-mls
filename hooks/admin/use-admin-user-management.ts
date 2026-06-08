@@ -54,6 +54,7 @@ export function useAdminUserManagement() {
   const createUser = useMutation({
     mutationFn: async (data: {
       email: string;
+      password: string;
       name: string;
       role?: UserRole;
       branchId?: string;

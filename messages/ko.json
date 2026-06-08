@@ -238,10 +238,12 @@
     "search": "검색",
     "createUser": "사용자 생성",
     "createUserTitle": "새 사용자 생성",
-    "createUserDescription": "새 사용자 계정을 생성하려면 세부 정보를 입력하세요.",
+    "createUserDescription": "새 사용자 계정을 생성하려면 세부 정보를 입력하세요. 사용자에게 확인 이메일이 발송됩니다.",
     "fields": {
       "email": "이메일",
       "name": "이름",
+      "password": "비밀번호",
+      "confirmPassword": "비밀번호 확인",
       "role": "역할",
       "approvalStatus": "승인 상태",
       "branch": "지점",
@@ -252,6 +254,8 @@
     "placeholders": {
       "email": "you@example.com",
       "name": "전체 이름 입력",
+      "password": "강력한 비밀번호 생성",
+      "confirmPassword": "비밀번호 재입력",
       "role": "역할 선택",
       "approvalStatus": "상태 선택",
       "branch": "지점 선택",
@@ -295,7 +299,7 @@
     },
     "toasts": {
       "created": "사용자 생성됨",
-      "createdDesc": "사용자가 성공적으로 생성되었습니다.",
+      "createdDesc": "사용자가 성공적으로 생성되었습니다. 사용자에게 확인 이메일이 발송됩니다.",
       "updated": "사용자 정보 업데이트됨",
       "updatedDesc": "사용자의 역할/상태가 업데이트되었습니다.",
       "failed": "업데이트 실패",

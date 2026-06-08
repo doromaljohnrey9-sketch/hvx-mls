@@ -20,6 +20,7 @@ export const adminService = {
 
   createUser: async (data: {
     email: string;
+    password: string;
     name: string;
     role?: UserRole;
     branchId?: string;
@@ -27,9 +28,9 @@ export const adminService = {
     grade?: number;
     assignedTeacher?: string;
     approvalStatus?: ApprovalStatus;
-  }): Promise<SelectProfile | null> => {
+  }): Promise<any | null> => {
     try {
-      const response = await axiosInstance.post<{ success: boolean; data: SelectProfile }>(
+      const response = await axiosInstance.post<{ success: boolean; data: any }>(
         API_ROUTES.ADMIN.STUDENTS,
         data
       );

@@ -1,5 +1,6 @@
 import { eq, and, like, or, sql } from "drizzle-orm";
 import { NextRequest } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 
 import { profiles, branches, schools } from "@/drizzle/schemas";
 import { alias } from "drizzle-orm/pg-core";
@@ -128,7 +129,7 @@ export async function GET(request: NextRequest) {
 /**
  * POST /api/admin/students
  * Create a new user. Teacher+ only.
- * Body: { email: string, name: string, role?: UserRole, branchId?: string, schoolId?: string, grade?: number, assignedTeacher?: string, approvalStatus?: ApprovalStatus }
+ * Body: { email: string, password: string, name: string, role?: UserRole, branchId?: string, schoolId?: string, grade?: number, assignedTeacher?: string, approvalStatus?: ApprovalStatus }
  */
 export async function POST(request: NextRequest) {
   try {
@@ -139,22 +140,32 @@ export async function POST(request: NextRequest) {
     if (error) return error;
 
     const body = await request.json();
-    const { email, name, role, branchId, schoolId, grade, assignedTeacher, approvalStatus } =
-      body as {
-        email: string;
-        name: string;
-        role?: UserRole;
-        branchId?: string;
-        schoolId?: string;
-        grade?: number;
-        assignedTeacher?: string;
-        approvalStatus?: ApprovalStatus;
-      };
+    const {
+      email,
+      password,
+      name,
+      role,
+      branchId,
+      schoolId,
+      grade,
+      assignedTeacher,
+      approvalStatus,
+    } = body as {
+      email: string;
+      password: string;
+      name: string;
+      role?: UserRole;
+      branchId?: string;
+      schoolId?: string;
+      grade?: number;
+      assignedTeacher?: string;
+      approvalStatus?: ApprovalStatus;
+    };
 
-    if (!email || !name) {
+    if (!email || !password || !name) {
       return apiResponse({
         status: HttpStatus.BAD_REQUEST,
-        message: "Email and name are required.",
+        message: "Email, password, and name are required.",
       });
     }
 
@@ -206,42 +217,57 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Build insert object
-    const insertData: {
-      email: string;
-      name: string;
-      role?: UserRole;
-      branchId?: string;
-      schoolId?: string;
-      grade?: number;
-      assignedTeacher?: string;
-      approvalStatus?: ApprovalStatus;
-      approvedBy?: string;
-      approvedAt?: Date;
-    } = {
-      email,
-      name,
-    };
+    // Create Supabase auth user
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+    );
 
-    if (role) insertData.role = role;
-    if (branchId) insertData.branchId = branchId;
-    if (schoolId) insertData.schoolId = schoolId;
-    if (grade) insertData.grade = grade;
-    if (assignedTeacher) insertData.assignedTeacher = assignedTeacher;
-    if (approvalStatus) {
-      insertData.approvalStatus = approvalStatus;
-      if (approvalStatus === "approved") {
-        insertData.approvedBy = profile!.id;
-        insertData.approvedAt = new Date();
-      }
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name,
+          ...(branchId && branchId !== "none" && { branchId }),
+          ...(schoolId && schoolId !== "none" && { schoolId }),
+          ...(grade && { grade }),
+          ...(assignedTeacher && assignedTeacher !== "none" && { assignedTeacher }),
+        },
+      },
+    });
+
+    if (authError) {
+      console.error("Error creating auth user:", authError);
+      return apiResponse({
+        status: HttpStatus.BAD_REQUEST,
+        message: authError.message || "Failed to create auth user.",
+      });
     }
 
-    // Insert the new user
-    const result = await db.insert(profiles).values(insertData).returning();
-    const newUser = result[0];
+    // Update profile with role and approvalStatus (trigger sets defaults)
+    if (authData.user && (role || approvalStatus)) {
+      const updateData: {
+        role?: UserRole;
+        approvalStatus?: ApprovalStatus;
+        approvedBy?: string;
+        approvedAt?: Date;
+      } = {};
+
+      if (role) updateData.role = role;
+      if (approvalStatus) {
+        updateData.approvalStatus = approvalStatus;
+        if (approvalStatus === "approved") {
+          updateData.approvedBy = profile!.id;
+          updateData.approvedAt = new Date();
+        }
+      }
+
+      await db.update(profiles).set(updateData).where(eq(profiles.id, authData.user.id));
+    }
 
     return apiResponse({
-      data: newUser,
+      data: authData,
       status: HttpStatus.CREATED,
     });
   } catch (error) {
