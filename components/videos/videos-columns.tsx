@@ -29,9 +29,16 @@ interface CreateVideosColumnsProps {
   onUpdate?: (video: Video) => void;
   onDelete?: (video: Video) => void;
   t: ReturnType<typeof useTranslations<"Videos">>;
+  tFilters: ReturnType<typeof useTranslations<"Videos.search.filters">>;
 }
 
-export function createVideosColumns({ userRole, onUpdate, onDelete, t }: CreateVideosColumnsProps) {
+export function createVideosColumns({
+  userRole,
+  onUpdate,
+  onDelete,
+  t,
+  tFilters,
+}: CreateVideosColumnsProps) {
   const columns: ColumnDef<Video>[] = [
     {
       id: "spacer",
@@ -148,7 +155,9 @@ export function createVideosColumns({ userRole, onUpdate, onDelete, t }: CreateV
         return (
           <div className="flex items-center gap-2">
             <Clock className="size-4 text-muted-foreground shrink-0" />
-            <span className="text-sm text-foreground truncate">{video.examSet.semester}</span>
+            <span className="text-sm text-foreground truncate">
+              {video.examSet.semester === "1st" ? tFilters("semester1") : tFilters("semester2")}
+            </span>
           </div>
         );
       },
@@ -172,7 +181,7 @@ export function createVideosColumns({ userRole, onUpdate, onDelete, t }: CreateV
           <div className="flex items-center gap-2">
             <ClipboardList className="size-4 text-muted-foreground shrink-0" />
             <span className="text-sm text-foreground truncate">
-              {toSentenceCase(video.examSet.examType)}
+              {video.examSet.examType === "midterm" ? tFilters("midterm") : tFilters("final")}
             </span>
           </div>
         );

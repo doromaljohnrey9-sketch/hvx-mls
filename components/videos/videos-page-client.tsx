@@ -45,6 +45,7 @@ export function VideosPageClient() {
   } = useVideoSearch();
 
   const t = useTranslations("Videos");
+  const tFilters = useTranslations("Videos.search.filters");
 
   const columns = createVideosColumns({
     userRole: profile?.role,
@@ -57,6 +58,7 @@ export function VideosPageClient() {
       setIsDeleteDialogOpen(true);
     },
     t,
+    tFilters,
   });
 
   return (
