@@ -114,6 +114,10 @@
     }
   },
   "Auth": {
+    "hero": {
+      "title": "Past-exam explainer videos, organized and searchable.",
+      "description": "Search by school, year, semester, exam type, and problem number. Watch 600+ explainer videos approved by your teachers."
+    },
     "common": {
       "email": "Email Address",
       "password": "Password",
