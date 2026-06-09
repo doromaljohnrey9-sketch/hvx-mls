@@ -384,61 +384,67 @@ export const PageClient = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mx-auto">
           {/* Card 1 */}
-          <Card className="bg-muted rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all">
-            <CardContent className="p-0">
-              <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
-                <Layers className="size-6 text-primary" />
-              </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">
-                {t("featured.school1.name")}
-              </h3>
-              <p className="text-muted-foreground text-sm mb-8">{t("featured.school1.desc")}</p>
-              <div className="flex justify-between items-end">
-                <span className="text-sm font-medium text-primary">
-                  {t("featured.videoCount", { count: 120 })}
-                </span>
-                <ArrowUpRight className="size-5 text-foreground opacity-50 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-              </div>
-            </CardContent>
-          </Card>
+          <Link href="/search" className="block">
+            <Card className="bg-muted rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all h-full">
+              <CardContent className="p-0">
+                <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
+                  <Layers className="size-6 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-2">
+                  {t("featured.school1.name")}
+                </h3>
+                <p className="text-muted-foreground text-sm mb-8">{t("featured.school1.desc")}</p>
+                <div className="flex justify-between items-end">
+                  <span className="text-sm font-medium text-primary">
+                    {t("featured.videoCount", { count: 120 })}
+                  </span>
+                  <ArrowUpRight className="size-5 text-foreground opacity-50 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
           {/* Card 2 */}
-          <Card className="bg-muted rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all">
-            <CardContent className="p-0">
-              <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
-                <Building2 className="size-6 text-primary" />
-              </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">
-                {t("featured.school2.name")}
-              </h3>
-              <p className="text-muted-foreground text-sm mb-8">{t("featured.school2.desc")}</p>
-              <div className="flex justify-between items-end">
-                <span className="text-sm font-medium text-primary">
-                  {t("featured.videoCount", { count: 95 })}
-                </span>
-                <ArrowUpRight className="size-5 text-foreground opacity-50 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-              </div>
-            </CardContent>
-          </Card>
+          <Link href="/search" className="block">
+            <Card className="bg-muted rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all h-full">
+              <CardContent className="p-0">
+                <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
+                  <Building2 className="size-6 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-2">
+                  {t("featured.school2.name")}
+                </h3>
+                <p className="text-muted-foreground text-sm mb-8">{t("featured.school2.desc")}</p>
+                <div className="flex justify-between items-end">
+                  <span className="text-sm font-medium text-primary">
+                    {t("featured.videoCount", { count: 95 })}
+                  </span>
+                  <ArrowUpRight className="size-5 text-foreground opacity-50 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
           {/* Card 3 */}
-          <Card className="bg-primary rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/80 transition-all relative overflow-hidden shadow-lg shadow-primary/20">
-            <CardContent className="p-0 relative z-10">
-              <div className="size-12 bg-primary-foreground/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6">
-                <Shield className="size-6 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-bold text-primary-foreground mb-2">
-                {t("featured.school3.name")}
-              </h3>
-              <p className="text-primary-foreground/80 text-sm mb-8">
-                {t("featured.school3.desc")}
-              </p>
-              <div className="flex justify-between items-end">
-                <span className="text-sm font-medium text-primary-foreground">
-                  {t("featured.videoCountPlus", { count: 600 })}
-                </span>
-                <ArrowUpRight className="size-5 text-primary-foreground opacity-90 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-              </div>
-            </CardContent>
-          </Card>
+          <Link href="/search" className="block">
+            <Card className="bg-primary rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/80 transition-all relative overflow-hidden shadow-lg shadow-primary/20 h-full">
+              <CardContent className="p-0 relative z-10">
+                <div className="size-12 bg-primary-foreground/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6">
+                  <Shield className="size-6 text-primary-foreground" />
+                </div>
+                <h3 className="text-2xl font-bold text-primary-foreground mb-2">
+                  {t("featured.school3.name")}
+                </h3>
+                <p className="text-primary-foreground/80 text-sm mb-8">
+                  {t("featured.school3.desc")}
+                </p>
+                <div className="flex justify-between items-end">
+                  <span className="text-sm font-medium text-primary-foreground">
+                    {t("featured.videoCountPlus", { count: 600 })}
+                  </span>
+                  <ArrowUpRight className="size-5 text-primary-foreground opacity-90 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
       </section>
 
@@ -490,20 +496,8 @@ export const PageClient = () => {
           </div>
 
           <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground mb-12">
-            <Link href="#" className="hover:text-primary transition-colors">
+            <Link href="/dashboard" className="hover:text-primary transition-colors">
               {t("footer.modules")}
-            </Link>
-            <Link href="#" className="hover:text-primary transition-colors">
-              {t("footer.about")}
-            </Link>
-            <Link href="#" className="hover:text-primary transition-colors">
-              {t("footer.support")}
-            </Link>
-            <Link href="#" className="hover:text-primary transition-colors">
-              {t("footer.privacy")}
-            </Link>
-            <Link href="#" className="hover:text-primary transition-colors">
-              {t("footer.terms")}
             </Link>
           </div>
 

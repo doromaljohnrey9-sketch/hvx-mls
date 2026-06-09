@@ -11,7 +11,6 @@ import { Mail, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FieldError, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { PasswordInput } from "@/components/shared/password-input";
 
 import { getSupabaseClient } from "@/lib/supabase/client";
@@ -65,7 +64,7 @@ export const PageClient = () => {
 
   return (
     <div className="grid min-h-screen w-full lg:grid-cols-2">
-      {/* Left: Placeholder image panel */}
+      {/* Left: Hero panel */}
       <div className="relative hidden overflow-hidden bg-muted lg:block">
         <Link
           href="/"
@@ -74,8 +73,15 @@ export const PageClient = () => {
           <ArrowLeft className="size-4" />
           {t("common.backToHome")}
         </Link>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <AspectRatio ratio={16 / 9} className="w-full max-w-md"></AspectRatio>
+        <div className="absolute inset-0 flex flex-col items-start justify-start px-12 pt-32 text-left">
+          <div className="max-w-lg">
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-6 leading-[1.05]">
+              {t("hero.title")}
+            </h1>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              {t("hero.description")}
+            </p>
+          </div>
         </div>
         <div className="absolute inset-0 bg-linear-to-t from-background/80 via-background/10 to-transparent" />
       </div>
