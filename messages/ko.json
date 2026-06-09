@@ -8,7 +8,7 @@
     "students": "학생"
   },
   "Index": {
-    "title": "Math Learning Studio",
+    "title": "수학 학습 스튜디오",
     "description": "기출문제 해설 영상 시스템",
     "hero": {
       "title": "체계적이고 검색 가능한 기출문제 해설 영상",
@@ -393,7 +393,7 @@
   },
   "Sidebar": {
     "platform": "MLS",
-    "tagline": "Math Learning Studio",
+    "tagline": "수학 학습 스튜디오",
     "dashboard": "대시보드",
     "searchvideos": "동영상 검색",
     "students": "학생 관리",

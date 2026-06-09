@@ -165,8 +165,8 @@ export function VideosFilters({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">{t("filters.allSemesters")}</SelectItem>
-              <SelectItem value="1">{t("filters.semester1")}</SelectItem>
-              <SelectItem value="2">{t("filters.semester2")}</SelectItem>
+              <SelectItem value="1st">{t("filters.semester1")}</SelectItem>
+              <SelectItem value="2nd">{t("filters.semester2")}</SelectItem>
             </SelectContent>
           </Select>
         </div>

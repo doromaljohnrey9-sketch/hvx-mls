@@ -50,6 +50,7 @@ import { useTranslations } from "next-intl";
 export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDialogProps) {
   const queryClient = useQueryClient();
   const t = useTranslations("Videos.management");
+  const tFilters = useTranslations("Videos.search.filters");
 
   const { data: examSets } = useQuery(getExamSetsQueryOptions()) as {
     data: ExamSetWithSchoolName[] | undefined;
@@ -130,7 +131,9 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
                 <SelectContent>
                   {examSets?.map((examSet) => (
                     <SelectItem key={examSet.id} value={examSet.id}>
-                      {examSet.schoolName} - {examSet.year} {examSet.semester} {examSet.examType} G
+                      {examSet.schoolName} - {examSet.year}{" "}
+                      {examSet.semester === "1st" ? tFilters("semester1") : tFilters("semester2")}{" "}
+                      {examSet.examType === "midterm" ? tFilters("midterm") : tFilters("final")} G
                       {examSet.grade} - {examSet.subject} - {examSet.title}
                     </SelectItem>
                   ))}

@@ -20,7 +20,7 @@ export const PublicHeader = () => {
         <Link href="/">
           <div className="flex items-center gap-2">
             <Image src="/logo.png" alt="MLS Logo" width={32} height={32} className="rounded-sm" />
-            <span className="font-bold text-xl tracking-tight text-foreground">MLS</span>
+            <span className="font-bold text-lg tracking-tight text-foreground">{t("title")}</span>
           </div>
         </Link>
       </div>
