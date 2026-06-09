@@ -329,25 +329,30 @@ LANGUAGE plpgsql
 SECURITY DEFINER SET search_path = ''
 AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email, name, role, branch_id, school_id, grade, assigned_teacher, approval_status)
+  INSERT INTO public.profiles (id, created_at, updated_at, email, name, role, branch_id, school_id, grade, assigned_teacher, approval_status)
   VALUES (
     new.id,
+    now(),
+    now(),
     new.email,
     COALESCE(new.raw_user_meta_data ->> 'name', 'Unknown User'),
     'student',
     CASE
-      WHEN new.raw_user_meta_data ->> 'branchId' IS NULL THEN NULL
+      WHEN new.raw_user_meta_data ->> 'branchId' IS NULL OR new.raw_user_meta_data ->> 'branchId' = 'none' THEN NULL
       ELSE (new.raw_user_meta_data ->> 'branchId')::uuid
     END,
     CASE
-      WHEN new.raw_user_meta_data ->> 'schoolId' IS NULL THEN NULL
+      WHEN new.raw_user_meta_data ->> 'schoolId' IS NULL OR new.raw_user_meta_data ->> 'schoolId' = 'none' THEN NULL
       ELSE (new.raw_user_meta_data ->> 'schoolId')::uuid
     END,
     CASE
-      WHEN new.raw_user_meta_data ->> 'grade' IS NULL THEN NULL
+      WHEN new.raw_user_meta_data ->> 'grade' IS NULL OR new.raw_user_meta_data ->> 'grade' = 'none' THEN NULL
       ELSE (new.raw_user_meta_data ->> 'grade')::integer
     END,
-    new.raw_user_meta_data ->> 'assignedTeacher',
+    CASE
+      WHEN new.raw_user_meta_data ->> 'assignedTeacher' IS NULL OR new.raw_user_meta_data ->> 'assignedTeacher' = 'none' THEN NULL
+      ELSE new.raw_user_meta_data ->> 'assignedTeacher'
+    END,
     'pending'
   );
   RETURN new;

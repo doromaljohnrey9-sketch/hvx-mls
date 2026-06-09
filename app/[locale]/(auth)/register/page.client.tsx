@@ -84,7 +84,16 @@ export const PageClient = () => {
   const onFormSubmit = (values: RegisterFormValues) => {
     startTransition(async () => {
       try {
-        const { error } = await supabase.auth.signUp({
+        console.log("Attempting signup with:", {
+          email: values.email,
+          name: values.name,
+          branchId: values.branchId,
+          schoolId: values.schoolId,
+          grade: values.grade,
+          assignedTeacher: values.assignedTeacher,
+        });
+
+        const { data, error } = await supabase.auth.signUp({
           email: values.email,
           password: values.password,
           options: {
@@ -99,7 +108,10 @@ export const PageClient = () => {
           },
         });
 
+        console.log("Signup response:", { data, error });
+
         if (error) {
+          console.error("Signup error details:", error);
           toast.error(t("register.failed"), {
             description: error.message,
           });
@@ -113,7 +125,7 @@ export const PageClient = () => {
         form.reset();
         router.push(AUTH_ROUTES.LOGIN);
       } catch (error) {
-        console.error(error);
+        console.error("Unexpected signup error:", error);
         toast.error(t("common.somethingWentWrong"), {
           description: t("common.tryAgain"),
         });
@@ -421,12 +433,12 @@ export const PageClient = () => {
                 {t.rich("common.agreementSignup", {
                   terms: (chunks) => (
                     <Link href="#" className="underline hover:text-muted-foreground">
-                      {t("common.terms")}
+                      {chunks}
                     </Link>
                   ),
                   privacy: (chunks) => (
                     <Link href="#" className="underline hover:text-muted-foreground">
-                      {t("common.privacyPolicy")}
+                      {chunks}
                     </Link>
                   ),
                 })}
