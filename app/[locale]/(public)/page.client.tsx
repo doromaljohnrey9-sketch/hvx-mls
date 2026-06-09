@@ -1,19 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { ArrowUpRight, RefreshCw, Shield, Building2, Layers } from "lucide-react";
 import { Bar, BarChart } from "recharts";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { LanguageToggle } from "@/components/shared/language-toggle";
 
 import { useAuth } from "@/hooks/use-auth";
+import { PublicHeader } from "@/components/shared/public-header";
+import { PublicFooter } from "@/components/shared/public-footer";
 
 export const PageClient = () => {
   const { user } = useAuth();
@@ -21,27 +20,7 @@ export const PageClient = () => {
 
   return (
     <div className="min-h-screen bg-muted/50 text-foreground flex flex-col">
-      {/* NAVIGATION */}
-      <nav className="w-full bg-card max-w-[1400px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Image src="/logo.png" alt="MLS Logo" width={32} height={32} className="rounded-sm" />
-          <span className="font-bold text-xl tracking-tight text-foreground">MLS</span>
-        </div>
-
-        <div className="flex items-center gap-4 text-sm font-medium">
-          <Link
-            href="/login"
-            className="hidden sm:block text-foreground border border-border px-5 py-2.5 rounded-full hover:bg-accent transition-colors"
-          >
-            {t("hero.login")}
-          </Link>
-          <Link href="/register">
-            <Button className="rounded-full px-5 py-2.5">{t("hero.signup")}</Button>
-          </Link>
-          <ModeToggle />
-          <LanguageToggle />
-        </div>
-      </nav>
+      <PublicHeader />
 
       {/* HERO SECTION */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-12 sm:pt-16 lg:pt-28 pb-16 sm:pb-20 flex flex-col items-center text-center">
@@ -485,27 +464,7 @@ export const PageClient = () => {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="w-full bg-background pt-16 pb-8 border-t border-border">
-        <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col items-center">
-          <div className="flex items-start gap-2 mb-8">
-            <Image src="/logo.png" alt="MLS Logo" width={24} height={24} className="rounded-sm" />
-            <span className="font-bold text-lg tracking-tight text-foreground leading-none">
-              MLS
-            </span>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground mb-12">
-            <Link href="/dashboard" className="hover:text-primary transition-colors">
-              {t("footer.modules")}
-            </Link>
-          </div>
-
-          <div className="text-center text-[11px] text-muted-foreground w-full pt-4 border-t border-border">
-            {t("footer.copyright")}
-          </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 };
