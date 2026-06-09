@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { Link, useRouter } from "@/i18n/routing";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -229,7 +228,9 @@ export const PageClient = () => {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
-                      <FieldLabel htmlFor="confirmPassword">{t("common.confirmPassword")}</FieldLabel>
+                      <FieldLabel htmlFor="confirmPassword">
+                        {t("common.confirmPassword")}
+                      </FieldLabel>
                       <PasswordInput
                         {...field}
                         id="confirmPassword"

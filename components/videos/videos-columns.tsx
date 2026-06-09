@@ -14,7 +14,7 @@ import {
   Award,
   Hash,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 import { VideoActionsDropdown } from "@/components/videos/video-actions-dropdown";
 

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { type LucideIcon } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/routing";
 
 import {
   SidebarGroup,

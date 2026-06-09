@@ -18,7 +18,7 @@ import {
   MoonIcon,
   PlayIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 // Default Supabase Storage bucket for exam videos
 const DEFAULT_VIDEO_BUCKET = "exams";
