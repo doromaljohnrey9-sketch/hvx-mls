@@ -497,7 +497,9 @@
         "semester": "학기",
         "examType": "시험 종류",
         "grade": "학년",
-        "status": "상태"
+        "subject": "과목",
+        "status": "상태",
+        "examSetTitle": "시험 세트 제목"
       },
       "placeholders": {
         "selectExamSet": "시험 세트 선택",
