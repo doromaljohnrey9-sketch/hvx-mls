@@ -363,7 +363,7 @@ export const PageClient = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mx-auto">
           {/* Card 1 */}
-          <Link href="/search" className="block">
+          <Link href="/login" className="block">
             <Card className="bg-muted rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all h-full">
               <CardContent className="p-0">
                 <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
@@ -383,7 +383,7 @@ export const PageClient = () => {
             </Card>
           </Link>
           {/* Card 2 */}
-          <Link href="/search" className="block">
+          <Link href="/login" className="block">
             <Card className="bg-muted rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/20 transition-all h-full">
               <CardContent className="p-0">
                 <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
@@ -403,7 +403,7 @@ export const PageClient = () => {
             </Card>
           </Link>
           {/* Card 3 */}
-          <Link href="/search" className="block">
+          <Link href="/login" className="block">
             <Card className="bg-primary rounded-4xl p-6 sm:p-10 group cursor-pointer border border-transparent hover:border-primary/80 transition-all relative overflow-hidden shadow-lg shadow-primary/20 h-full">
               <CardContent className="p-0 relative z-10">
                 <div className="size-12 bg-primary-foreground/10 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6">
