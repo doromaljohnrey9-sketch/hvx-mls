@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 
 import * as React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 import {
   Sidebar,
@@ -40,7 +40,7 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
-      queryClient.invalidateQueries({ queryKey: getQueryKey.users.all });
+      queryClient.invalidateQueries({ queryKey: getQueryKey.users.me() });
       router.push("/");
     } catch (error) {
       console.error("Sign out failed:", error);

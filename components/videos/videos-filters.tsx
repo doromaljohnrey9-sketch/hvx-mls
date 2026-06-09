@@ -112,7 +112,7 @@ export function VideosFilters({
         </div>
         <div className="flex items-center gap-2">
           {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters}>
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="whitespace-nowrap">
               <XIcon className="size-4 mr-2" />
               {t("clearFilters")}
             </Button>
@@ -148,6 +148,8 @@ export function VideosFilters({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">{t("filters.allYears")}</SelectItem>
+              <SelectItem value="2026">2026</SelectItem>
+              <SelectItem value="2025">2025</SelectItem>
               <SelectItem value="2024">2024</SelectItem>
               <SelectItem value="2023">2023</SelectItem>
               <SelectItem value="2022">2022</SelectItem>

@@ -14,7 +14,7 @@ import {
   Award,
   Hash,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 import { VideoActionsDropdown } from "@/components/videos/video-actions-dropdown";
 
@@ -75,9 +75,12 @@ export function createVideosColumns({ userRole, onUpdate, onDelete, t }: CreateV
       cell: ({ row }) => {
         const video = row.original;
         return (
-          <span className="font-semibold text-sm text-foreground truncate">
+          <div
+            className="font-semibold text-sm text-foreground truncate"
+            title={video.title || "N/A"}
+          >
             {video.title || "N/A"}
-          </span>
+          </div>
         );
       },
       size: 200,
@@ -247,7 +250,9 @@ export function createVideosColumns({ userRole, onUpdate, onDelete, t }: CreateV
     },
     {
       id: "actions",
-      header: () => <div className="text-sm font-semibold text-foreground">{t("table.actions")}</div>,
+      header: () => (
+        <div className="text-sm font-semibold text-foreground">{t("table.actions")}</div>
+      ),
       cell: ({ row }) => {
         const video = row.original;
         return (

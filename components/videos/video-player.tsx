@@ -18,7 +18,7 @@ import {
   MoonIcon,
   PlayIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 // Default Supabase Storage bucket for exam videos
 const DEFAULT_VIDEO_BUCKET = "exams";
@@ -59,9 +59,8 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
   const { data: video, isLoading, error } = useQuery(getVideoByIdQueryOptions(videoId));
 
   const resolvedVideoUrl = video
-    ? video.filePath
-      ? getPublicUrlSync(DEFAULT_VIDEO_BUCKET, video.filePath)
-      : video.videoUrl
+    ? video.videoUrl ||
+      (video.filePath ? getPublicUrlSync(DEFAULT_VIDEO_BUCKET, video.filePath) : undefined)
     : undefined;
 
   if (isLoading) {
@@ -93,12 +92,24 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
     );
   }
 
-  const embedUrl = resolvedVideoUrl
-    ? resolvedVideoUrl.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")
-    : undefined;
-
   const isYouTube =
     resolvedVideoUrl?.includes("youtube.com") || resolvedVideoUrl?.includes("youtu.be");
+
+  const isGoogleDrive = resolvedVideoUrl?.includes("drive.google.com");
+
+  const getDriveEmbedUrl = (url: string) => {
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) {
+      return `https://drive.google.com/file/d/${match[1]}/preview`;
+    }
+    return url;
+  };
+
+  const embedUrl = isYouTube
+    ? resolvedVideoUrl?.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/")
+    : isGoogleDrive
+      ? getDriveEmbedUrl(resolvedVideoUrl!)
+      : undefined;
 
   const translatedSemester =
     video.examSet.semester === "1st" ? tFilters("semester1") : tFilters("semester2");
@@ -107,6 +118,21 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
     video.examSet.examType === "midterm" ? tFilters("midterm") : tFilters("final");
 
   const translatedVisibility = tManagement(`options.${video.visibility}`);
+
+  const handleVideoPlay = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const videoElement = e.currentTarget;
+    if (videoElement.requestFullscreen) {
+      videoElement.requestFullscreen().catch((err) => {
+        console.log("Fullscreen request failed:", err);
+      });
+    } else if ((videoElement as any).webkitRequestFullscreen) {
+      (videoElement as any).webkitRequestFullscreen();
+    } else if ((videoElement as any).mozRequestFullScreen) {
+      (videoElement as any).mozRequestFullScreen();
+    } else if ((videoElement as any).msRequestFullscreen) {
+      (videoElement as any).msRequestFullscreen();
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
@@ -137,7 +163,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
         {/* Left — video */}
         <div>
           <div className="aspect-video w-full min-h-[360px] bg-primary-foreground rounded-xl overflow-hidden border border-border/60 shadow-none">
-            {isYouTube ? (
+            {isYouTube || isGoogleDrive ? (
               <iframe
                 src={embedUrl}
                 className="w-full h-full"
@@ -149,6 +175,7 @@ export function VideoPlayer({ videoId }: VideoPlayerProps) {
                 src={resolvedVideoUrl}
                 className="w-full h-full bg-primary-foreground"
                 controls
+                onPlay={handleVideoPlay}
                 onError={(e) => console.error("Video error:", e)}
               />
             )}

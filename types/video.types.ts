@@ -4,6 +4,8 @@ export interface Video {
   id: string;
   examSetId: string;
   problemNumber: number;
+  questionType: "multiple_choice" | "essay";
+  part: number;
   videoUrl: string;
   filePath: string | null;
   duration: number | null;

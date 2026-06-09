@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import { Link } from "@/i18n/routing";
 import { ArrowUpRight, RefreshCw, Shield, Building2, Layers } from "lucide-react";
 import { Bar, BarChart } from "recharts";
 import { useTranslations } from "next-intl";
@@ -97,7 +97,9 @@ export const PageClient = () => {
             <div className="inline-flex size-12 rounded-xl items-center justify-center border border-border mb-6 bg-muted">
               <RefreshCw className="size-5 text-foreground" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">{t("features.feature1.title")}</h3>
+            <h3 className="text-xl font-bold text-foreground mb-3">
+              {t("features.feature1.title")}
+            </h3>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-[280px]">
               {t("features.feature1.desc")}
             </p>
@@ -107,7 +109,9 @@ export const PageClient = () => {
             <div className="inline-flex size-12 rounded-xl items-center justify-center border border-border mb-6 bg-muted">
               <Building2 className="size-5 text-foreground" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">{t("features.feature2.title")}</h3>
+            <h3 className="text-xl font-bold text-foreground mb-3">
+              {t("features.feature2.title")}
+            </h3>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-[280px]">
               {t("features.feature2.desc")}
             </p>
@@ -117,7 +121,9 @@ export const PageClient = () => {
             <div className="inline-flex size-12 rounded-xl items-center justify-center border border-border mb-6 bg-muted">
               <Shield className="size-5 text-foreground" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">{t("features.feature3.title")}</h3>
+            <h3 className="text-xl font-bold text-foreground mb-3">
+              {t("features.feature3.title")}
+            </h3>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-[280px]">
               {t("features.feature3.desc")}
             </p>
@@ -196,7 +202,9 @@ export const PageClient = () => {
                     <div>
                       <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">
                         <span>{t("stats.box2.complete")}</span>{" "}
-                        <span className="text-foreground">{t("stats.box2.sets", { count: 45 })}</span>
+                        <span className="text-foreground">
+                          {t("stats.box2.sets", { count: 45 })}
+                        </span>
                       </div>
                       <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
                         <div className="w-[85%] h-full bg-foreground rounded-full"></div>
@@ -381,7 +389,9 @@ export const PageClient = () => {
               <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
                 <Layers className="size-6 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">{t("featured.school1.name")}</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-2">
+                {t("featured.school1.name")}
+              </h3>
               <p className="text-muted-foreground text-sm mb-8">{t("featured.school1.desc")}</p>
               <div className="flex justify-between items-end">
                 <span className="text-sm font-medium text-primary">
@@ -397,7 +407,9 @@ export const PageClient = () => {
               <div className="size-12 bg-card rounded-xl flex items-center justify-center mb-6 shadow-sm">
                 <Building2 className="size-6 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-2">{t("featured.school2.name")}</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-2">
+                {t("featured.school2.name")}
+              </h3>
               <p className="text-muted-foreground text-sm mb-8">{t("featured.school2.desc")}</p>
               <div className="flex justify-between items-end">
                 <span className="text-sm font-medium text-primary">
@@ -416,7 +428,9 @@ export const PageClient = () => {
               <h3 className="text-2xl font-bold text-primary-foreground mb-2">
                 {t("featured.school3.name")}
               </h3>
-              <p className="text-primary-foreground/80 text-sm mb-8">{t("featured.school3.desc")}</p>
+              <p className="text-primary-foreground/80 text-sm mb-8">
+                {t("featured.school3.desc")}
+              </p>
               <div className="flex justify-between items-end">
                 <span className="text-sm font-medium text-primary-foreground">
                   {t("featured.videoCountPlus", { count: 600 })}

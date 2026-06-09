@@ -1,5 +1,6 @@
 import { eq, and, like, or, sql } from "drizzle-orm";
 import { NextRequest } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 
 import { profiles, branches, schools } from "@/drizzle/schemas";
 import { alias } from "drizzle-orm/pg-core";
@@ -121,6 +122,159 @@ export async function GET(request: NextRequest) {
     return apiResponse({
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       message: "An error occurred while fetching the student list.",
+    });
+  }
+}
+
+/**
+ * POST /api/admin/students
+ * Create a new user. Teacher+ only.
+ * Body: { email: string, password: string, name: string, role?: UserRole, branchId?: string, schoolId?: string, grade?: number, assignedTeacher?: string, approvalStatus?: ApprovalStatus }
+ */
+export async function POST(request: NextRequest) {
+  try {
+    const rateLimited = await rateLimit("api");
+    if (rateLimited) return rateLimited;
+
+    const { profile, error } = await requireRole(ADMIN_ROLES);
+    if (error) return error;
+
+    const body = await request.json();
+    const {
+      email,
+      password,
+      name,
+      role,
+      branchId,
+      schoolId,
+      grade,
+      assignedTeacher,
+      approvalStatus,
+    } = body as {
+      email: string;
+      password: string;
+      name: string;
+      role?: UserRole;
+      branchId?: string;
+      schoolId?: string;
+      grade?: number;
+      assignedTeacher?: string;
+      approvalStatus?: ApprovalStatus;
+    };
+
+    if (!email || !password || !name) {
+      return apiResponse({
+        status: HttpStatus.BAD_REQUEST,
+        message: "Email, password, and name are required.",
+      });
+    }
+
+    // Validate role if provided
+    if (role) {
+      const allowedRoles = ["student", "teacher", "branch_admin", "super_admin"];
+      if (!allowedRoles.includes(role)) {
+        return apiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          message: "Invalid role.",
+        });
+      }
+    }
+
+    // Validate approvalStatus if provided
+    if (approvalStatus) {
+      const allowedStatuses = ["pending", "approved", "rejected", "blocked"];
+      if (!allowedStatuses.includes(approvalStatus)) {
+        return apiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          message: "Invalid approval status.",
+        });
+      }
+    }
+
+    // Check if email already exists
+    const existingUsers = await db
+      .select()
+      .from(profiles)
+      .where(eq(profiles.email, email))
+      .limit(1);
+    if (existingUsers.length > 0) {
+      return apiResponse({
+        status: HttpStatus.CONFLICT,
+        message: "A user with this email already exists.",
+      });
+    }
+
+    // Branch Admin can only create users in their own branch
+    if (
+      profile!.role !== "super_admin" &&
+      profile!.branchId &&
+      branchId &&
+      branchId !== profile!.branchId
+    ) {
+      return apiResponse({
+        status: HttpStatus.FORBIDDEN,
+        message: "Cannot create users for other branches.",
+      });
+    }
+
+    // Create Supabase auth user
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+    );
+
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name,
+          ...(branchId && branchId !== "none" && { branchId }),
+          ...(schoolId && schoolId !== "none" && { schoolId }),
+          ...(grade && { grade }),
+          ...(assignedTeacher && assignedTeacher !== "none" && { assignedTeacher }),
+        },
+      },
+    });
+
+    if (authError) {
+      console.error("Error creating auth user:", authError);
+      return apiResponse({
+        status: HttpStatus.BAD_REQUEST,
+        message: authError.message || "Failed to create auth user.",
+      });
+    }
+
+    // Update profile with role and approvalStatus (trigger sets defaults)
+    if (authData.user && (role || approvalStatus)) {
+      const updateData: {
+        role?: UserRole;
+        approvalStatus?: ApprovalStatus;
+        approvedBy?: string;
+        approvedAt?: Date;
+      } = {};
+
+      if (role) updateData.role = role;
+      if (approvalStatus) {
+        updateData.approvalStatus = approvalStatus;
+        if (approvalStatus === "approved") {
+          updateData.approvedBy = profile!.id;
+          updateData.approvedAt = new Date();
+        }
+      }
+
+      await db.update(profiles).set(updateData).where(eq(profiles.id, authData.user.id));
+    }
+
+    return apiResponse({
+      data: authData,
+      status: HttpStatus.CREATED,
+    });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return apiResponse({
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: "An error occurred while creating the user.",
     });
   }
 }

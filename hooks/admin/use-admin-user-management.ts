@@ -8,7 +8,7 @@ import { adminService } from "@/services/admin.service";
 import { getAdminUsersQueryOptions } from "@/queries/admin-users.query";
 import { getQueryKey } from "@/lib/query/get-query-keys";
 import type { AdminUserUpdate } from "@/types/admin.types";
-import type { ApprovalStatus } from "@/types/drizzle.types";
+import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 
 export function useAdminUserManagement() {
   const queryClient = useQueryClient();
@@ -51,6 +51,31 @@ export function useAdminUserManagement() {
     },
   });
 
+  const createUser = useMutation({
+    mutationFn: async (data: {
+      email: string;
+      password: string;
+      name: string;
+      role?: UserRole;
+      branchId?: string;
+      schoolId?: string;
+      grade?: number;
+      assignedTeacher?: string;
+      approvalStatus?: ApprovalStatus;
+    }) => {
+      return adminService.createUser(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getQueryKey.admin.users() });
+    },
+    onError: (error: any) => {
+      console.error("Failed to create user:", error);
+      toast.error("Failed to create user", {
+        description: error.response?.data?.message || error.message || "Please try again",
+      });
+    },
+  });
+
   const handleSearchChange = (value: string) => {
     setSearchInput(value);
   };
@@ -79,6 +104,7 @@ export function useAdminUserManagement() {
   return {
     users,
     updateUser,
+    createUser,
     isLoading: users.isLoading,
     search: searchInput,
     roleFilter,

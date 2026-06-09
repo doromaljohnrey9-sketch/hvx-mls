@@ -11,4 +11,5 @@ export {
   problemVideos,
   videoVisibilityEnum,
   videoUploadStatusEnum,
+  questionTypeEnum,
 } from "./problem-videos/problem-videos.schema";

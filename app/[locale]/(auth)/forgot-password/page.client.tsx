@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";

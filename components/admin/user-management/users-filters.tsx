@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SearchIcon, XIcon } from "lucide-react";
+import { UserCreateDialog } from "./user-create-dialog";
 
 interface UsersFiltersProps {
   search: string;
@@ -19,6 +20,7 @@ interface UsersFiltersProps {
   onSearchSubmit: () => void;
   onRoleFilterChange: (value: string) => void;
   onApprovalStatusFilterChange: (value: string) => void;
+  onCreateUser: (data: any) => void;
 }
 
 import { useTranslations } from "next-intl";
@@ -31,6 +33,7 @@ export function UsersFilters({
   onSearchSubmit,
   onRoleFilterChange,
   onApprovalStatusFilterChange,
+  onCreateUser,
 }: UsersFiltersProps) {
   const t = useTranslations("UserManagement");
   const tRoles = useTranslations("Dashboard.roles");
@@ -75,9 +78,14 @@ export function UsersFilters({
               {t("filters.all")}
             </Button>
           )}
+          <UserCreateDialog onCreateUser={onCreateUser} />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="w-full">
           <Select value={roleFilter} onValueChange={onRoleFilterChange}>
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder={t("filters.role")} />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={t("filters.role")} className="truncate" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">{t("filters.all")}</SelectItem>
@@ -87,9 +95,11 @@ export function UsersFilters({
               <SelectItem value="student">{tRoles("student")}</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+        <div className="w-full">
           <Select value={approvalStatusFilter} onValueChange={onApprovalStatusFilterChange}>
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder={t("filters.status")} />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={t("filters.status")} className="truncate" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">{t("filters.all")}</SelectItem>

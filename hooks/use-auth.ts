@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Session, User } from "@supabase/supabase-js";
 
 import { getSupabaseClient } from "@/lib/supabase/client";
 
 import { getUserQueryOptions } from "@/queries/user.query";
+import { getQueryKey } from "@/lib/query/get-query-keys";
 
 export const useAuth = () => {
   const supabase = getSupabaseClient();
+  const queryClient = useQueryClient();
 
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -37,6 +39,12 @@ export const useAuth = () => {
 
     return () => subscription?.unsubscribe();
   }, [supabase]);
+
+  useEffect(() => {
+    if (user) {
+      queryClient.invalidateQueries({ queryKey: getQueryKey.users.me() });
+    }
+  }, [user, queryClient]);
 
   return {
     session,

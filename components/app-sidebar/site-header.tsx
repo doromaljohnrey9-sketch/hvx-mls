@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { SidebarIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/routing";
 
 import {
   Breadcrumb,
@@ -31,7 +31,9 @@ export const SiteHeader = () => {
     const displaySegments = ["en", "ko"].includes(segments[0]) ? segments.slice(1) : segments;
 
     return displaySegments.map((segment, index) => {
-      let title = t.has(segment) ? t(segment as any) : segment.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+      let title = t.has(segment)
+        ? t(segment as any)
+        : segment.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
       const path = "/" + displaySegments.slice(0, index + 1).join("/");
       return {
         title,
