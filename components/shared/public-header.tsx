@@ -26,15 +26,23 @@ export const PublicHeader = () => {
       </div>
 
       <div className="flex items-center gap-4 text-sm font-medium">
-        <Link
-          href="/login"
-          className="hidden sm:block text-foreground border border-border px-5 py-2.5 rounded-full hover:bg-accent transition-colors"
-        >
-          {t("hero.login")}
-        </Link>
-        <Link href="/register">
-          <Button className="rounded-full px-5 py-2.5">{t("hero.signup")}</Button>
-        </Link>
+        {user ? (
+          <Link href="/dashboard">
+            <Button className="rounded-full px-5 py-2.5">Go to Dashboard</Button>
+          </Link>
+        ) : (
+          <>
+            <Link
+              href="/login"
+              className="hidden sm:block text-foreground border border-border px-5 py-2.5 rounded-full hover:bg-accent transition-colors"
+            >
+              {t("hero.login")}
+            </Link>
+            <Link href="/register">
+              <Button className="rounded-full px-5 py-2.5">{t("hero.signup")}</Button>
+            </Link>
+          </>
+        )}
         <ModeToggle />
         <LanguageToggle />
       </div>
