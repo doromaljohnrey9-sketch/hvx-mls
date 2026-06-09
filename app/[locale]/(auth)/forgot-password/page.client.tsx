@@ -139,12 +139,12 @@ export const PageClient = () => {
                 {t.rich("common.agreementLogin", {
                   terms: (chunks) => (
                     <Link href="#" className="underline hover:text-muted-foreground">
-                      {t("common.terms")}
+                      {chunks}
                     </Link>
                   ),
                   privacy: (chunks) => (
                     <Link href="#" className="underline hover:text-muted-foreground">
-                      {t("common.privacyPolicy")}
+                      {chunks}
                     </Link>
                   ),
                 })}

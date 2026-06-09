@@ -45,12 +45,15 @@ export async function updateSession(
   const claims = data?.claims;
   const pathname = request.nextUrl.pathname;
 
+  // Handle locale-prefixed routes (e.g., /en/dashboard, /ko/search)
+  const pathnameWithoutLocale = pathname.replace(/^\/[a-z]{2}(\/|$)/, "/");
+
   const isProtected = protectedRoutes.some((pattern) => {
     if (pattern.endsWith("/*")) {
       const base = pattern.slice(0, -2);
-      return pathname === base || pathname.startsWith(`${base}/`);
+      return pathnameWithoutLocale === base || pathnameWithoutLocale.startsWith(`${base}/`);
     }
-    return pathname === pattern || pathname.startsWith(`${pattern}/`);
+    return pathnameWithoutLocale === pattern || pathnameWithoutLocale.startsWith(`${pattern}/`);
   });
 
   // Not a protected route — allow
@@ -59,7 +62,10 @@ export async function updateSession(
   // Unauthenticated — redirect to login
   if (!claims) {
     const url = request.nextUrl.clone();
-    url.pathname = DEFAULT_UNAUTH_REDIRECT;
+    // Preserve locale prefix if present
+    const localeMatch = pathname.match(/^\/([a-z]{2})(\/|$)/);
+    const locale = localeMatch ? `/${localeMatch[1]}` : "";
+    url.pathname = `${locale}${DEFAULT_UNAUTH_REDIRECT}`;
     url.searchParams.set("redirect", pathname);
     return NextResponse.redirect(url);
   }
@@ -70,65 +76,68 @@ export async function updateSession(
     const result = await db.select().from(profiles).where(eq(profiles.id, userId)).limit(1);
     const profile = result[0];
 
-    if (!profile) {
+    // Helper to preserve locale prefix in redirects
+    const getLocaleRedirect = (path: string) => {
       const url = request.nextUrl.clone();
-      url.pathname = DEFAULT_UNAUTH_REDIRECT;
+      const localeMatch = pathname.match(/^\/([a-z]{2})(\/|$)/);
+      const locale = localeMatch ? `/${localeMatch[1]}` : "";
+      url.pathname = `${locale}${path}`;
+      return url;
+    };
+
+    if (!profile) {
+      const url = getLocaleRedirect(DEFAULT_UNAUTH_REDIRECT);
       url.searchParams.set("redirect", pathname);
       return NextResponse.redirect(url);
     }
 
     // Handle pending, rejected, and blocked users (based on approvalStatus)
     if (profile.approvalStatus === "pending") {
-      if (pathname !== "/pending") {
-        const url = request.nextUrl.clone();
-        url.pathname = DEFAULT_PENDING_REDIRECT;
-        return NextResponse.redirect(url);
+      if (pathnameWithoutLocale !== "/pending") {
+        return NextResponse.redirect(getLocaleRedirect(DEFAULT_PENDING_REDIRECT));
       }
       return response;
     }
 
     if (profile.approvalStatus === "rejected") {
-      if (pathname !== "/denied") {
-        const url = request.nextUrl.clone();
-        url.pathname = PROTECTED_ROUTES.DENIED;
-        return NextResponse.redirect(url);
+      if (pathnameWithoutLocale !== "/denied") {
+        return NextResponse.redirect(getLocaleRedirect(PROTECTED_ROUTES.DENIED));
       }
       return response;
     }
 
     if (profile.approvalStatus === "blocked") {
-      if (pathname !== "/blocked") {
-        const url = request.nextUrl.clone();
-        url.pathname = PROTECTED_ROUTES.BLOCKED;
-        return NextResponse.redirect(url);
+      if (pathnameWithoutLocale !== "/blocked") {
+        return NextResponse.redirect(getLocaleRedirect(PROTECTED_ROUTES.BLOCKED));
       }
       return response;
     }
 
     // Admin route check — only teacher, branch_admin, super_admin
-    const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
+    const isAdminRoute =
+      pathnameWithoutLocale === "/admin" || pathnameWithoutLocale.startsWith("/admin/");
     const adminRoles = ["teacher", "branch_admin", "super_admin"];
 
     if (isAdminRoute && !adminRoles.includes(profile.role)) {
-      const url = request.nextUrl.clone();
       // Students redirect to search, others to dashboard
-      url.pathname = profile.role === "student" ? "/search" : "/dashboard";
-      return NextResponse.redirect(url);
+      const redirectPath = profile.role === "student" ? "/search" : "/dashboard";
+      return NextResponse.redirect(getLocaleRedirect(redirectPath));
     }
 
     // Students trying to access dashboard — redirect to search
-    if (profile.role === "student" && pathname === "/dashboard") {
-      const url = request.nextUrl.clone();
-      url.pathname = "/search";
-      return NextResponse.redirect(url);
+    if (profile.role === "student" && pathnameWithoutLocale === "/dashboard") {
+      return NextResponse.redirect(getLocaleRedirect("/search"));
     }
 
     // Approved users trying to access /pending, /denied, or /blocked — redirect based on role
-    if (pathname === "/pending" || pathname === "/denied" || pathname === "/blocked") {
-      const url = request.nextUrl.clone();
+    if (
+      pathnameWithoutLocale === "/pending" ||
+      pathnameWithoutLocale === "/denied" ||
+      pathnameWithoutLocale === "/blocked"
+    ) {
       // Students redirect to search, others to dashboard
-      url.pathname = profile.role === "student" ? "/search" : "/dashboard";
-      return NextResponse.redirect(url);
+      const redirectPath = profile.role === "student" ? "/search" : "/dashboard";
+      return NextResponse.redirect(getLocaleRedirect(redirectPath));
     }
   } catch (error) {
     console.error("Middleware role check failed:", error);
