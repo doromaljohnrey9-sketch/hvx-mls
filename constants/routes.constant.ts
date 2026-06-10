@@ -14,7 +14,7 @@ export const PROTECTED_ROUTES = {
   PENDING: "/pending",
   DENIED: "/denied",
   BLOCKED: "/blocked",
-  ADMIN_STUDENTS: "/admin/students",
+  ADMIN_USERS: "/admin/users",
   ADMIN_VIDEOS: "/admin/videos",
   SEARCH: "/search",
   VIDEO: "/videos",
@@ -25,7 +25,7 @@ export const API_ROUTES = {
     ME: "/api/users/me",
   },
   ADMIN: {
-    STUDENTS: "/api/admin/students",
+    USERS: "/api/admin/users",
   },
   DASHBOARD: {
     STATS: "/api/dashboard/stats",

@@ -18,8 +18,8 @@ export const APP_SIDEBAR_ITEMS = {
         roles: ["student", "teacher", "super_admin"], // All approved roles
       },
       {
-        name: "Students",
-        url: "/admin/students",
+        name: "Users",
+        url: "/admin/users",
         icon: UsersIcon,
         roles: ["teacher", "super_admin"], // Admin only
       },

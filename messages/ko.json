@@ -5,7 +5,7 @@
     "admin": "관리자",
     "videos": "동영상",
     "search": "검색",
-    "students": "학생"
+    "users": "사용자"
   },
   "Index": {
     "title": "수학 학습 스튜디오",
@@ -395,7 +395,7 @@
     "tagline": "수학 학습 스튜디오",
     "dashboard": "대시보드",
     "searchvideos": "동영상 검색",
-    "students": "학생 관리",
+    "users": "사용자 관리",
     "logout": "로그아웃",
     "logoutFailed": "로그아웃 실패",
     "tryAgain": "다시 시도해 주세요."

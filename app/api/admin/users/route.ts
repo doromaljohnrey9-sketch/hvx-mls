@@ -1,4 +1,4 @@
-import { eq, and, like, or, sql } from "drizzle-orm";
+import { eq, and, like, or } from "drizzle-orm";
 import { NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
@@ -20,8 +20,8 @@ const ADMIN_ROLES: UserRole[] = ["teacher", "super_admin"];
 const approverProfiles = alias(profiles, "approver_profiles");
 
 /**
- * GET /api/admin/students
- * List students with pagination and filtering. Teacher+ only.
+ * GET /api/admin/users
+ * List users with pagination and filtering. Teacher+ only.
  * Teacher: scoped to own branch. Super Admin: all branches.
  *
  * Query params:
@@ -106,10 +106,10 @@ export async function GET(request: NextRequest) {
 
     // Get paginated data
     const offset = (page - 1) * pageSize;
-    const students = await dataQuery.limit(pageSize).offset(offset);
+    const users = await dataQuery.limit(pageSize).offset(offset);
 
     const response: AdminUsersResponse = {
-      users: students,
+      users: users,
       total,
     };
 
@@ -118,16 +118,16 @@ export async function GET(request: NextRequest) {
       status: HttpStatus.OK,
     });
   } catch (error) {
-    console.error("Error fetching students:", error);
+    console.error("Error fetching users:", error);
     return apiResponse({
       status: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: "An error occurred while fetching the student list.",
+      message: "An error occurred while fetching the user list.",
     });
   }
 }
 
 /**
- * POST /api/admin/students
+ * POST /api/admin/users
  * Create a new user. Teacher+ only.
  * Body: { email: string, password: string, name: string, role?: UserRole, branchId?: string, schoolId?: string, grade?: number, assignedTeacher?: string, approvalStatus?: ApprovalStatus }
  */
@@ -280,8 +280,8 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * PATCH /api/admin/students
- * Update a student's role or approval status. Teacher+ only.
+ * PATCH /api/admin/users
+ * Update a user's role or approval status. Teacher+ only.
  * Body: { userId: string, role?: UserRole, approvalStatus?: ApprovalStatus }
  */
 export async function PATCH(request: NextRequest) {
@@ -390,10 +390,10 @@ export async function PATCH(request: NextRequest) {
       status: HttpStatus.OK,
     });
   } catch (error) {
-    console.error("Error updating student:", error);
+    console.error("Error updating user:", error);
     return apiResponse({
       status: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: "An error occurred while updating the student.",
+      message: "An error occurred while updating the user.",
     });
   }
 }

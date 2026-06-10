@@ -5,7 +5,7 @@
     "admin": "Admin",
     "videos": "Videos",
     "search": "Search",
-    "students": "Students"
+    "users": "Users"
   },
   "Index": {
     "title": "Math Learning Studio",
@@ -395,7 +395,7 @@
     "tagline": "Math Learning Studio",
     "dashboard": "Dashboard",
     "searchvideos": "Search Videos",
-    "students": "Students",
+    "users": "Users",
     "logout": "Log out",
     "logoutFailed": "Sign out failed",
     "tryAgain": "Please try again."
