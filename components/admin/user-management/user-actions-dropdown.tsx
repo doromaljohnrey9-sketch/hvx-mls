@@ -42,7 +42,7 @@ export function UserActionsDropdown({
   const [selectedStatus, setSelectedStatus] = useState<ApprovalStatus | null>(user.approvalStatus);
   const [isOpen, setIsOpen] = useState(false);
 
-  const availableRoles: UserRole[] = ["student", "teacher", "branch_admin"];
+  const availableRoles: UserRole[] = ["student", "teacher"];
   const availableStatuses: ApprovalStatus[] = ["pending", "approved", "rejected", "blocked"];
 
   const handleConfirm = () => {

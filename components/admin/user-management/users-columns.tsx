@@ -46,14 +46,12 @@ export function createUsersColumns({
   const ROLE_LABELS: Record<string, string> = {
     student: tRoles("student"),
     teacher: tRoles("teacher"),
-    branch_admin: tRoles("branch_admin"),
     super_admin: tRoles("super_admin"),
   };
 
   const ROLE_ICONS: Record<string, React.ReactNode> = {
     student: <GraduationCap className="size-3" />,
     teacher: <GraduationCap className="size-3" />,
-    branch_admin: <Building className="size-3" />,
     super_admin: <Shield className="size-3" />,
   };
 
@@ -279,10 +277,12 @@ export function createUsersColumns({
     },
     {
       id: "actions",
-      header: () => <div className="text-sm font-semibold text-foreground">{t("table.actions")}</div>,
+      header: () => (
+        <div className="text-sm font-semibold text-foreground">{t("table.actions")}</div>
+      ),
       cell: ({ row }) => {
         const user = row.original;
-        const hasAction = user.role !== "super_admin" && user.role !== "branch_admin";
+        const hasAction = user.role !== "super_admin";
         const isSelf = currentUserId === user.id;
 
         if (!hasAction) {

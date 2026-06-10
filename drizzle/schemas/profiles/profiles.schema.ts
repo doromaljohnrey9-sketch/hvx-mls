@@ -5,12 +5,7 @@ import { baseColumns } from "../base";
 import { branches } from "../branches/branches.schema";
 import { schools } from "../schools/schools.schema";
 
-export const userRoleEnum = pgEnum("user_role", [
-  "student",
-  "teacher",
-  "branch_admin",
-  "super_admin",
-]);
+export const userRoleEnum = pgEnum("user_role", ["student", "teacher", "super_admin"]);
 
 export const approvalStatusEnum = pgEnum("approval_status", [
   "pending",

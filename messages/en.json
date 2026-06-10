@@ -298,7 +298,6 @@
       "teacher": "Teacher",
       "admin": "Admin",
       "staff": "Staff",
-      "branch_admin": "Branch Admin",
       "super_admin": "Super Admin"
     },
     "statuses": {

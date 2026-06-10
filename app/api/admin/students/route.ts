@@ -14,7 +14,7 @@ import { HttpStatus } from "@/constants/http-status.constant";
 import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 import type { AdminUsersResponse } from "@/types/admin.types";
 
-const ADMIN_ROLES: UserRole[] = ["teacher", "branch_admin", "super_admin"];
+const ADMIN_ROLES: UserRole[] = ["teacher", "super_admin"];
 
 // Create alias for self-join to get approver name
 const approverProfiles = alias(profiles, "approver_profiles");
@@ -22,7 +22,7 @@ const approverProfiles = alias(profiles, "approver_profiles");
 /**
  * GET /api/admin/students
  * List students with pagination and filtering. Teacher+ only.
- * Branch Admin: scoped to own branch. Super Admin: all branches.
+ * Teacher: scoped to own branch. Super Admin: all branches.
  *
  * Query params:
  * - page: number (default 1)
@@ -171,7 +171,7 @@ export async function POST(request: NextRequest) {
 
     // Validate role if provided
     if (role) {
-      const allowedRoles = ["student", "teacher", "branch_admin", "super_admin"];
+      const allowedRoles = ["student", "teacher", "super_admin"];
       if (!allowedRoles.includes(role)) {
         return apiResponse({
           status: HttpStatus.BAD_REQUEST,
@@ -204,7 +204,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Branch Admin can only create users in their own branch
+    // Teacher can only create users in their own branch
     if (
       profile!.role !== "super_admin" &&
       profile!.branchId &&
@@ -315,7 +315,7 @@ export async function PATCH(request: NextRequest) {
 
     // Validate role if provided
     if (role) {
-      const allowedRoles = ["student", "teacher", "branch_admin", "super_admin"];
+      const allowedRoles = ["student", "teacher", "super_admin"];
       if (!allowedRoles.includes(role)) {
         return apiResponse({
           status: HttpStatus.BAD_REQUEST,
@@ -354,7 +354,7 @@ export async function PATCH(request: NextRequest) {
       });
     }
 
-    // Branch Admin can only manage users in their own branch
+    // Teacher can only manage users in their own branch
     if (
       profile!.role !== "super_admin" &&
       profile!.branchId &&

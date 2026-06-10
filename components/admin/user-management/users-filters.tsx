@@ -90,7 +90,6 @@ export function UsersFilters({
             <SelectContent>
               <SelectItem value="all">{t("filters.all")}</SelectItem>
               <SelectItem value="super_admin">{tRoles("super_admin")}</SelectItem>
-              <SelectItem value="branch_admin">{tRoles("branch_admin")}</SelectItem>
               <SelectItem value="teacher">{tRoles("teacher")}</SelectItem>
               <SelectItem value="student">{tRoles("student")}</SelectItem>
             </SelectContent>

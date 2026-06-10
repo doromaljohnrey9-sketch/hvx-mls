@@ -113,10 +113,10 @@ export async function updateSession(
       return response;
     }
 
-    // Admin route check — only teacher, branch_admin, super_admin
+    // Admin route check — only teacher, super_admin
     const isAdminRoute =
       pathnameWithoutLocale === "/admin" || pathnameWithoutLocale.startsWith("/admin/");
-    const adminRoles = ["teacher", "branch_admin", "super_admin"];
+    const adminRoles = ["teacher", "super_admin"];
 
     if (isAdminRoute && !adminRoles.includes(profile.role)) {
       // Students redirect to search, others to dashboard

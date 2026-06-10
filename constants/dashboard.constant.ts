@@ -20,9 +20,6 @@ export const DASHBOARD_CHART_CONFIG = {
   blocked: {
     color: "#6b7280",
   },
-  branch_admin: {
-    color: "#f59e0b",
-  },
   super_admin: {
     color: "#f59e0b",
   },
@@ -45,7 +42,6 @@ export const DASHBOARD_ROLE_COLOR_MAP: Record<string, string> = {
   pending: "#6b7280",
   denied: "#6b7280",
   blocked: "#6b7280",
-  branch_admin: "#f59e0b",
   super_admin: "#f59e0b",
 };
 
