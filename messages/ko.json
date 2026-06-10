@@ -8,7 +8,7 @@
     "users": "사용자"
   },
   "Index": {
-    "title": "수학 학습 스튜디오",
+    "title": "이자경수학 기출문제 학습 스튜디오",
     "description": "기출문제 해설 영상 시스템",
     "hero": {
       "title": "체계적이고 검색 가능한 기출문제 해설 영상",
@@ -458,13 +458,14 @@
       "createdDesc": "학생이 성공적으로 생성되었습니다.",
       "updated": "학생 정보 업데이트됨",
       "updatedDesc": "학생 정보가 업데이트되었습니다.",
+      "noChanges": "변경 사항 없음",
       "failed": "업데이트 실패",
       "failedDesc": "학생 정보를 업데이트할 수 없습니다."
     }
   },
   "Sidebar": {
     "platform": "MLS",
-    "tagline": "수학 학습 스튜디오",
+    "tagline": "이자경수학 기출문제 학습 스튜디오",
     "dashboard": "대시보드",
     "searchvideos": "동영상 검색",
     "users": "사용자 관리",

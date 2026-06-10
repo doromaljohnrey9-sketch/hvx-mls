@@ -85,16 +85,18 @@ export function StudentEditDialog({
     )
   );
 
-  // Reset form when student changes
+  // Reset form when dialog opens or student changes
   useEffect(() => {
-    form.reset({
-      approvalStatus: (student.approvalStatus || "pending") as ApprovalStatus,
-      branchId: student.branchId || "none",
-      schoolId: student.schoolId || "none",
-      grade: student.grade?.toString() || "",
-      assignedTeacher: student.assignedTeacher || "none",
-    });
-  }, [student, form]);
+    if (open) {
+      form.reset({
+        approvalStatus: (student.approvalStatus || "pending") as ApprovalStatus,
+        branchId: student.branchId || "none",
+        schoolId: student.schoolId || "none",
+        grade: student.grade?.toString() || "",
+        assignedTeacher: student.assignedTeacher || "none",
+      });
+    }
+  }, [open, student, form]);
 
   const onSubmit = (data: any) => {
     const updates: StudentUpdate = {};
@@ -127,9 +129,12 @@ export function StudentEditDialog({
 
     if (hasChanges) {
       onUpdateStudent({ id: student.id, updates });
+      toast.success(t("toasts.updated"), {
+        description: t("toasts.updatedDesc"),
+      });
       onOpenChange(false);
     } else {
-      toast.info("No changes made");
+      toast.info(t("toasts.noChanges"));
     }
   };
 
@@ -148,7 +153,7 @@ export function StudentEditDialog({
               <Field>
                 <FieldLabel>{t("fields.approvalStatus")}</FieldLabel>
                 <Select
-                  {...form.register("approvalStatus")}
+                  value={form.watch("approvalStatus")}
                   onValueChange={(value) =>
                     form.setValue("approvalStatus", value as ApprovalStatus)
                   }
@@ -168,7 +173,7 @@ export function StudentEditDialog({
               <Field>
                 <FieldLabel>{t("fields.grade")}</FieldLabel>
                 <Select
-                  {...form.register("grade")}
+                  value={form.watch("grade")}
                   onValueChange={(value) => form.setValue("grade", value)}
                 >
                   <SelectTrigger>

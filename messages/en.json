@@ -458,6 +458,7 @@
       "createdDesc": "The student has been created successfully.",
       "updated": "Student updated",
       "updatedDesc": "The student's information has been updated.",
+      "noChanges": "No changes made",
       "failed": "Update failed",
       "failedDesc": "Could not update student."
     }
