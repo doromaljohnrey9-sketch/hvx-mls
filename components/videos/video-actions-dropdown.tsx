@@ -30,8 +30,7 @@ export function VideoActionsDropdown({
 }: VideoActionsDropdownProps) {
   const router = useRouter();
   const t = useTranslations("Videos.table");
-  const canManage =
-    userRole === "super_admin" || userRole === "branch_admin" || userRole === "teacher";
+  const canManage = userRole === "super_admin" || userRole === "teacher";
 
   return (
     <DropdownMenu>

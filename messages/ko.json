@@ -298,7 +298,6 @@
       "teacher": "선생님",
       "admin": "관리자",
       "staff": "스태프",
-      "branch_admin": "지점 관리자",
       "super_admin": "최고 관리자"
     },
     "statuses": {

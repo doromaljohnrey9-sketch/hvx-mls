@@ -37,10 +37,6 @@ export const PageClient = () => {
       label: tRoles("admin"),
       color: DASHBOARD_CHART_CONFIG.admin.color,
     },
-    branch_admin: {
-      label: tRoles("branch_admin"),
-      color: DASHBOARD_CHART_CONFIG.branch_admin.color,
-    },
     super_admin: {
       label: tRoles("super_admin"),
       color: DASHBOARD_CHART_CONFIG.super_admin.color,

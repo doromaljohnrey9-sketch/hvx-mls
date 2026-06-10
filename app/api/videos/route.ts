@@ -157,11 +157,7 @@ export async function POST(request: NextRequest) {
     const rateLimited = await rateLimit("api");
     if (rateLimited) return rateLimited;
 
-    const { user, error: authError } = await requireRole([
-      "super_admin",
-      "branch_admin",
-      "teacher",
-    ]);
+    const { user, error: authError } = await requireRole(["super_admin", "teacher"]);
     if (authError) return authError;
 
     const body = await request.json();

@@ -114,11 +114,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const rateLimited = await rateLimit("api");
     if (rateLimited) return rateLimited;
 
-    const { user, error: authError } = await requireRole([
-      "super_admin",
-      "branch_admin",
-      "teacher",
-    ]);
+    const { user, error: authError } = await requireRole(["super_admin", "teacher"]);
     if (authError) return authError;
 
     const { id } = await params;
@@ -164,11 +160,7 @@ export async function DELETE(
     const rateLimited = await rateLimit("api");
     if (rateLimited) return rateLimited;
 
-    const { user, error: authError } = await requireRole([
-      "super_admin",
-      "branch_admin",
-      "teacher",
-    ]);
+    const { user, error: authError } = await requireRole(["super_admin", "teacher"]);
     if (authError) return authError;
 
     const { id } = await params;

@@ -62,10 +62,7 @@ export function VideosFilters({
   const { profile } = useAuth();
   const t = useTranslations("Videos.search");
 
-  const canUploadVideo =
-    profile?.role === "teacher" ||
-    profile?.role === "branch_admin" ||
-    profile?.role === "super_admin";
+  const canUploadVideo = profile?.role === "teacher" || profile?.role === "super_admin";
 
   const hasActiveFilters =
     (schoolIdFilter && schoolIdFilter !== "all") ||

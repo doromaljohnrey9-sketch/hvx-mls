@@ -22,7 +22,7 @@ export async function updateAdminUser(userId: string, updates: AdminUserUpdate) 
     // Check if the authenticated user has admin privileges
     const adminUser = await db.select().from(profiles).where(eq(profiles.id, authUser.id)).limit(1);
 
-    if (!adminUser[0] || !["super_admin", "branch_admin"].includes(adminUser[0].role)) {
+    if (!adminUser[0] || !["super_admin", "teacher"].includes(adminUser[0].role)) {
       return { success: false, error: "Insufficient permissions" };
     }
 
