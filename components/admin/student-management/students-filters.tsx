@@ -10,7 +10,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SearchIcon, XIcon } from "lucide-react";
-import { StudentCreateDialog } from "./student-create-dialog";
 
 interface StudentsFiltersProps {
   search: string;
@@ -24,7 +23,6 @@ interface StudentsFiltersProps {
   onBranchFilterChange: (value: string) => void;
   onSchoolFilterChange: (value: string) => void;
   onGradeFilterChange: (value: string) => void;
-  onCreateStudent: (data: any) => void;
 }
 
 import { useTranslations } from "next-intl";
@@ -41,7 +39,6 @@ export function StudentsFilters({
   onBranchFilterChange,
   onSchoolFilterChange,
   onGradeFilterChange,
-  onCreateStudent,
 }: StudentsFiltersProps) {
   const t = useTranslations("StudentManagement");
   const tStatuses = useTranslations("Dashboard.statuses");
@@ -90,7 +87,6 @@ export function StudentsFilters({
               {t("filters.all")}
             </Button>
           )}
-          <StudentCreateDialog onCreateStudent={onCreateStudent} />
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">

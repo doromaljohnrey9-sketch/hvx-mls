@@ -5,6 +5,28 @@ import type { StudentsResponse, StudentsQueryParams, StudentUpdate } from "@/typ
 import { API_ROUTES } from "@/constants/routes.constant";
 
 export const studentService = {
+  createStudent: async (data: {
+    email: string;
+    password: string;
+    name: string;
+    branchId?: string;
+    schoolId?: string;
+    grade?: number;
+    assignedTeacher?: string;
+    approvalStatus?: ApprovalStatus;
+  }): Promise<any | null> => {
+    try {
+      const response = await axiosInstance.post<{ success: boolean; data: any }>(
+        API_ROUTES.ADMIN.USERS,
+        { ...data, role: "student" }
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to create student:", error);
+      return null;
+    }
+  },
+
   getStudents: async (params: StudentsQueryParams): Promise<StudentsResponse> => {
     try {
       const queryParams = new URLSearchParams();
@@ -18,8 +40,12 @@ export const studentService = {
       if (params.grade) queryParams.append("grade", params.grade.toString());
 
       const url = `${API_ROUTES.ADMIN.USERS}?${queryParams.toString()}`;
-      const response = await axiosInstance.get<{ success: boolean; data: StudentsResponse }>(url);
-      return response.data.data ?? { students: [], total: 0 };
+      const response = await axiosInstance.get<{
+        success: boolean;
+        data: { users: any[]; total: number };
+      }>(url);
+      const data = response.data.data ?? { users: [], total: 0 };
+      return { students: data.users, total: data.total };
     } catch (error) {
       console.error("Failed to fetch students:", error);
       return { students: [], total: 0 };

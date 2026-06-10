@@ -395,6 +395,8 @@
     "createStudent": "Create Student",
     "createStudentTitle": "Create New Student",
     "createStudentDescription": "Fill in the details to create a new student account.",
+    "editStudentTitle": "Edit Student",
+    "editStudentDescription": "Update the student's information.",
     "fields": {
       "email": "Email",
       "name": "Name",
@@ -418,10 +420,12 @@
       "assignedTeacher": "Select teacher",
       "noBranch": "No branch",
       "noSchool": "No school",
-      "noTeacher": "No teacher"
+      "noTeacher": "No teacher",
+      "noGrade": "No grade"
     },
     "cancel": "Cancel",
     "create": "Create Student",
+    "save": "Save",
     "filters": {
       "all": "All",
       "status": "Status",
@@ -442,7 +446,7 @@
       "approvedBy": "Approved By",
       "approvedAt": "Approved At",
       "actions": "Actions",
-      "save": "Save",
+      "edit": "Edit",
       "noStudents": "No students found.",
       "showing": "Showing {start} to {end} of {total} students",
       "previous": "Previous",

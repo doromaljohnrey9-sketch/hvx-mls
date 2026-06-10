@@ -94,6 +94,30 @@ export function useAdminStudentManagement() {
     },
   });
 
+  const createStudent = useMutation({
+    mutationFn: async (data: {
+      email: string;
+      password: string;
+      name: string;
+      branchId?: string;
+      schoolId?: string;
+      grade?: number;
+      assignedTeacher?: string;
+      approvalStatus?: ApprovalStatus;
+    }) => {
+      return studentService.createStudent(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getQueryKey.students.all });
+    },
+    onError: (error: any) => {
+      console.error("Failed to create student:", error);
+      toast.error("Failed to create student", {
+        description: error.response?.data?.message || error.message || "Please try again",
+      });
+    },
+  });
+
   const handleSearchChange = (value: string) => {
     setSearchInput(value);
   };
@@ -135,6 +159,7 @@ export function useAdminStudentManagement() {
     updateStudentApprovalStatus,
     updateStudentGrade,
     updateStudentTeacher,
+    createStudent,
     isLoading: students.isLoading,
     search: searchInput,
     approvalStatusFilter,

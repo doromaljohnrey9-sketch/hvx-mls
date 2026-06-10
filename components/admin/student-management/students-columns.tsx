@@ -30,29 +30,18 @@ interface CreateStudentsColumnsProps {
     mutate: (data: { id: string; updates: StudentUpdate }) => void;
     isPending?: boolean;
   };
-  updateStudentApprovalStatus: {
-    mutate: (data: { id: string; approvalStatus: ApprovalStatus }) => void;
-    isPending?: boolean;
-  };
-  updateStudentGrade: {
-    mutate: (data: { id: string; grade: number }) => void;
-    isPending?: boolean;
-  };
-  updateStudentTeacher: {
-    mutate: (data: { id: string; assignedTeacher: string }) => void;
-    isPending?: boolean;
-  };
   t: ReturnType<typeof useTranslations<"StudentManagement">>;
   tStatuses: ReturnType<typeof useTranslations<"Dashboard.statuses">>;
+  currentUserRole?: string | null;
+  currentUserBranchId?: string | null;
 }
 
 export function createStudentsColumns({
   updateStudent,
-  updateStudentApprovalStatus,
-  updateStudentGrade,
-  updateStudentTeacher,
   t,
   tStatuses,
+  currentUserRole,
+  currentUserBranchId,
 }: CreateStudentsColumnsProps) {
   const APPROVAL_STATUS_LABELS: Record<string, string> = {
     pending: tStatuses("pending"),
@@ -268,7 +257,9 @@ export function createStudentsColumns({
         return (
           <div className="flex items-center gap-2">
             <User className="size-4 text-muted-foreground shrink-0" />
-            <span className="text-sm text-foreground truncate">{student.approverName || "N/A"}</span>
+            <span className="text-sm text-foreground truncate">
+              {student.approverName || "N/A"}
+            </span>
           </div>
         );
       },
@@ -311,10 +302,8 @@ export function createStudentsColumns({
           <StudentActionsDropdown
             student={student}
             updateStudent={updateStudent}
-            updateStudentApprovalStatus={updateStudentApprovalStatus}
-            updateStudentGrade={updateStudentGrade}
-            updateStudentTeacher={updateStudentTeacher}
-            statusLabels={APPROVAL_STATUS_LABELS}
+            currentUserRole={currentUserRole}
+            currentUserBranchId={currentUserBranchId}
           />
         );
       },

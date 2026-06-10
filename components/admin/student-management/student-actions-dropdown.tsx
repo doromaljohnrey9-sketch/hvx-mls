@@ -1,21 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuCheckboxItem,
-  DropdownMenuSeparator,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontalIcon } from "lucide-react";
 
+import { StudentEditDialog } from "./student-edit-dialog";
+
 import type { Student, StudentUpdate } from "@/types/student.types";
-import type { ApprovalStatus } from "@/types/drizzle.types";
 
 interface StudentActionsDropdownProps {
   student: Student;
@@ -23,108 +21,59 @@ interface StudentActionsDropdownProps {
     mutate: (data: { id: string; updates: StudentUpdate }) => void;
     isPending?: boolean;
   };
-  updateStudentApprovalStatus: {
-    mutate: (data: { id: string; approvalStatus: ApprovalStatus }) => void;
-    isPending?: boolean;
-  };
-  updateStudentGrade: {
-    mutate: (data: { id: string; grade: number }) => void;
-    isPending?: boolean;
-  };
-  updateStudentTeacher: {
-    mutate: (data: { id: string; assignedTeacher: string }) => void;
-    isPending?: boolean;
-  };
-  statusLabels: Record<string, string>;
+  currentUserRole?: string | null;
+  currentUserBranchId?: string | null;
 }
 
 import { useTranslations } from "next-intl";
 
 export function StudentActionsDropdown({
   student,
-  updateStudentApprovalStatus,
-  updateStudentGrade,
-  updateStudentTeacher,
-  statusLabels,
+  updateStudent,
+  currentUserRole,
+  currentUserBranchId,
 }: StudentActionsDropdownProps) {
   const t = useTranslations("StudentManagement");
-  const [selectedStatus, setSelectedStatus] = useState<ApprovalStatus | null>(student.approvalStatus);
-  const [selectedGrade, setSelectedGrade] = useState<number | null>(student.grade || null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
-  const availableStatuses: ApprovalStatus[] = ["pending", "approved", "rejected", "blocked"];
-  const availableGrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  // Permission check: Teachers can only edit students in their branch
+  // Super admins can edit all students
+  const canEditStudent =
+    currentUserRole === "super_admin" ||
+    (currentUserRole === "teacher" && currentUserBranchId === student.branchId);
 
-  const handleConfirm = () => {
-    let hasChanges = false;
+  const isSuperAdmin = currentUserRole === "super_admin";
 
-    if (selectedStatus && selectedStatus !== student.approvalStatus) {
-      updateStudentApprovalStatus.mutate({
-        id: student.id,
-        approvalStatus: selectedStatus,
-      });
-      hasChanges = true;
-    }
-
-    if (selectedGrade !== null && selectedGrade !== student.grade) {
-      updateStudentGrade.mutate({
-        id: student.id,
-        grade: selectedGrade,
-      });
-      hasChanges = true;
-    }
-
-    if (hasChanges) {
-      toast.success(t("toasts.updated"), {
-        description: t("toasts.updatedDesc"),
-      });
-    }
-    setIsOpen(false);
+  const handleUpdateStudent = (data: { id: string; updates: StudentUpdate }) => {
+    updateStudent.mutate(data);
   };
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0"
-          disabled={updateStudentApprovalStatus.isPending || updateStudentGrade.isPending}
-        >
-          <MoreHorizontalIcon className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>{t("table.status")}</DropdownMenuLabel>
-        {availableStatuses.map((status) => (
-          <DropdownMenuCheckboxItem
-            key={status}
-            checked={selectedStatus === status}
-            onCheckedChange={(checked) => checked && setSelectedStatus(status)}
-            onSelect={(e) => e.preventDefault()}
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            disabled={updateStudent.isPending || !canEditStudent}
           >
-            {statusLabels[status]}
-          </DropdownMenuCheckboxItem>
-        ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel>{t("table.grade")}</DropdownMenuLabel>
-        {availableGrades.map((grade) => (
-          <DropdownMenuCheckboxItem
-            key={grade}
-            checked={selectedGrade === grade}
-            onCheckedChange={(checked) => checked && setSelectedGrade(grade)}
-            onSelect={(e) => e.preventDefault()}
-          >
-            {grade}
-          </DropdownMenuCheckboxItem>
-        ))}
-        <DropdownMenuSeparator />
-        <div className="flex items-center justify-end gap-2 p-2">
-          <Button size="sm" onClick={handleConfirm} disabled={updateStudentApprovalStatus.isPending}>
-            {t("table.save")}
+            <MoreHorizontalIcon className="size-4" />
           </Button>
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => setEditOpen(true)} disabled={!canEditStudent}>
+            {t("table.edit")}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <StudentEditDialog
+        student={student}
+        open={editOpen}
+        onOpenChange={setEditOpen}
+        onUpdateStudent={handleUpdateStudent}
+        isSuperAdmin={isSuperAdmin}
+      />
+    </>
   );
 }

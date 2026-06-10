@@ -5,14 +5,14 @@ import { StudentsPageHeader } from "@/components/admin/student-management/studen
 import { StudentsTable } from "@/components/admin/student-management/students-table";
 import { StudentsFilters } from "@/components/admin/student-management/students-filters";
 import { createStudentsColumns } from "@/components/admin/student-management/students-columns";
-import { adminService } from "@/services/admin.service";
-import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
 
 import { useTranslations } from "next-intl";
 
 export function AdminStudentsPageClient() {
   const t = useTranslations("StudentManagement");
   const tStatuses = useTranslations("Dashboard.statuses");
+  const { profile } = useAuth();
 
   const {
     students,
@@ -40,20 +40,11 @@ export function AdminStudentsPageClient() {
 
   const columns = createStudentsColumns({
     updateStudent,
-    updateStudentApprovalStatus,
-    updateStudentGrade,
-    updateStudentTeacher,
     t,
     tStatuses,
+    currentUserRole: profile?.role,
+    currentUserBranchId: profile?.branchId,
   });
-
-  const handleCreateStudent = (data: any) => {
-    adminService.createUser(data).then(() => {
-      toast.success(t("toasts.created"), {
-        description: t("toasts.createdDesc"),
-      });
-    });
-  };
 
   return (
     <div className="flex-1 min-w-0 space-y-6 p-8">
@@ -70,7 +61,6 @@ export function AdminStudentsPageClient() {
         onBranchFilterChange={handleBranchFilterChange}
         onSchoolFilterChange={handleSchoolFilterChange}
         onGradeFilterChange={handleGradeFilterChange}
-        onCreateStudent={handleCreateStudent}
       />
       <StudentsTable
         columns={columns}
