@@ -5,19 +5,6 @@ import type { AdminUsersResponse, AdminUsersQueryParams } from "@/types/admin.ty
 import { API_ROUTES } from "@/constants/routes.constant";
 
 export const adminService = {
-  getStudents: async (roleFilter?: UserRole): Promise<SelectProfile[]> => {
-    try {
-      const params = roleFilter ? `?role=${roleFilter}` : "";
-      const response = await axiosInstance.get<{ success: boolean; data: SelectProfile[] }>(
-        `${API_ROUTES.ADMIN.STUDENTS}${params}`
-      );
-      return response.data.data ?? [];
-    } catch (error) {
-      console.error("Failed to fetch students:", error);
-      return [];
-    }
-  },
-
   createUser: async (data: {
     email: string;
     password: string;
@@ -31,7 +18,7 @@ export const adminService = {
   }): Promise<any | null> => {
     try {
       const response = await axiosInstance.post<{ success: boolean; data: any }>(
-        API_ROUTES.ADMIN.STUDENTS,
+        API_ROUTES.ADMIN.USERS,
         data
       );
       return response.data.data ?? null;
@@ -41,25 +28,25 @@ export const adminService = {
     }
   },
 
-  updateStudentRole: async (userId: string, role: UserRole): Promise<boolean> => {
+  updateUserRole: async (userId: string, role: UserRole): Promise<boolean> => {
     try {
-      await axiosInstance.patch(API_ROUTES.ADMIN.STUDENTS, { userId, role });
+      await axiosInstance.patch(API_ROUTES.ADMIN.USERS, { userId, role });
       return true;
     } catch (error) {
-      console.error("Failed to update student role:", error);
+      console.error("Failed to update user role:", error);
       return false;
     }
   },
 
-  updateStudentApprovalStatus: async (
+  updateUserApprovalStatus: async (
     userId: string,
     approvalStatus: ApprovalStatus
   ): Promise<boolean> => {
     try {
-      await axiosInstance.patch(API_ROUTES.ADMIN.STUDENTS, { userId, approvalStatus });
+      await axiosInstance.patch(API_ROUTES.ADMIN.USERS, { userId, approvalStatus });
       return true;
     } catch (error) {
-      console.error("Failed to update student approval status:", error);
+      console.error("Failed to update user approval status:", error);
       return false;
     }
   },
@@ -73,7 +60,7 @@ export const adminService = {
       if (params.role) queryParams.append("role", params.role);
       if (params.approvalStatus) queryParams.append("approvalStatus", params.approvalStatus);
 
-      const url = `${API_ROUTES.ADMIN.STUDENTS}?${queryParams.toString()}`;
+      const url = `${API_ROUTES.ADMIN.USERS}?${queryParams.toString()}`;
       const response = await axiosInstance.get<{ success: boolean; data: AdminUsersResponse }>(url);
       return response.data.data ?? { users: [], total: 0 };
     } catch (error) {

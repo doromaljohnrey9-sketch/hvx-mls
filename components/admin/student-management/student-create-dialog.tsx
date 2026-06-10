@@ -40,16 +40,15 @@ import { cn } from "@/lib/utils";
 import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
 import { getTeachersQueryOptions } from "@/queries/teachers.query";
-import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
+import type { ApprovalStatus } from "@/types/drizzle.types";
 
 import { useTranslations } from "next-intl";
 
-const userCreateSchema = {
+const studentCreateSchema = {
   email: "",
   name: "",
   password: "",
   confirmPassword: "",
-  role: "student",
   branchId: "none",
   schoolId: "none",
   grade: "",
@@ -57,15 +56,15 @@ const userCreateSchema = {
   approvalStatus: "approved",
 };
 
-export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) => void }) {
+export function StudentCreateDialog({ onCreateStudent }: { onCreateStudent: (data: any) => void }) {
   const [open, setOpen] = useState(false);
   const [branchOpen, setBranchOpen] = useState(false);
   const [schoolOpen, setSchoolOpen] = useState(false);
   const [teacherOpen, setTeacherOpen] = useState(false);
-  const t = useTranslations("UserManagement");
+  const t = useTranslations("StudentManagement");
 
   const form = useForm({
-    defaultValues: userCreateSchema,
+    defaultValues: studentCreateSchema,
   });
 
   const { data: branches } = useQuery(getBranchesQueryOptions());
@@ -96,19 +95,18 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
       email: data.email,
       password: data.password,
       name: data.name,
-      role: data.role as UserRole,
+      role: "student",
       branchId: data.branchId === "none" ? undefined : data.branchId,
       schoolId: data.schoolId === "none" ? undefined : data.schoolId,
       grade: data.grade ? parseInt(data.grade) : undefined,
       assignedTeacher: data.assignedTeacher === "none" ? undefined : data.assignedTeacher,
       approvalStatus: data.approvalStatus as ApprovalStatus,
     };
-    onCreateUser(payload);
+    onCreateStudent(payload);
     form.reset();
     setOpen(false);
   };
 
-  const tRoles = useTranslations("Dashboard.roles");
   const tStatuses = useTranslations("Dashboard.statuses");
 
   return (
@@ -116,13 +114,13 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
       <DialogTrigger asChild>
         <Button>
           <PlusIcon className="h-4 w-4 mr-2" />
-          {t("createUser")}
+          {t("createStudent")}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t("createUserTitle")}</DialogTitle>
-          <DialogDescription>{t("createUserDescription")}</DialogDescription>
+          <DialogTitle>{t("createStudentTitle")}</DialogTitle>
+          <DialogDescription>{t("createStudentDescription")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup className="space-y-4">
@@ -173,44 +171,24 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
               </Field>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <Field>
-                <FieldLabel>{t("fields.role")}</FieldLabel>
-                <Select
-                  {...form.register("role")}
-                  onValueChange={(value) => form.setValue("role", value)}
-                  defaultValue="student"
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("placeholders.role")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="student">{tRoles("student")}</SelectItem>
-                    <SelectItem value="teacher">{tRoles("teacher")}</SelectItem>
-                    <SelectItem value="super_admin">{tRoles("super_admin")}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </Field>
-
-              <Field>
-                <FieldLabel>{t("fields.approvalStatus")}</FieldLabel>
-                <Select
-                  {...form.register("approvalStatus")}
-                  onValueChange={(value) => form.setValue("approvalStatus", value)}
-                  defaultValue="pending"
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("placeholders.approvalStatus")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="pending">{tStatuses("pending")}</SelectItem>
-                    <SelectItem value="approved">{tStatuses("approved")}</SelectItem>
-                    <SelectItem value="rejected">{tStatuses("rejected")}</SelectItem>
-                    <SelectItem value="blocked">{tStatuses("blocked")}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </Field>
-            </div>
+            <Field>
+              <FieldLabel>{t("fields.approvalStatus")}</FieldLabel>
+              <Select
+                {...form.register("approvalStatus")}
+                onValueChange={(value) => form.setValue("approvalStatus", value)}
+                defaultValue="pending"
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t("placeholders.approvalStatus")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pending">{tStatuses("pending")}</SelectItem>
+                  <SelectItem value="approved">{tStatuses("approved")}</SelectItem>
+                  <SelectItem value="rejected">{tStatuses("rejected")}</SelectItem>
+                  <SelectItem value="blocked">{tStatuses("blocked")}</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
 
             <Field>
               <FieldLabel>{t("fields.branch")}</FieldLabel>
@@ -363,11 +341,21 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
             <div className="grid grid-cols-2 gap-4">
               <Field>
                 <FieldLabel>{t("fields.grade")}</FieldLabel>
-                <Input
+                <Select
                   {...form.register("grade")}
-                  type="number"
-                  placeholder={t("placeholders.grade")}
-                />
+                  onValueChange={(value) => form.setValue("grade", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={t("placeholders.grade")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((grade) => (
+                      <SelectItem key={grade} value={grade.toString()}>
+                        {grade}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </Field>
 
               <Field>

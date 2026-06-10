@@ -1,7 +1,7 @@
 "use client";
 
-import { AdminUsersPageClient } from "@/components/admin/user-management/admin-users-page-client";
+import { AdminStudentsPageClient } from "@/components/admin/student-management/admin-students-page-client";
 
 export function PageClient() {
-  return <AdminUsersPageClient />;
+  return <AdminStudentsPageClient />;
 }

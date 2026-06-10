@@ -4,13 +4,15 @@ import { Link, useRouter } from "@/i18n/routing";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { useEffect } from "react";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { User, Mail, Lock, GraduationCap, ArrowLeft } from "lucide-react";
+import { User, Mail, Lock, GraduationCap, ArrowLeft, Check, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { FieldError, FieldLabel } from "@/components/ui/field";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import {
   Select,
   SelectContent,
@@ -18,8 +20,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { PasswordInput } from "@/components/shared/password-input";
+import { cn } from "@/lib/utils";
 
 import { getSupabaseClient } from "@/lib/supabase/client";
 
@@ -28,7 +39,6 @@ import { getAuthSchemas, type RegisterFormValues } from "@/schemas/auth.schema";
 import { AUTH_ROUTES } from "@/constants/routes.constant";
 import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
-import { getTeachersQueryOptions } from "@/queries/teachers.query";
 
 import { useTranslations } from "next-intl";
 
@@ -39,6 +49,8 @@ export const PageClient = () => {
   const supabase = getSupabaseClient();
 
   const [isPending, startTransition] = useTransition();
+  const [branchOpen, setBranchOpen] = useState(false);
+  const [schoolOpen, setSchoolOpen] = useState(false);
 
   const { data: branches, isLoading: branchesLoading } = useQuery(getBranchesQueryOptions());
   const { data: schools, isLoading: schoolsLoading } = useQuery(getSchoolsQueryOptions());
@@ -53,7 +65,6 @@ export const PageClient = () => {
       branchId: "none",
       schoolId: "none",
       grade: "none",
-      assignedTeacher: "none",
     },
   });
 
@@ -61,12 +72,6 @@ export const PageClient = () => {
   const schoolId = form.watch("schoolId");
   const branchId = form.watch("branchId");
 
-  const { data: teachers, isLoading: teachersLoading } = useQuery(
-    getTeachersQueryOptions(
-      branchId && branchId !== "none" ? branchId : undefined,
-      schoolId && schoolId !== "none" ? schoolId : undefined
-    )
-  );
   useEffect(() => {
     if (schoolId && schoolId !== "none" && schools) {
       const selectedSchool = schools.find((s) => s.id === schoolId);
@@ -75,11 +80,6 @@ export const PageClient = () => {
       }
     }
   }, [schoolId, schools, form]);
-
-  // Reset assigned teacher when branch or school changes
-  useEffect(() => {
-    form.setValue("assignedTeacher", "none");
-  }, [branchId, schoolId, form]);
 
   const onFormSubmit = (values: RegisterFormValues) => {
     startTransition(async () => {
@@ -90,7 +90,6 @@ export const PageClient = () => {
           branchId: values.branchId,
           schoolId: values.schoolId,
           grade: values.grade,
-          assignedTeacher: values.assignedTeacher,
         });
 
         const { data, error } = await supabase.auth.signUp({
@@ -102,8 +101,6 @@ export const PageClient = () => {
               ...(values.branchId && values.branchId !== "none" && { branchId: values.branchId }),
               ...(values.schoolId && values.schoolId !== "none" && { schoolId: values.schoolId }),
               ...(values.grade && { grade: values.grade }),
-              ...(values.assignedTeacher &&
-                values.assignedTeacher !== "none" && { assignedTeacher: values.assignedTeacher }),
             },
           },
         });
@@ -279,31 +276,76 @@ export const PageClient = () => {
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
                       <FieldLabel htmlFor="branchId">{t("register.branch")}</FieldLabel>
-                      <Select
-                        {...field}
-                        value={field.value || "none"}
-                        onValueChange={(value) => {
-                          field.onChange(value === "none" ? null : value);
-                          form.setValue("schoolId", "none");
-                        }}
-                        disabled={isPending || branchesLoading}
-                      >
-                        <SelectTrigger
-                          id="branchId"
-                          className="w-full"
-                          aria-invalid={fieldState.invalid}
+                      <Popover open={branchOpen} onOpenChange={setBranchOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "w-full justify-between",
+                              (!field.value || field.value === "none") && "text-muted-foreground"
+                            )}
+                            disabled={isPending || branchesLoading}
+                          >
+                            {field.value && field.value !== "none" ? (
+                              <span className="truncate">
+                                {branches?.find((branch) => branch.id === field.value)?.name}
+                              </span>
+                            ) : (
+                              t("register.selectBranch")
+                            )}
+                            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="w-[var(--radix-popover-trigger-width)] p-0"
+                          align="start"
                         >
-                          <SelectValue placeholder={t("register.selectBranch")} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">{t("register.none")}</SelectItem>
-                          {branches?.map((branch) => (
-                            <SelectItem key={branch.id} value={branch.id}>
-                              {branch.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                          <Command>
+                            <CommandInput placeholder={t("register.selectBranch")} />
+                            <CommandList className="max-h-[300px] overflow-y-auto overflow-x-hidden">
+                              <CommandEmpty>{t("register.none")}</CommandEmpty>
+                              <CommandGroup>
+                                <CommandItem
+                                  value="none"
+                                  onSelect={() => {
+                                    field.onChange(null);
+                                    form.setValue("schoolId", null);
+                                    setBranchOpen(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      !field.value ? "opacity-100" : "opacity-0"
+                                    )}
+                                  />
+                                  {t("register.none")}
+                                </CommandItem>
+                                {branches?.map((branch) => (
+                                  <CommandItem
+                                    key={branch.id}
+                                    value={branch.name}
+                                    onSelect={() => {
+                                      field.onChange(branch.id);
+                                      form.setValue("schoolId", null);
+                                      setBranchOpen(false);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        field.value === branch.id ? "opacity-100" : "opacity-0"
+                                      )}
+                                    />
+                                    <span className="truncate">{branch.name}</span>
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                       {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
                     </div>
                   )}
@@ -315,33 +357,81 @@ export const PageClient = () => {
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
                       <FieldLabel htmlFor="schoolId">{t("register.school")}</FieldLabel>
-                      <Select
-                        {...field}
-                        value={field.value || "none"}
-                        onValueChange={(value) => field.onChange(value === "none" ? null : value)}
-                        disabled={isPending || schoolsLoading}
-                      >
-                        <SelectTrigger
-                          id="schoolId"
-                          className="w-full"
-                          aria-invalid={fieldState.invalid}
+                      <Popover modal={true} open={schoolOpen} onOpenChange={setSchoolOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "w-full justify-between",
+                              (!field.value || field.value === "none") && "text-muted-foreground"
+                            )}
+                            disabled={isPending || schoolsLoading}
+                          >
+                            {field.value && field.value !== "none" ? (
+                              <span className="truncate">
+                                {schools?.find((school) => school.id === field.value)?.name}
+                              </span>
+                            ) : (
+                              t("register.selectSchool")
+                            )}
+                            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="w-[var(--radix-popover-trigger-width)] p-0"
+                          align="start"
                         >
-                          <SelectValue placeholder={t("register.selectSchool")} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">{t("register.none")}</SelectItem>
-                          {schools
-                            ?.filter(
-                              (school) =>
-                                !branchId || branchId === "none" || school.branchId === branchId
-                            )
-                            .map((school) => (
-                              <SelectItem key={school.id} value={school.id}>
-                                {school.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
+                          <Command>
+                            <CommandInput placeholder={t("register.selectSchool")} />
+                            <CommandList className="max-h-[300px] overflow-y-auto overflow-x-hidden">
+                              <CommandEmpty>{t("register.none")}</CommandEmpty>
+                              <CommandGroup>
+                                <CommandItem
+                                  value="none"
+                                  onSelect={() => {
+                                    field.onChange(null);
+                                    setSchoolOpen(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      !field.value ? "opacity-100" : "opacity-0"
+                                    )}
+                                  />
+                                  {t("register.none")}
+                                </CommandItem>
+                                {schools
+                                  ?.filter(
+                                    (school) =>
+                                      !branchId ||
+                                      branchId === "none" ||
+                                      school.branchId === branchId
+                                  )
+                                  .map((school) => (
+                                    <CommandItem
+                                      key={school.id}
+                                      value={school.name}
+                                      onSelect={() => {
+                                        field.onChange(school.id);
+                                        setSchoolOpen(false);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          field.value === school.id ? "opacity-100" : "opacity-0"
+                                        )}
+                                      />
+                                      <span className="truncate">{school.name}</span>
+                                    </CommandItem>
+                                  ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                       {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
                     </div>
                   )}
@@ -373,39 +463,6 @@ export const PageClient = () => {
                           <SelectItem value="1">{t("register.gradeLabel", { n: 1 })}</SelectItem>
                           <SelectItem value="2">{t("register.gradeLabel", { n: 2 })}</SelectItem>
                           <SelectItem value="3">{t("register.gradeLabel", { n: 3 })}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
-                    </div>
-                  )}
-                />
-
-                <Controller
-                  name="assignedTeacher"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <div className="space-y-2">
-                      <FieldLabel htmlFor="assignedTeacher">{t("register.teacher")}</FieldLabel>
-                      <Select
-                        {...field}
-                        value={field.value || "none"}
-                        onValueChange={(value) => field.onChange(value === "none" ? null : value)}
-                        disabled={isPending || teachersLoading}
-                      >
-                        <SelectTrigger
-                          id="assignedTeacher"
-                          className="w-full"
-                          aria-invalid={fieldState.invalid}
-                        >
-                          <SelectValue placeholder={t("register.selectTeacher")} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">{t("register.none")}</SelectItem>
-                          {teachers?.map((teacher) => (
-                            <SelectItem key={teacher.id} value={teacher.name}>
-                              {teacher.name}
-                            </SelectItem>
-                          ))}
                         </SelectContent>
                       </Select>
                       {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}

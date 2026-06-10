@@ -33,10 +33,10 @@ export function useAdminUserManagement() {
   const updateUser = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: AdminUserUpdate }) => {
       if (updates.role) {
-        await adminService.updateStudentRole(id, updates.role);
+        await adminService.updateUserRole(id, updates.role);
       }
       if (updates.approvalStatus) {
-        await adminService.updateStudentApprovalStatus(id, updates.approvalStatus);
+        await adminService.updateUserApprovalStatus(id, updates.approvalStatus);
       }
       return true;
     },

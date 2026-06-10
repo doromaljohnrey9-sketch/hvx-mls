@@ -12,18 +12,7 @@ export const getAuthSchemas = (t: ReturnType<typeof useTranslations<"Auth">>) =>
     .union([z.string().uuid(t("validation.invalidSchool")), z.literal("none"), z.null()])
     .optional();
   const gradeSchema = z
-    .union([
-      z.number().int().positive(t("validation.positiveGrade")),
-      z.literal("none"),
-      z.null(),
-    ])
-    .optional();
-  const assignedTeacherSchema = z
-    .union([
-      z.string().min(1, t("validation.teacherMin")),
-      z.literal("none"),
-      z.null(),
-    ])
+    .union([z.number().int().positive(t("validation.positiveGrade")), z.literal("none"), z.null()])
     .optional();
 
   const loginSchema = z.object({
@@ -40,7 +29,6 @@ export const getAuthSchemas = (t: ReturnType<typeof useTranslations<"Auth">>) =>
       branchId: branchIdSchema,
       schoolId: schoolIdSchema,
       grade: gradeSchema,
-      assignedTeacher: assignedTeacherSchema,
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: t("validation.passwordsDoNotMatch"),
@@ -71,5 +59,9 @@ export const getAuthSchemas = (t: ReturnType<typeof useTranslations<"Auth">>) =>
 
 export type LoginFormValues = z.infer<ReturnType<typeof getAuthSchemas>["loginSchema"]>;
 export type RegisterFormValues = z.infer<ReturnType<typeof getAuthSchemas>["registerSchema"]>;
-export type ForgotPasswordFormValues = z.infer<ReturnType<typeof getAuthSchemas>["forgotPasswordSchema"]>;
-export type ResetPasswordFormValues = z.infer<ReturnType<typeof getAuthSchemas>["resetPasswordSchema"]>;
+export type ForgotPasswordFormValues = z.infer<
+  ReturnType<typeof getAuthSchemas>["forgotPasswordSchema"]
+>;
+export type ResetPasswordFormValues = z.infer<
+  ReturnType<typeof getAuthSchemas>["resetPasswordSchema"]
+>;

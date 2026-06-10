@@ -1,9 +1,9 @@
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Student Management",
-  description: "Manage students.",
-  path: "/admin/students",
+  title: "User Management",
+  description: "Approve and manage users.",
+  path: "/admin/users",
   noIndex: true,
 });
 
