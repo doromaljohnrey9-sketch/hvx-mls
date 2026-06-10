@@ -244,8 +244,6 @@
       "grade": "Grade",
       "selectGrade": "Select grade",
       "gradeLabel": "Grade {n}",
-      "teacher": "Assigned Teacher",
-      "selectTeacher": "Select teacher",
       "requestApproval": "Request Approval",
       "haveAccount": "Already have an account?",
       "success": "Registration successful",
@@ -278,7 +276,6 @@
       "invalidBranch": "Please select a valid branch",
       "invalidSchool": "Please select a valid school",
       "positiveGrade": "Grade must be a positive number",
-      "teacherMin": "Teacher name must be at least 1 character",
       "passwordsDoNotMatch": "Passwords do not match"
     }
   },

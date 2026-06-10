@@ -244,8 +244,6 @@
       "grade": "학년",
       "selectGrade": "학년 선택",
       "gradeLabel": "{n}학년",
-      "teacher": "담당 선생님",
-      "selectTeacher": "선생님 선택",
       "requestApproval": "승인 요청",
       "haveAccount": "이미 계정이 있으신가요?",
       "success": "회원가입 성공",
@@ -278,7 +276,6 @@
       "invalidBranch": "올바른 지점을 선택해 주세요",
       "invalidSchool": "올바른 학교를 선택해 주세요",
       "positiveGrade": "학년은 양수여야 합니다",
-      "teacherMin": "선생님 이름은 최소 1자 이상이어야 합니다",
       "passwordsDoNotMatch": "비밀번호가 일치하지 않습니다"
     }
   },

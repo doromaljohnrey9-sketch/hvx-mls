@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Check, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,8 +24,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { PasswordInput } from "@/components/shared/password-input";
+import { cn } from "@/lib/utils";
 
 import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
@@ -49,6 +59,9 @@ const userCreateSchema = {
 
 export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) => void }) {
   const [open, setOpen] = useState(false);
+  const [branchOpen, setBranchOpen] = useState(false);
+  const [schoolOpen, setSchoolOpen] = useState(false);
+  const [teacherOpen, setTeacherOpen] = useState(false);
   const t = useTranslations("UserManagement");
 
   const form = useForm({
@@ -201,42 +214,150 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
 
             <Field>
               <FieldLabel>{t("fields.branch")}</FieldLabel>
-              <Select
-                {...form.register("branchId")}
-                onValueChange={(value) => form.setValue("branchId", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t("placeholders.branch")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">{t("placeholders.noBranch")}</SelectItem>
-                  {branches?.map((branch) => (
-                    <SelectItem key={branch.id} value={branch.id}>
-                      {branch.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover modal={true} open={branchOpen} onOpenChange={setBranchOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className={cn(
+                      "w-full justify-between",
+                      !form.watch("branchId") || form.watch("branchId") === "none"
+                        ? "text-muted-foreground"
+                        : ""
+                    )}
+                  >
+                    {form.watch("branchId") && form.watch("branchId") !== "none"
+                      ? branches?.find((branch) => branch.id === form.watch("branchId"))?.name
+                      : t("placeholders.branch")}
+                    <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[var(--radix-popover-trigger-width)] p-0"
+                  align="start"
+                >
+                  <Command>
+                    <CommandInput placeholder={t("placeholders.branch")} />
+                    <CommandList className="max-h-[300px] overflow-y-auto overflow-x-hidden">
+                      <CommandEmpty>{t("placeholders.noBranch")}</CommandEmpty>
+                      <CommandGroup>
+                        <CommandItem
+                          value="none"
+                          onSelect={() => {
+                            form.setValue("branchId", "none");
+                            form.setValue("schoolId", "none");
+                            setBranchOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              !form.watch("branchId") || form.watch("branchId") === "none"
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {t("placeholders.noBranch")}
+                        </CommandItem>
+                        {branches?.map((branch) => (
+                          <CommandItem
+                            key={branch.id}
+                            value={branch.name}
+                            onSelect={() => {
+                              form.setValue("branchId", branch.id);
+                              form.setValue("schoolId", "none");
+                              setBranchOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                form.watch("branchId") === branch.id ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            <span className="truncate">{branch.name}</span>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </Field>
 
             <Field>
               <FieldLabel>{t("fields.school")}</FieldLabel>
-              <Select
-                {...form.register("schoolId")}
-                onValueChange={(value) => form.setValue("schoolId", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t("placeholders.school")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">{t("placeholders.noSchool")}</SelectItem>
-                  {schools?.map((school) => (
-                    <SelectItem key={school.id} value={school.id}>
-                      {school.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover modal={true} open={schoolOpen} onOpenChange={setSchoolOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className={cn(
+                      "w-full justify-between",
+                      !form.watch("schoolId") || form.watch("schoolId") === "none"
+                        ? "text-muted-foreground"
+                        : ""
+                    )}
+                  >
+                    {form.watch("schoolId") && form.watch("schoolId") !== "none" ? (
+                      <span className="truncate">
+                        {schools?.find((school) => school.id === form.watch("schoolId"))?.name}
+                      </span>
+                    ) : (
+                      t("placeholders.school")
+                    )}
+                    <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[var(--radix-popover-trigger-width)] p-0"
+                  align="start"
+                >
+                  <Command>
+                    <CommandInput placeholder={t("placeholders.school")} />
+                    <CommandList className="max-h-[300px] overflow-y-auto overflow-x-hidden">
+                      <CommandEmpty>{t("placeholders.noSchool")}</CommandEmpty>
+                      <CommandGroup>
+                        <CommandItem
+                          value="none"
+                          onSelect={() => {
+                            form.setValue("schoolId", "none");
+                            setSchoolOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              !form.watch("schoolId") || form.watch("schoolId") === "none"
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {t("placeholders.noSchool")}
+                        </CommandItem>
+                        {schools?.map((school) => (
+                          <CommandItem
+                            key={school.id}
+                            value={school.name}
+                            onSelect={() => {
+                              form.setValue("schoolId", school.id);
+                              setSchoolOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                form.watch("schoolId") === school.id ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            <span className="truncate">{school.name}</span>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </Field>
 
             <div className="grid grid-cols-2 gap-4">
@@ -251,22 +372,78 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
 
               <Field>
                 <FieldLabel>{t("fields.assignedTeacher")}</FieldLabel>
-                <Select
-                  {...form.register("assignedTeacher")}
-                  onValueChange={(value) => form.setValue("assignedTeacher", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("placeholders.assignedTeacher")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">{t("placeholders.noTeacher")}</SelectItem>
-                    {teachers?.map((teacher) => (
-                      <SelectItem key={teacher.id} value={teacher.name}>
-                        {teacher.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Popover modal={true} open={teacherOpen} onOpenChange={setTeacherOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between",
+                        !form.watch("assignedTeacher") || form.watch("assignedTeacher") === "none"
+                          ? "text-muted-foreground"
+                          : ""
+                      )}
+                    >
+                      {form.watch("assignedTeacher") && form.watch("assignedTeacher") !== "none" ? (
+                        <span className="truncate">{form.watch("assignedTeacher")}</span>
+                      ) : (
+                        t("placeholders.assignedTeacher")
+                      )}
+                      <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-[var(--radix-popover-trigger-width)] p-0"
+                    align="start"
+                  >
+                    <Command>
+                      <CommandInput placeholder={t("placeholders.assignedTeacher")} />
+                      <CommandList className="max-h-[300px] overflow-y-auto overflow-x-hidden">
+                        <CommandEmpty>{t("placeholders.noTeacher")}</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value="none"
+                            onSelect={() => {
+                              form.setValue("assignedTeacher", "none");
+                              setTeacherOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                !form.watch("assignedTeacher") ||
+                                  form.watch("assignedTeacher") === "none"
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {t("placeholders.noTeacher")}
+                          </CommandItem>
+                          {teachers?.map((teacher) => (
+                            <CommandItem
+                              key={teacher.id}
+                              value={teacher.name}
+                              onSelect={() => {
+                                form.setValue("assignedTeacher", teacher.name);
+                                setTeacherOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  form.watch("assignedTeacher") === teacher.name
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              <span className="truncate">{teacher.name}</span>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </Field>
             </div>
           </FieldGroup>
