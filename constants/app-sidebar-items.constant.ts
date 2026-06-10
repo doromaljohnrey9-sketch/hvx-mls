@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon, SearchIcon, UsersIcon, VideoIcon } from "lucide-react";
+import { LayoutDashboardIcon, SearchIcon, UsersIcon, VideoIcon, GraduationCap } from "lucide-react";
 
 // MLS Sidebar navigation items
 export const APP_SIDEBAR_ITEMS = {
@@ -21,6 +21,12 @@ export const APP_SIDEBAR_ITEMS = {
         name: "Users",
         url: "/admin/users",
         icon: UsersIcon,
+        roles: ["teacher", "super_admin"], // Admin only
+      },
+      {
+        name: "Students",
+        url: "/admin/students",
+        icon: GraduationCap,
         roles: ["teacher", "super_admin"], // Admin only
       },
     ],

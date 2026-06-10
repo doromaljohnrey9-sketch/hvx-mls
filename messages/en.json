@@ -387,12 +387,84 @@
       "failedDesc": "Could not update user."
     }
   },
+  "StudentManagement": {
+    "title": "Student Management",
+    "subtitle": "Manage and create student accounts, grades, and assignments.",
+    "searchPlaceholder": "Search by name or email...",
+    "search": "Search",
+    "createStudent": "Create Student",
+    "createStudentTitle": "Create New Student",
+    "createStudentDescription": "Fill in the details to create a new student account.",
+    "fields": {
+      "email": "Email",
+      "name": "Name",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "approvalStatus": "Approval Status",
+      "branch": "Branch",
+      "school": "School",
+      "grade": "Grade",
+      "assignedTeacher": "Assigned Teacher"
+    },
+    "placeholders": {
+      "email": "you@example.com",
+      "name": "Enter full name",
+      "password": "Create a strong password",
+      "confirmPassword": "Re-enter password",
+      "approvalStatus": "Select status",
+      "branch": "Select branch",
+      "school": "Select school",
+      "grade": "Select grade",
+      "assignedTeacher": "Select teacher",
+      "noBranch": "No branch",
+      "noSchool": "No school",
+      "noTeacher": "No teacher"
+    },
+    "cancel": "Cancel",
+    "create": "Create Student",
+    "filters": {
+      "all": "All",
+      "status": "Status",
+      "grade": "Grade",
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "blocked": "Blocked"
+    },
+    "table": {
+      "name": "Name",
+      "grade": "Grade",
+      "status": "Status",
+      "joined": "Joined",
+      "branch": "Branch",
+      "school": "School",
+      "teacher": "Teacher",
+      "approvedBy": "Approved By",
+      "approvedAt": "Approved At",
+      "actions": "Actions",
+      "save": "Save",
+      "noStudents": "No students found.",
+      "showing": "Showing {start} to {end} of {total} students",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {totalPages}"
+    },
+    "toasts": {
+      "created": "Student created",
+      "createdDesc": "The student has been created successfully.",
+      "updated": "Student updated",
+      "updatedDesc": "The student's information has been updated.",
+      "failed": "Update failed",
+      "failedDesc": "Could not update student."
+    }
+  },
   "Sidebar": {
     "platform": "MLS",
     "tagline": "Math Learning Studio",
     "dashboard": "Dashboard",
     "searchvideos": "Search Videos",
     "users": "Users",
+    "students": "Students",
     "logout": "Log out",
     "logoutFailed": "Sign out failed",
     "tryAgain": "Please try again."

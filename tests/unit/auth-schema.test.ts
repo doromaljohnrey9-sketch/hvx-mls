@@ -1,10 +1,11 @@
 import { describe, it, expect } from "vitest";
-import {
-  loginSchema,
-  registerSchema,
-  forgotPasswordSchema,
-  resetPasswordSchema,
-} from "@/schemas/auth.schema";
+import { getAuthSchemas } from "@/schemas/auth.schema";
+
+const mockT = (key: string) => key;
+
+const { loginSchema, registerSchema, forgotPasswordSchema, resetPasswordSchema } = getAuthSchemas(
+  mockT as any
+);
 
 describe("loginSchema", () => {
   it("should accept valid email and password", () => {
@@ -34,6 +35,7 @@ describe("registerSchema", () => {
       name: "John",
       email: "john@example.com",
       password: "secure123",
+      confirmPassword: "secure123",
     });
     expect(result.success).toBe(true);
   });
@@ -43,6 +45,7 @@ describe("registerSchema", () => {
       name: "J",
       email: "john@example.com",
       password: "secure123",
+      confirmPassword: "secure123",
     });
     expect(result.success).toBe(false);
   });

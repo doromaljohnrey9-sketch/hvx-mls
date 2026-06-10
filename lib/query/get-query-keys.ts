@@ -29,4 +29,7 @@ export const getQueryKey = {
   subjects: {
     all: ["subjects"] as const,
   },
+  students: {
+    all: ["students"] as const,
+  },
 } as const;
