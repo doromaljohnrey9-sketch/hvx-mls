@@ -60,7 +60,6 @@ export function UserResetPasswordDialog({
       id: user.id,
       password: data.password,
     });
-    toast.success(t("toasts.passwordReset"));
     form.reset();
     onOpenChange(false);
   };
