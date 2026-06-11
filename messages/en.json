@@ -398,11 +398,8 @@
       "approvedBy": "Approved By",
       "approvedAt": "Approved At",
       "actions": "Actions",
-      "approve": "Approve",
-      "reject": "Reject",
-      "view": "View Details",
-      "updateRole": "Update Role",
       "edit": "Edit",
+      "resetPassword": "Reset Password",
       "noUsers": "No users found.",
       "showing": "Showing {start} to {end} of {total} users",
       "previous": "Previous",
@@ -414,11 +411,15 @@
       "createdDesc": "The user has been created successfully.",
       "updated": "User updated",
       "updatedDesc": "The user's role/status has been updated.",
-      "failed": "Update failed",
-      "failedDesc": "Could not update user.",
       "passwordsDoNotMatch": "Passwords do not match",
       "passwordMinLength": "Password must be at least 6 characters",
-      "schoolCreated": "School created successfully"
+      "schoolCreated": "School created successfully",
+      "passwordReset": "Password reset successfully"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "description": "Reset password for",
+      "submit": "Reset Password"
     }
   },
   "Sidebar": {

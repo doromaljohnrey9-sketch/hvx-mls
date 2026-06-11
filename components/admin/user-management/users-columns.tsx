@@ -20,7 +20,6 @@ import {
 } from "lucide-react";
 
 import type { AdminUser, AdminUserUpdate } from "@/types/admin.types";
-import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 import { formatDate } from "@/lib/utils";
 
 import { useTranslations } from "next-intl";
@@ -28,6 +27,10 @@ import { useTranslations } from "next-intl";
 interface CreateUsersColumnsProps {
   updateUser: {
     mutate: (data: { id: string; updates: AdminUserUpdate }) => void;
+    isPending?: boolean;
+  };
+  resetPassword?: {
+    mutate: (data: { id: string; password: string }) => void;
     isPending?: boolean;
   };
   currentUserId?: string;
@@ -38,6 +41,7 @@ interface CreateUsersColumnsProps {
 
 export function createUsersColumns({
   updateUser,
+  resetPassword,
   currentUserId,
   t,
   tRoles,
@@ -293,9 +297,8 @@ export function createUsersColumns({
           <UserActionsDropdown
             user={user}
             updateUser={updateUser}
+            resetPassword={resetPassword}
             isSelf={isSelf}
-            roleLabels={ROLE_LABELS}
-            statusLabels={APPROVAL_STATUS_LABELS}
           />
         );
       },

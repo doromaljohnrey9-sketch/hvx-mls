@@ -42,6 +42,16 @@ export const adminService = {
     }
   },
 
+  resetPassword: async (userId: string, password: string): Promise<boolean> => {
+    try {
+      await axiosInstance.post(`${API_ROUTES.ADMIN.USERS}/reset-password`, { userId, password });
+      return true;
+    } catch (error) {
+      console.error("Failed to reset password:", error);
+      return false;
+    }
+  },
+
   getAdminUsers: async (params: AdminUsersQueryParams): Promise<AdminUsersResponse> => {
     try {
       const queryParams = new URLSearchParams();
