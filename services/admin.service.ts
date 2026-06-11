@@ -1,6 +1,10 @@
 import { axiosInstance } from "@/config/axios.config";
 import type { SelectProfile, UserRole, ApprovalStatus } from "@/types/drizzle.types";
-import type { AdminUsersResponse, AdminUsersQueryParams } from "@/types/admin.types";
+import type {
+  AdminUsersResponse,
+  AdminUsersQueryParams,
+  AdminUserUpdate,
+} from "@/types/admin.types";
 
 import { API_ROUTES } from "@/constants/routes.constant";
 
@@ -28,25 +32,12 @@ export const adminService = {
     }
   },
 
-  updateUserRole: async (userId: string, role: UserRole): Promise<boolean> => {
+  updateUser: async (userId: string, updates: AdminUserUpdate): Promise<boolean> => {
     try {
-      await axiosInstance.patch(API_ROUTES.ADMIN.USERS, { userId, role });
+      await axiosInstance.patch(API_ROUTES.ADMIN.USERS, { userId, ...updates });
       return true;
     } catch (error) {
-      console.error("Failed to update user role:", error);
-      return false;
-    }
-  },
-
-  updateUserApprovalStatus: async (
-    userId: string,
-    approvalStatus: ApprovalStatus
-  ): Promise<boolean> => {
-    try {
-      await axiosInstance.patch(API_ROUTES.ADMIN.USERS, { userId, approvalStatus });
-      return true;
-    } catch (error) {
-      console.error("Failed to update user approval status:", error);
+      console.error("Failed to update user:", error);
       return false;
     }
   },

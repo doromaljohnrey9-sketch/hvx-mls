@@ -348,6 +348,9 @@
     },
     "cancel": "Cancel",
     "create": "Create User",
+    "save": "Save Changes",
+    "editUserTitle": "Edit User",
+    "editUserDescription": "Update the user's information and settings.",
     "filters": {
       "all": "All",
       "role": "Role",
@@ -372,6 +375,7 @@
       "reject": "Reject",
       "view": "View Details",
       "updateRole": "Update Role",
+      "edit": "Edit",
       "noUsers": "No users found.",
       "showing": "Showing {start} to {end} of {total} users",
       "previous": "Previous",

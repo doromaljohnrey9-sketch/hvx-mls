@@ -7,8 +7,13 @@ export type AdminUser = SelectProfile & {
 };
 
 export interface AdminUserUpdate {
+  name?: string;
   role?: UserRole;
   approvalStatus?: ApprovalStatus;
+  branchId?: string | null;
+  schoolId?: string | null;
+  grade?: number | null;
+  assignedTeacher?: string | null;
 }
 
 export interface AdminUsersResponse {
