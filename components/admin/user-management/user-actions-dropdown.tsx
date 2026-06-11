@@ -12,10 +12,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontalIcon } from "lucide-react";
+import { MoreHorizontalIcon, PencilIcon } from "lucide-react";
 
 import type { AdminUser, AdminUserUpdate } from "@/types/admin.types";
 import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
+import { UserEditDialog } from "@/components/admin/user-management/user-edit-dialog";
 
 interface UserActionsDropdownProps {
   user: AdminUser;
@@ -41,6 +42,7 @@ export function UserActionsDropdown({
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(user.role);
   const [selectedStatus, setSelectedStatus] = useState<ApprovalStatus | null>(user.approvalStatus);
   const [isOpen, setIsOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const availableRoles: UserRole[] = ["student", "teacher"];
   const availableStatuses: ApprovalStatus[] = ["pending", "approved", "rejected", "blocked"];
@@ -71,48 +73,69 @@ export function UserActionsDropdown({
   };
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0"
-          disabled={updateUser.isPending || isSelf}
-        >
-          <MoreHorizontalIcon className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>{t("table.role")}</DropdownMenuLabel>
-        {availableRoles.map((role) => (
-          <DropdownMenuCheckboxItem
-            key={role}
-            checked={selectedRole === role}
-            onCheckedChange={(checked) => checked && setSelectedRole(role)}
-            onSelect={(e) => e.preventDefault()}
+    <>
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            disabled={updateUser.isPending || isSelf}
           >
-            {roleLabels[role]}
-          </DropdownMenuCheckboxItem>
-        ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel>{t("table.status")}</DropdownMenuLabel>
-        {availableStatuses.map((status) => (
-          <DropdownMenuCheckboxItem
-            key={status}
-            checked={selectedStatus === status}
-            onCheckedChange={(checked) => checked && setSelectedStatus(status)}
-            onSelect={(e) => e.preventDefault()}
-          >
-            {statusLabels[status]}
-          </DropdownMenuCheckboxItem>
-        ))}
-        <DropdownMenuSeparator />
-        <div className="flex items-center justify-end gap-2 p-2">
-          <Button size="sm" onClick={handleConfirm} disabled={updateUser.isPending}>
-            {t("table.approve")}
+            <MoreHorizontalIcon className="size-4" />
           </Button>
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>{t("table.role")}</DropdownMenuLabel>
+          {availableRoles.map((role) => (
+            <DropdownMenuCheckboxItem
+              key={role}
+              checked={selectedRole === role}
+              onCheckedChange={(checked) => checked && setSelectedRole(role)}
+              onSelect={(e) => e.preventDefault()}
+            >
+              {roleLabels[role]}
+            </DropdownMenuCheckboxItem>
+          ))}
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel>{t("table.status")}</DropdownMenuLabel>
+          {availableStatuses.map((status) => (
+            <DropdownMenuCheckboxItem
+              key={status}
+              checked={selectedStatus === status}
+              onCheckedChange={(checked) => checked && setSelectedStatus(status)}
+              onSelect={(e) => e.preventDefault()}
+            >
+              {statusLabels[status]}
+            </DropdownMenuCheckboxItem>
+          ))}
+          <DropdownMenuSeparator />
+          <div className="flex items-center justify-end gap-2 p-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                setEditDialogOpen(true);
+                setIsOpen(false);
+              }}
+              disabled={updateUser.isPending}
+            >
+              <PencilIcon className="size-3 mr-1" />
+              {t("table.edit")}
+            </Button>
+            <Button size="sm" onClick={handleConfirm} disabled={updateUser.isPending}>
+              {t("table.approve")}
+            </Button>
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <UserEditDialog
+        user={user}
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        onUpdateUser={updateUser.mutate}
+        isPending={updateUser.isPending}
+      />
+    </>
   );
 }

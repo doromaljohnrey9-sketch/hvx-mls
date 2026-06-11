@@ -281,8 +281,8 @@ export async function POST(request: NextRequest) {
 
 /**
  * PATCH /api/admin/users
- * Update a user's role or approval status. Teacher+ only.
- * Body: { userId: string, role?: UserRole, approvalStatus?: ApprovalStatus }
+ * Update a user's profile. Teacher+ only.
+ * Body: { userId: string, name?: string, role?: UserRole, approvalStatus?: ApprovalStatus, branchId?: string | null, schoolId?: string | null, grade?: number | null, assignedTeacher?: string | null }
  */
 export async function PATCH(request: NextRequest) {
   try {
@@ -293,11 +293,17 @@ export async function PATCH(request: NextRequest) {
     if (error) return error;
 
     const body = await request.json();
-    const { userId, role, approvalStatus } = body as {
-      userId: string;
-      role?: UserRole;
-      approvalStatus?: ApprovalStatus;
-    };
+    const { userId, name, role, approvalStatus, branchId, schoolId, grade, assignedTeacher } =
+      body as {
+        userId: string;
+        name?: string;
+        role?: UserRole;
+        approvalStatus?: ApprovalStatus;
+        branchId?: string | null;
+        schoolId?: string | null;
+        grade?: number | null;
+        assignedTeacher?: string | null;
+      };
 
     if (!userId) {
       return apiResponse({
@@ -306,10 +312,18 @@ export async function PATCH(request: NextRequest) {
       });
     }
 
-    if (!role && !approvalStatus) {
+    if (
+      !name &&
+      !role &&
+      !approvalStatus &&
+      branchId === undefined &&
+      schoolId === undefined &&
+      grade === undefined &&
+      assignedTeacher === undefined
+    ) {
       return apiResponse({
         status: HttpStatus.BAD_REQUEST,
-        message: "Role or approvalStatus is required.",
+        message: "At least one field to update is required.",
       });
     }
 
@@ -368,12 +382,24 @@ export async function PATCH(request: NextRequest) {
 
     // Build update object
     const updateData: {
+      name?: string;
       role?: UserRole;
       approvalStatus?: ApprovalStatus;
       approvedBy?: string;
       approvedAt?: Date;
+      branchId?: string | null;
+      schoolId?: string | null;
+      grade?: number | null;
+      assignedTeacher?: string | null;
     } = {};
+
+    if (name !== undefined) updateData.name = name;
     if (role) updateData.role = role;
+    if (branchId !== undefined) updateData.branchId = branchId;
+    if (schoolId !== undefined) updateData.schoolId = schoolId;
+    if (grade !== undefined) updateData.grade = grade;
+    if (assignedTeacher !== undefined) updateData.assignedTeacher = assignedTeacher;
+
     if (approvalStatus) {
       updateData.approvalStatus = approvalStatus;
       if (approvalStatus === "approved") {

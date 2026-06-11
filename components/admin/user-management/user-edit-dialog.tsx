@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { PlusIcon, Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +14,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -34,38 +32,60 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { PasswordInput } from "@/components/shared/password-input";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
 import { getTeachersQueryOptions } from "@/queries/teachers.query";
-import type { ApprovalStatus } from "@/types/drizzle.types";
+import type { AdminUser, AdminUserUpdate } from "@/types/admin.types";
+import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 
 import { useTranslations } from "next-intl";
 
-const studentCreateSchema = {
-  email: "",
-  name: "",
-  password: "",
-  confirmPassword: "",
-  branchId: "none",
-  schoolId: "none",
-  grade: "",
-  assignedTeacher: "none",
-  approvalStatus: "approved",
-};
+interface UserEditDialogProps {
+  user: AdminUser;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onUpdateUser: (data: { id: string; updates: AdminUserUpdate }) => void;
+  isPending?: boolean;
+}
 
-export function StudentCreateDialog({ onCreateStudent }: { onCreateStudent: (data: any) => void }) {
-  const [open, setOpen] = useState(false);
+export function UserEditDialog({
+  user,
+  open,
+  onOpenChange,
+  onUpdateUser,
+  isPending,
+}: UserEditDialogProps) {
   const [branchOpen, setBranchOpen] = useState(false);
   const [schoolOpen, setSchoolOpen] = useState(false);
   const [teacherOpen, setTeacherOpen] = useState(false);
-  const t = useTranslations("StudentManagement");
+  const t = useTranslations("UserManagement");
 
   const form = useForm({
-    defaultValues: studentCreateSchema,
+    defaultValues: {
+      name: user.name || "",
+      role: user.role,
+      approvalStatus: user.approvalStatus,
+      branchId: user.branchId || "none",
+      schoolId: user.schoolId || "none",
+      grade: user.grade?.toString() || "",
+      assignedTeacher: user.assignedTeacher || "none",
+    },
   });
+
+  useEffect(() => {
+    form.reset({
+      name: user.name || "",
+      role: user.role,
+      approvalStatus: user.approvalStatus,
+      branchId: user.branchId || "none",
+      schoolId: user.schoolId || "none",
+      grade: user.grade?.toString() || "",
+      assignedTeacher: user.assignedTeacher || "none",
+    });
+  }, [user, form]);
 
   const { data: branches } = useQuery(getBranchesQueryOptions());
   const { data: schools } = useQuery(getSchoolsQueryOptions());
@@ -81,61 +101,52 @@ export function StudentCreateDialog({ onCreateStudent }: { onCreateStudent: (dat
   );
 
   const onSubmit = (data: any) => {
-    if (data.password !== data.confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
+    const updates: AdminUserUpdate = {};
+
+    if (data.name !== user.name) {
+      updates.name = data.name;
+    }
+    if (data.role !== user.role) {
+      updates.role = data.role as UserRole;
+    }
+    if (data.approvalStatus !== user.approvalStatus) {
+      updates.approvalStatus = data.approvalStatus as ApprovalStatus;
+    }
+    if (data.branchId !== (user.branchId || "none")) {
+      updates.branchId = data.branchId === "none" ? null : data.branchId;
+    }
+    if (data.schoolId !== (user.schoolId || "none")) {
+      updates.schoolId = data.schoolId === "none" ? null : data.schoolId;
+    }
+    if (data.grade !== (user.grade?.toString() || "")) {
+      updates.grade = data.grade ? parseInt(data.grade) : null;
+    }
+    if (data.assignedTeacher !== (user.assignedTeacher || "none")) {
+      updates.assignedTeacher = data.assignedTeacher === "none" ? null : data.assignedTeacher;
     }
 
-    if (data.password.length < 6) {
-      toast.error("Password must be at least 6 characters");
-      return;
-    }
-
-    const payload = {
-      email: data.email,
-      password: data.password,
-      name: data.name,
-      role: "student",
-      branchId: data.branchId === "none" ? undefined : data.branchId,
-      schoolId: data.schoolId === "none" ? undefined : data.schoolId,
-      grade: data.grade ? parseInt(data.grade) : undefined,
-      assignedTeacher: data.assignedTeacher === "none" ? undefined : data.assignedTeacher,
-      approvalStatus: data.approvalStatus as ApprovalStatus,
-    };
-    onCreateStudent(payload);
-    form.reset();
-    setOpen(false);
+    onUpdateUser({
+      id: user.id,
+      updates,
+    });
+    toast.success(t("toasts.updated"), {
+      description: t("toasts.updatedDesc"),
+    });
+    onOpenChange(false);
   };
 
+  const tRoles = useTranslations("Dashboard.roles");
   const tStatuses = useTranslations("Dashboard.statuses");
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <PlusIcon className="h-4 w-4 mr-2" />
-          {t("createStudent")}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t("createStudentTitle")}</DialogTitle>
-          <DialogDescription>{t("createStudentDescription")}</DialogDescription>
+          <DialogTitle>{t("editUserTitle")}</DialogTitle>
+          <DialogDescription>{t("editUserDescription")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup className="space-y-4">
-            <Field>
-              <FieldLabel>{t("fields.email")}</FieldLabel>
-              <Input
-                {...form.register("email", { required: true })}
-                type="email"
-                placeholder={t("placeholders.email")}
-              />
-              {form.formState.errors.email && (
-                <FieldError errors={[form.formState.errors.email as any]} />
-              )}
-            </Field>
-
             <Field>
               <FieldLabel>{t("fields.name")}</FieldLabel>
               <Input
@@ -149,46 +160,39 @@ export function StudentCreateDialog({ onCreateStudent }: { onCreateStudent: (dat
 
             <div className="grid grid-cols-2 gap-4">
               <Field>
-                <FieldLabel>{t("fields.password")}</FieldLabel>
-                <PasswordInput
-                  {...form.register("password", { required: true, minLength: 6 })}
-                  placeholder={t("placeholders.password")}
-                />
-                {form.formState.errors.password && (
-                  <FieldError errors={[form.formState.errors.password as any]} />
-                )}
+                <FieldLabel>{t("fields.role")}</FieldLabel>
+                <Select
+                  value={form.watch("role")}
+                  onValueChange={(value: UserRole) => form.setValue("role", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={t("placeholders.role")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="student">{tRoles("student")}</SelectItem>
+                    <SelectItem value="teacher">{tRoles("teacher")}</SelectItem>
+                  </SelectContent>
+                </Select>
               </Field>
 
               <Field>
-                <FieldLabel>{t("fields.confirmPassword")}</FieldLabel>
-                <PasswordInput
-                  {...form.register("confirmPassword", { required: true })}
-                  placeholder={t("placeholders.confirmPassword")}
-                />
-                {form.formState.errors.confirmPassword && (
-                  <FieldError errors={[form.formState.errors.confirmPassword as any]} />
-                )}
+                <FieldLabel>{t("fields.approvalStatus")}</FieldLabel>
+                <Select
+                  value={form.watch("approvalStatus")}
+                  onValueChange={(value: ApprovalStatus) => form.setValue("approvalStatus", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={t("placeholders.approvalStatus")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pending">{tStatuses("pending")}</SelectItem>
+                    <SelectItem value="approved">{tStatuses("approved")}</SelectItem>
+                    <SelectItem value="rejected">{tStatuses("rejected")}</SelectItem>
+                    <SelectItem value="blocked">{tStatuses("blocked")}</SelectItem>
+                  </SelectContent>
+                </Select>
               </Field>
             </div>
-
-            <Field>
-              <FieldLabel>{t("fields.approvalStatus")}</FieldLabel>
-              <Select
-                {...form.register("approvalStatus")}
-                onValueChange={(value) => form.setValue("approvalStatus", value)}
-                defaultValue="pending"
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t("placeholders.approvalStatus")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pending">{tStatuses("pending")}</SelectItem>
-                  <SelectItem value="approved">{tStatuses("approved")}</SelectItem>
-                  <SelectItem value="rejected">{tStatuses("rejected")}</SelectItem>
-                  <SelectItem value="blocked">{tStatuses("blocked")}</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
 
             <Field>
               <FieldLabel>{t("fields.branch")}</FieldLabel>
@@ -341,21 +345,11 @@ export function StudentCreateDialog({ onCreateStudent }: { onCreateStudent: (dat
             <div className="grid grid-cols-2 gap-4">
               <Field>
                 <FieldLabel>{t("fields.grade")}</FieldLabel>
-                <Select
+                <Input
                   {...form.register("grade")}
-                  onValueChange={(value) => form.setValue("grade", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("placeholders.grade")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((grade) => (
-                      <SelectItem key={grade} value={grade.toString()}>
-                        {grade}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  type="number"
+                  placeholder={t("placeholders.grade")}
+                />
               </Field>
 
               <Field>
@@ -436,10 +430,12 @@ export function StudentCreateDialog({ onCreateStudent }: { onCreateStudent: (dat
             </div>
           </FieldGroup>
           <DialogFooter className="mt-6">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               {t("cancel")}
             </Button>
-            <Button type="submit">{t("create")}</Button>
+            <Button type="submit" disabled={isPending}>
+              {t("save")}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
