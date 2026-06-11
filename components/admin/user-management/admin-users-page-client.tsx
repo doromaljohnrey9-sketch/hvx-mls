@@ -21,6 +21,7 @@ export function AdminUsersPageClient() {
     isLoading,
     updateUser,
     createUser,
+    resetPassword,
     search,
     roleFilter,
     approvalStatusFilter,
@@ -36,6 +37,7 @@ export function AdminUsersPageClient() {
 
   const columns = createUsersColumns({
     updateUser: updateUser,
+    resetPassword: resetPassword,
     currentUserId: user?.id,
     t,
     tRoles,

@@ -1,22 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuCheckboxItem,
-  DropdownMenuSeparator,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontalIcon, PencilIcon } from "lucide-react";
+import { MoreHorizontalIcon, PencilIcon, KeyIcon } from "lucide-react";
 
 import type { AdminUser, AdminUserUpdate } from "@/types/admin.types";
-import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 import { UserEditDialog } from "@/components/admin/user-management/user-edit-dialog";
+import { UserResetPasswordDialog } from "@/components/admin/user-management/user-reset-password-dialog";
 
 interface UserActionsDropdownProps {
   user: AdminUser;
@@ -24,9 +20,11 @@ interface UserActionsDropdownProps {
     mutate: (data: { id: string; updates: AdminUserUpdate }) => void;
     isPending?: boolean;
   };
+  resetPassword?: {
+    mutate: (data: { id: string; password: string }) => void;
+    isPending?: boolean;
+  };
   isSelf: boolean;
-  roleLabels: Record<string, string>;
-  statusLabels: Record<string, string>;
 }
 
 import { useTranslations } from "next-intl";
@@ -34,43 +32,13 @@ import { useTranslations } from "next-intl";
 export function UserActionsDropdown({
   user,
   updateUser,
+  resetPassword,
   isSelf,
-  roleLabels,
-  statusLabels,
 }: UserActionsDropdownProps) {
   const t = useTranslations("UserManagement");
-  const [selectedRole, setSelectedRole] = useState<UserRole | null>(user.role);
-  const [selectedStatus, setSelectedStatus] = useState<ApprovalStatus | null>(user.approvalStatus);
   const [isOpen, setIsOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-
-  const availableRoles: UserRole[] = ["student", "teacher"];
-  const availableStatuses: ApprovalStatus[] = ["pending", "approved", "rejected", "blocked"];
-
-  const handleConfirm = () => {
-    const updates: AdminUserUpdate = {};
-    let hasChanges = false;
-
-    if (selectedRole && selectedRole !== user.role) {
-      updates.role = selectedRole;
-      hasChanges = true;
-    }
-    if (selectedStatus && selectedStatus !== user.approvalStatus) {
-      updates.approvalStatus = selectedStatus;
-      hasChanges = true;
-    }
-
-    if (hasChanges) {
-      updateUser.mutate({
-        id: user.id,
-        updates,
-      });
-      toast.success(t("toasts.updated"), {
-        description: t("toasts.updatedDesc"),
-      });
-    }
-    setIsOpen(false);
-  };
+  const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState(false);
 
   return (
     <>
@@ -86,47 +54,26 @@ export function UserActionsDropdown({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>{t("table.role")}</DropdownMenuLabel>
-          {availableRoles.map((role) => (
-            <DropdownMenuCheckboxItem
-              key={role}
-              checked={selectedRole === role}
-              onCheckedChange={(checked) => checked && setSelectedRole(role)}
-              onSelect={(e) => e.preventDefault()}
-            >
-              {roleLabels[role]}
-            </DropdownMenuCheckboxItem>
-          ))}
-          <DropdownMenuSeparator />
-          <DropdownMenuLabel>{t("table.status")}</DropdownMenuLabel>
-          {availableStatuses.map((status) => (
-            <DropdownMenuCheckboxItem
-              key={status}
-              checked={selectedStatus === status}
-              onCheckedChange={(checked) => checked && setSelectedStatus(status)}
-              onSelect={(e) => e.preventDefault()}
-            >
-              {statusLabels[status]}
-            </DropdownMenuCheckboxItem>
-          ))}
-          <DropdownMenuSeparator />
-          <div className="flex items-center justify-end gap-2 p-2">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                setEditDialogOpen(true);
-                setIsOpen(false);
-              }}
-              disabled={updateUser.isPending}
-            >
-              <PencilIcon className="size-3 mr-1" />
-              {t("table.edit")}
-            </Button>
-            <Button size="sm" onClick={handleConfirm} disabled={updateUser.isPending}>
-              {t("table.approve")}
-            </Button>
-          </div>
+          <DropdownMenuItem
+            onClick={() => {
+              setResetPasswordDialogOpen(true);
+              setIsOpen(false);
+            }}
+            disabled={!resetPassword || updateUser.isPending || isSelf}
+          >
+            <KeyIcon className="size-4 mr-2" />
+            {t("table.resetPassword")}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              setEditDialogOpen(true);
+              setIsOpen(false);
+            }}
+            disabled={updateUser.isPending}
+          >
+            <PencilIcon className="size-4 mr-2" />
+            {t("table.edit")}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <UserEditDialog
@@ -136,6 +83,15 @@ export function UserActionsDropdown({
         onUpdateUser={updateUser.mutate}
         isPending={updateUser.isPending}
       />
+      {resetPassword && (
+        <UserResetPasswordDialog
+          user={user}
+          open={resetPasswordDialogOpen}
+          onOpenChange={setResetPasswordDialogOpen}
+          onResetPassword={resetPassword.mutate}
+          isPending={resetPassword.isPending}
+        />
+      )}
     </>
   );
 }

@@ -71,6 +71,21 @@ export function useAdminUserManagement() {
     },
   });
 
+  const resetPassword = useMutation({
+    mutationFn: async ({ id, password }: { id: string; password: string }) => {
+      return adminService.resetPassword(id, password);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getQueryKey.admin.users() });
+    },
+    onError: (error: any) => {
+      console.error("Failed to reset password:", error);
+      toast.error("Failed to reset password", {
+        description: error.response?.data?.message || error.message || "Please try again",
+      });
+    },
+  });
+
   const handleSearchChange = (value: string) => {
     setSearchInput(value);
   };
@@ -100,6 +115,7 @@ export function useAdminUserManagement() {
     users,
     updateUser,
     createUser,
+    resetPassword,
     isLoading: users.isLoading,
     search: searchInput,
     roleFilter,
