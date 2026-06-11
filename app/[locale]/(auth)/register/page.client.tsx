@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { User, Mail, Lock, GraduationCap, ArrowLeft, Check, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { PasswordInput } from "@/components/shared/password-input";
+import { CreatableCombobox } from "@/components/ui/creatable-combobox";
 import { cn } from "@/lib/utils";
 
 import { getSupabaseClient } from "@/lib/supabase/client";
@@ -39,6 +40,7 @@ import { getAuthSchemas, type RegisterFormValues } from "@/schemas/auth.schema";
 import { AUTH_ROUTES } from "@/constants/routes.constant";
 import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
+import { schoolsService } from "@/services/schools.service";
 
 import { useTranslations } from "next-intl";
 
@@ -47,13 +49,31 @@ export const PageClient = () => {
   const { registerSchema } = getAuthSchemas(t);
   const router = useRouter();
   const supabase = getSupabaseClient();
+  const queryClient = useQueryClient();
 
   const [isPending, startTransition] = useTransition();
   const [branchOpen, setBranchOpen] = useState(false);
-  const [schoolOpen, setSchoolOpen] = useState(false);
 
   const { data: branches, isLoading: branchesLoading } = useQuery(getBranchesQueryOptions());
   const { data: schools, isLoading: schoolsLoading } = useQuery(getSchoolsQueryOptions());
+
+  const createSchoolMutation = useMutation({
+    mutationFn: async (data: { name: string; branchId: string }) => {
+      return schoolsService.create(data);
+    },
+    onSuccess: (newSchool) => {
+      if (newSchool) {
+        queryClient.invalidateQueries({ queryKey: ["schools"] });
+        toast.success(t("register.schoolCreated"));
+        form.setValue("schoolId", newSchool.id);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(t("common.somethingWentWrong"), {
+        description: error.message || t("common.tryAgain"),
+      });
+    },
+  });
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -357,81 +377,35 @@ export const PageClient = () => {
                   render={({ field, fieldState }) => (
                     <div className="space-y-2">
                       <FieldLabel htmlFor="schoolId">{t("register.school")}</FieldLabel>
-                      <Popover modal={true} open={schoolOpen} onOpenChange={setSchoolOpen}>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className={cn(
-                              "w-full justify-between",
-                              (!field.value || field.value === "none") && "text-muted-foreground"
-                            )}
-                            disabled={isPending || schoolsLoading}
-                          >
-                            {field.value && field.value !== "none" ? (
-                              <span className="truncate">
-                                {schools?.find((school) => school.id === field.value)?.name}
-                              </span>
-                            ) : (
-                              t("register.selectSchool")
-                            )}
-                            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent
-                          className="w-[var(--radix-popover-trigger-width)] p-0"
-                          align="start"
-                        >
-                          <Command>
-                            <CommandInput placeholder={t("register.selectSchool")} />
-                            <CommandList className="max-h-[300px] overflow-y-auto overflow-x-hidden">
-                              <CommandEmpty>{t("register.none")}</CommandEmpty>
-                              <CommandGroup>
-                                <CommandItem
-                                  value="none"
-                                  onSelect={() => {
-                                    field.onChange(null);
-                                    setSchoolOpen(false);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      !field.value ? "opacity-100" : "opacity-0"
-                                    )}
-                                  />
-                                  {t("register.none")}
-                                </CommandItem>
-                                {schools
-                                  ?.filter(
-                                    (school) =>
-                                      !branchId ||
-                                      branchId === "none" ||
-                                      school.branchId === branchId
-                                  )
-                                  .map((school) => (
-                                    <CommandItem
-                                      key={school.id}
-                                      value={school.name}
-                                      onSelect={() => {
-                                        field.onChange(school.id);
-                                        setSchoolOpen(false);
-                                      }}
-                                    >
-                                      <Check
-                                        className={cn(
-                                          "mr-2 h-4 w-4",
-                                          field.value === school.id ? "opacity-100" : "opacity-0"
-                                        )}
-                                      />
-                                      <span className="truncate">{school.name}</span>
-                                    </CommandItem>
-                                  ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
+                      <CreatableCombobox
+                        items={
+                          schools
+                            ?.filter(
+                              (school) =>
+                                !branchId || branchId === "none" || school.branchId === branchId
+                            )
+                            .map((school) => ({
+                              label: school.name,
+                              value: school.id,
+                            })) || []
+                        }
+                        value={field.value || ""}
+                        onValueChange={(value) => field.onChange(value || null)}
+                        onCreateItem={async (schoolName) => {
+                          if (branchId && branchId !== "none") {
+                            createSchoolMutation.mutate({
+                              name: schoolName,
+                              branchId,
+                            });
+                          } else {
+                            toast.error(t("register.selectBranch"));
+                          }
+                        }}
+                        placeholder={t("register.selectSchool")}
+                        emptyText={t("register.noSchoolsFound")}
+                        createText={t("register.createSchool")}
+                        disabled={isPending || schoolsLoading || createSchoolMutation.isPending}
+                      />
                       {fieldState.error ? <FieldError errors={[fieldState.error]} /> : null}
                     </div>
                   )}

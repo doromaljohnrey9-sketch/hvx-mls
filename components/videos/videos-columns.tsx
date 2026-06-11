@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   ArrowUpDownIcon,
   PlayIcon,
@@ -82,12 +83,16 @@ export function createVideosColumns({
       cell: ({ row }) => {
         const video = row.original;
         return (
-          <div
-            className="font-semibold text-sm text-foreground truncate"
-            title={video.title || "N/A"}
-          >
-            {video.title || "N/A"}
-          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="font-semibold text-sm text-foreground truncate cursor-help">
+                {video.title || "N/A"}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{video.title || "N/A"}</p>
+            </TooltipContent>
+          </Tooltip>
         );
       },
       size: 200,

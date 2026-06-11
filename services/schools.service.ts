@@ -13,4 +13,13 @@ export const schoolsService = {
       return [];
     }
   },
+  create: async (data: { name: string; branchId: string }): Promise<SelectSchool | null> => {
+    try {
+      const response = await axiosInstance.post<{ data: SelectSchool }>(API_ROUTES.SCHOOLS, data);
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to create school:", error);
+      return null;
+    }
+  },
 };

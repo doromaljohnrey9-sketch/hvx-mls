@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { PlusIcon, Check, ChevronDown } from "lucide-react";
 
@@ -35,11 +35,13 @@ import {
 } from "@/components/ui/command";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { PasswordInput } from "@/components/shared/password-input";
+import { CreatableCombobox } from "@/components/ui/creatable-combobox";
 import { cn } from "@/lib/utils";
 
 import { getBranchesQueryOptions } from "@/queries/branches.query";
 import { getSchoolsQueryOptions } from "@/queries/schools.query";
 import { getTeachersQueryOptions } from "@/queries/teachers.query";
+import { schoolsService } from "@/services/schools.service";
 import type { UserRole, ApprovalStatus } from "@/types/drizzle.types";
 
 import { useTranslations } from "next-intl";
@@ -60,8 +62,8 @@ const userCreateSchema = {
 export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) => void }) {
   const [open, setOpen] = useState(false);
   const [branchOpen, setBranchOpen] = useState(false);
-  const [schoolOpen, setSchoolOpen] = useState(false);
   const [teacherOpen, setTeacherOpen] = useState(false);
+  const queryClient = useQueryClient();
   const t = useTranslations("UserManagement");
 
   const form = useForm({
@@ -81,14 +83,32 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
     )
   );
 
+  const createSchoolMutation = useMutation({
+    mutationFn: async (data: { name: string; branchId: string }) => {
+      return schoolsService.create(data);
+    },
+    onSuccess: (newSchool) => {
+      if (newSchool) {
+        queryClient.invalidateQueries({ queryKey: ["schools"] });
+        toast.success(t("toasts.schoolCreated"));
+        form.setValue("schoolId", newSchool.id);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(t("toasts.failed"), {
+        description: error.message || t("toasts.failedDesc"),
+      });
+    },
+  });
+
   const onSubmit = (data: any) => {
     if (data.password !== data.confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error(t("toasts.passwordsDoNotMatch"));
       return;
     }
 
     if (data.password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+      toast.error(t("toasts.passwordMinLength"));
       return;
     }
 
@@ -287,77 +307,31 @@ export function UserCreateDialog({ onCreateUser }: { onCreateUser: (data: any) =
 
             <Field>
               <FieldLabel>{t("fields.school")}</FieldLabel>
-              <Popover modal={true} open={schoolOpen} onOpenChange={setSchoolOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className={cn(
-                      "w-full justify-between",
-                      !form.watch("schoolId") || form.watch("schoolId") === "none"
-                        ? "text-muted-foreground"
-                        : ""
-                    )}
-                  >
-                    {form.watch("schoolId") && form.watch("schoolId") !== "none" ? (
-                      <span className="truncate">
-                        {schools?.find((school) => school.id === form.watch("schoolId"))?.name}
-                      </span>
-                    ) : (
-                      t("placeholders.school")
-                    )}
-                    <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-[var(--radix-popover-trigger-width)] p-0"
-                  align="start"
-                >
-                  <Command>
-                    <CommandInput placeholder={t("placeholders.school")} />
-                    <CommandList className="max-h-[300px] overflow-y-auto overflow-x-hidden">
-                      <CommandEmpty>{t("placeholders.noSchool")}</CommandEmpty>
-                      <CommandGroup>
-                        <CommandItem
-                          value="none"
-                          onSelect={() => {
-                            form.setValue("schoolId", "none");
-                            setSchoolOpen(false);
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              !form.watch("schoolId") || form.watch("schoolId") === "none"
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          {t("placeholders.noSchool")}
-                        </CommandItem>
-                        {schools?.map((school) => (
-                          <CommandItem
-                            key={school.id}
-                            value={school.name}
-                            onSelect={() => {
-                              form.setValue("schoolId", school.id);
-                              setSchoolOpen(false);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                form.watch("schoolId") === school.id ? "opacity-100" : "opacity-0"
-                              )}
-                            />
-                            <span className="truncate">{school.name}</span>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <CreatableCombobox
+                items={
+                  schools?.map((school) => ({
+                    label: school.name,
+                    value: school.id,
+                  })) || []
+                }
+                value={form.watch("schoolId") || ""}
+                onValueChange={(value) => form.setValue("schoolId", value || "none")}
+                onCreateItem={async (schoolName) => {
+                  const branchId = form.watch("branchId");
+                  if (branchId && branchId !== "none") {
+                    createSchoolMutation.mutate({
+                      name: schoolName,
+                      branchId,
+                    });
+                  } else {
+                    toast.error(t("placeholders.branch"));
+                  }
+                }}
+                placeholder={t("placeholders.school")}
+                emptyText={t("placeholders.noSchool")}
+                createText="Create"
+                disabled={createSchoolMutation.isPending}
+              />
             </Field>
 
             <div className="grid grid-cols-2 gap-4">
