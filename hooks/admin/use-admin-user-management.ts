@@ -77,6 +77,7 @@ export function useAdminUserManagement() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getQueryKey.admin.users() });
+      toast.success("Password reset successfully");
     },
     onError: (error: any) => {
       console.error("Failed to reset password:", error);

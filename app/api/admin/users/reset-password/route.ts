@@ -76,11 +76,20 @@ export async function POST(request: NextRequest) {
     }
 
     // Update password in Supabase auth
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+    if (!supabaseUrl || !supabaseServiceKey) {
+      console.error("Missing Supabase environment variables for admin operations");
+      return apiResponse({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: "Server configuration error: Missing Supabase service role key.",
+      });
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    console.log("Attempting to update password for user ID:", userId);
     const { error: updateError } = await supabase.auth.admin.updateUserById(userId, {
       password,
     });
@@ -92,6 +101,8 @@ export async function POST(request: NextRequest) {
         message: updateError.message || "Failed to update password.",
       });
     }
+
+    console.log("Password updated successfully for user ID:", userId);
 
     return apiResponse({
       data: { userId },
