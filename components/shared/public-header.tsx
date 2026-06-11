@@ -28,7 +28,7 @@ export const PublicHeader = () => {
       <div className="flex items-center gap-4 text-sm font-medium">
         {user ? (
           <Link href="/dashboard">
-            <Button className="rounded-full px-5 py-2.5">Go to Dashboard</Button>
+            <Button className="rounded-full px-5 py-2.5">{t("goToDashboard")}</Button>
           </Link>
         ) : (
           <>

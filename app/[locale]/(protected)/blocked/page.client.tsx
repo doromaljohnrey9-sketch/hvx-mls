@@ -13,16 +13,19 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { getQueryKey } from "@/lib/query/get-query-keys";
 
+import { useTranslations } from "next-intl";
+
 export const PageClient = () => {
   const router = useRouter();
   const supabase = getSupabaseClient();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const t = useTranslations("Auth.status.blocked");
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     queryClient.invalidateQueries({ queryKey: getQueryKey.users.all });
-    toast.success("Log out successful.");
+    toast.success(t("logoutSuccess"));
     router.replace("/login");
   };
 
@@ -33,17 +36,17 @@ export const PageClient = () => {
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
             <Ban className="h-8 w-8 text-destructive" />
           </div>
-          <CardTitle className="text-xl">Account Blocked</CardTitle>
-          <CardDescription>
-            Your account has been blocked by an administrator.
-            <br />
-            If you believe this is an error, please contact support.
-          </CardDescription>
+          <CardTitle className="text-xl">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {user && <p className="text-sm text-muted-foreground">Account: {user.email}</p>}
+          {user && (
+            <p className="text-sm text-muted-foreground">
+              {t("account")}: {user.email}
+            </p>
+          )}
           <Button variant="outline" onClick={handleSignOut} className="w-full">
-            Log out
+            {t("logout")}
           </Button>
         </CardContent>
       </Card>

@@ -17,6 +17,7 @@
       "login": "Login",
       "signup": "Sign Up"
     },
+    "goToDashboard": "Go to Dashboard",
     "features": {
       "badge": "Core Features",
       "title": "Everything you need to master past exams.",
@@ -249,7 +250,10 @@
       "success": "Registration successful",
       "successDesc": "Your account is pending approval by an administrator.",
       "failed": "Registration failed",
-      "none": "None"
+      "none": "None",
+      "createSchool": "Create school",
+      "schoolCreated": "School created successfully",
+      "noSchoolsFound": "No schools found"
     },
     "forgotPassword": {
       "title": "Forgot Password",
@@ -277,6 +281,29 @@
       "invalidSchool": "Please select a valid school",
       "positiveGrade": "Grade must be a positive number",
       "passwordsDoNotMatch": "Passwords do not match"
+    },
+    "status": {
+      "pending": {
+        "title": "Pending Approval",
+        "description": "An administrator is reviewing your account. You will have full access once approved.",
+        "account": "Account",
+        "logout": "Log out",
+        "logoutSuccess": "Log out successful."
+      },
+      "denied": {
+        "title": "Account Denied",
+        "description": "Your account registration has been denied by an administrator. If you believe this is an error, please contact support.",
+        "account": "Account",
+        "logout": "Log out",
+        "logoutSuccess": "Log out successful."
+      },
+      "blocked": {
+        "title": "Account Blocked",
+        "description": "Your account has been blocked by an administrator. If you believe this is an error, please contact support.",
+        "account": "Account",
+        "logout": "Log out",
+        "logoutSuccess": "Log out successful."
+      }
     }
   },
   "Dashboard": {
@@ -388,7 +415,10 @@
       "updated": "User updated",
       "updatedDesc": "The user's role/status has been updated.",
       "failed": "Update failed",
-      "failedDesc": "Could not update user."
+      "failedDesc": "Could not update user.",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "schoolCreated": "School created successfully"
     }
   },
   "Sidebar": {
