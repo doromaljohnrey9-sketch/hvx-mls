@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { UserActionsDropdown } from "@/components/admin/user-management/user-actions-dropdown";
 import {
   ArrowUpDownIcon,
@@ -95,15 +96,27 @@ export function createUsersColumns({
       cell: ({ row }) => {
         const user = row.original;
         return (
-          <div className="flex items-center gap-2">
-            <User className="size-4 text-muted-foreground shrink-0" />
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm text-foreground truncate">
-                {user.name || "N/A"}
-              </span>
-              <span className="text-xs text-muted-foreground truncate">{user.email}</span>
-            </div>
-          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-2 cursor-help">
+                <User className="size-4 text-muted-foreground shrink-0" />
+                <div className="flex flex-col gap-1">
+                  <span className="font-semibold text-sm text-foreground whitespace-normal wrap-break-word">
+                    {user.name || "N/A"}
+                  </span>
+                  <span className="text-xs text-muted-foreground whitespace-normal wrap-break-word">
+                    {user.email}
+                  </span>
+                </div>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <div className="flex flex-col gap-1">
+                <p>{user.name || "N/A"}</p>
+                <p className="text-xs text-muted-foreground">{user.email}</p>
+              </div>
+            </TooltipContent>
+          </Tooltip>
         );
       },
       size: 260,

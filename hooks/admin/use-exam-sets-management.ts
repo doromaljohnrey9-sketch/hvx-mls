@@ -45,9 +45,7 @@ export function useExamSetsManagement() {
 
   const updateExamSet = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<InsertExamSet> }) => {
-      // TODO: Implement update in service
-      console.log("Update exam set:", id, data);
-      return null;
+      return examSetsService.update(id, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getQueryKey.examSets.all });
@@ -63,9 +61,7 @@ export function useExamSetsManagement() {
 
   const deleteExamSet = useMutation({
     mutationFn: async (id: string) => {
-      // TODO: Implement delete in service
-      console.log("Delete exam set:", id);
-      return null;
+      return examSetsService.delete(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getQueryKey.examSets.all });

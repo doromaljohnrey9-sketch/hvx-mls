@@ -24,19 +24,20 @@ import {
 import { ExamSetWithSchool } from "@/hooks/admin/use-exam-sets-management";
 import { ExamSetStatus } from "@/types/drizzle.types";
 import { Badge } from "@/components/ui/badge";
-import { toSentenceCase } from "@/lib/utils";
+import { toSentenceCase, formatDate } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface ExamSetsColumnsProps {
-  updateExamSet: any;
-  deleteExamSet: any;
+  onUpdate: (examSet: ExamSetWithSchool) => void;
+  onDelete: (examSet: ExamSetWithSchool) => void;
   currentUserId?: string;
-  t: any;
-  tStatus: any;
+  t: ReturnType<typeof useTranslations<"ExamSets">>;
+  tStatus: (status: ExamSetStatus) => string;
 }
 
 export function createExamSetsColumns({
-  updateExamSet,
-  deleteExamSet,
+  onUpdate,
+  onDelete,
   currentUserId,
   t,
   tStatus,
@@ -64,7 +65,7 @@ export function createExamSetsColumns({
         return (
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="font-semibold text-sm text-foreground truncate cursor-help">
+              <div className="font-semibold text-sm text-foreground whitespace-normal break-words cursor-help">
                 {toSentenceCase(row.original.title || "") || "N/A"}
               </div>
             </TooltipTrigger>
@@ -172,15 +173,23 @@ export function createExamSetsColumns({
       accessorKey: "createdAt",
       header: t("table.columns.createdAt"),
       cell: ({ row }) => {
-        const date = new Date(row.original.createdAt ?? "");
         return (
-          <div className="flex items-center gap-2">
-            <Hash className="size-4 text-muted-foreground shrink-0" />
-            <span className="text-sm text-foreground truncate">{date.toLocaleDateString()}</span>
-          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-2 cursor-help">
+                <Hash className="size-4 text-muted-foreground shrink-0" />
+                <span className="text-sm text-foreground truncate">
+                  {formatDate(row.original.createdAt)}
+                </span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{formatDate(row.original.createdAt)}</p>
+            </TooltipContent>
+          </Tooltip>
         );
       },
-      size: 120,
+      size: 150,
     },
     {
       id: "actions",
@@ -194,16 +203,11 @@ export function createExamSetsColumns({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => updateExamSet.mutate({ id: row.original.id, data: {} })}
-            >
+            <DropdownMenuItem onClick={() => onUpdate(row.original)}>
               <PencilIcon className="h-4 w-4 mr-2" />
               {t("actions.edit")}
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => deleteExamSet.mutate(row.original.id)}
-              className="text-destructive"
-            >
+            <DropdownMenuItem onClick={() => onDelete(row.original)} className="text-destructive">
               <TrashIcon className="h-4 w-4 mr-2" />
               {t("actions.delete")}
             </DropdownMenuItem>

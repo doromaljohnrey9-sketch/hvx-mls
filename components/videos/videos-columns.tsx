@@ -89,7 +89,7 @@ export function createVideosColumns({
         return (
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="font-semibold text-sm text-foreground truncate cursor-help">
+              <div className="font-semibold text-sm text-foreground whitespace-normal wrap-break-word cursor-help">
                 {video.title || "N/A"}
               </div>
             </TooltipTrigger>

@@ -1,25 +1,35 @@
 "use client";
 
+import { useState } from "react";
 import { useExamSetsManagement } from "@/hooks/admin/use-exam-sets-management";
 import { ExamSetsPageHeader } from "./exam-sets-page-header";
 import { ExamSetsFilters } from "./exam-sets-filters";
 import { ExamSetsTable } from "./exam-sets-table";
 import { createExamSetsColumns } from "./exam-sets-columns";
+import { ExamSetDeleteDialog } from "./exam-set-delete-dialog";
+import { ExamSetUpdateDialog } from "./exam-set-update-dialog";
 import { useAuth } from "@/hooks/use-auth";
+import type { ExamSetWithSchool } from "@/hooks/admin/use-exam-sets-management";
+import type { ExamSetStatus } from "@/types/drizzle.types";
 
 import { useTranslations } from "next-intl";
 
 export function ExamSetsPageClient() {
   const t = useTranslations("ExamSets");
-  const tStatus = useTranslations("ExamSets.status");
+  const tStatusTranslations = useTranslations("ExamSets.status");
 
   const { user } = useAuth();
+  const [selectedExamSetForDelete, setSelectedExamSetForDelete] =
+    useState<ExamSetWithSchool | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedExamSetForUpdate, setSelectedExamSetForUpdate] =
+    useState<ExamSetWithSchool | null>(null);
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+
   const {
     examSets,
     isLoading,
     createExamSet,
-    updateExamSet,
-    deleteExamSet,
     search,
     statusFilter,
     page,
@@ -31,9 +41,17 @@ export function ExamSetsPageClient() {
     handlePageChange,
   } = useExamSetsManagement();
 
+  const tStatus = (status: ExamSetStatus) => tStatusTranslations(status);
+
   const columns = createExamSetsColumns({
-    updateExamSet: updateExamSet,
-    deleteExamSet: deleteExamSet,
+    onUpdate: (examSet) => {
+      setSelectedExamSetForUpdate(examSet);
+      setIsUpdateDialogOpen(true);
+    },
+    onDelete: (examSet) => {
+      setSelectedExamSetForDelete(examSet);
+      setIsDeleteDialogOpen(true);
+    },
     currentUserId: user?.id,
     t,
     tStatus,
@@ -66,6 +84,22 @@ export function ExamSetsPageClient() {
           onPageChange: handlePageChange,
         }}
       />
+      {selectedExamSetForDelete && (
+        <ExamSetDeleteDialog
+          examSet={selectedExamSetForDelete}
+          open={isDeleteDialogOpen}
+          onOpenChange={setIsDeleteDialogOpen}
+          key={selectedExamSetForDelete.id}
+        />
+      )}
+      {selectedExamSetForUpdate && (
+        <ExamSetUpdateDialog
+          examSet={selectedExamSetForUpdate}
+          open={isUpdateDialogOpen}
+          onOpenChange={setIsUpdateDialogOpen}
+          key={selectedExamSetForUpdate.id}
+        />
+      )}
     </div>
   );
 }
