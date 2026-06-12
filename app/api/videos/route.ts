@@ -11,6 +11,13 @@ import type { Video } from "@/types/video.types";
 
 export async function GET(request: NextRequest) {
   try {
+    const {
+      user,
+      profile,
+      error: authError,
+    } = await requireRole(["super_admin", "teacher", "student"]);
+    if (authError) return authError;
+
     const searchParams = request.nextUrl.searchParams;
     const page = parseInt(searchParams.get("page") || "1", 10);
     const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
@@ -26,6 +33,12 @@ export async function GET(request: NextRequest) {
       : undefined;
 
     const conditions = [];
+
+    // Filter by visibility based on user role
+    // Students can only see public videos, admins/teachers can see all
+    if (profile?.role === "student") {
+      conditions.push(eq(problemVideos.visibility, "public"));
+    }
 
     if (schoolId) {
       conditions.push(eq(examSets.schoolId, schoolId));
