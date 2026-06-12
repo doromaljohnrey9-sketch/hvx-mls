@@ -517,7 +517,6 @@
         "examType": "Exam Type",
         "grade": "Grade",
         "subject": "Subject",
-        "status": "Status",
         "title": "Title",
         "examSetTitle": "Exam Set Title"
       },
@@ -529,7 +528,6 @@
         "selectSemester": "Select semester",
         "selectType": "Select type",
         "selectGrade": "Select grade",
-        "selectStatus": "Select status",
         "selectVisibility": "Select visibility",
         "examSetTitle": "e.g. 2025 Mnago High Math 1 Midterm",
         "title": "e.g. Problem 15 Solution",
@@ -541,9 +539,7 @@
       "options": {
         "public": "Public",
         "private": "Private",
-        "hidden": "Hidden",
-        "draft": "Draft",
-        "published": "Published"
+        "hidden": "Hidden"
       },
       "toasts": {
         "uploadSuccess": "Video uploaded successfully",

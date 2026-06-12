@@ -49,7 +49,6 @@ const videoUploadSchema = {
     grade: "",
     subject: "Mathematics",
     title: "",
-    status: "Published",
   },
 };
 
@@ -82,7 +81,7 @@ export function VideoUploadDialog() {
           grade: parseInt(data.newExamSet.grade),
           subject: data.newExamSet.subject,
           title: data.newExamSet.title,
-          status: data.newExamSet.status as "draft" | "published" | "hidden",
+          status: "published",
         });
         if (!newExamSet) {
           throw new Error("Failed to create exam set");
@@ -268,24 +267,6 @@ export function VideoUploadDialog() {
                       {...form.register("newExamSet.subject")}
                       placeholder={t("placeholders.subject")}
                     />
-                  </Field>
-
-                  <Field>
-                    <FieldLabel>{t("fields.status")}</FieldLabel>
-                    <Select
-                      {...form.register("newExamSet.status")}
-                      onValueChange={(value) => form.setValue("newExamSet.status", value)}
-                      defaultValue="published"
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("placeholders.selectStatus")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="draft">{t("options.draft")}</SelectItem>
-                        <SelectItem value="published">{t("options.published")}</SelectItem>
-                        <SelectItem value="hidden">{t("options.hidden")}</SelectItem>
-                      </SelectContent>
-                    </Select>
                   </Field>
 
                   <Field className="col-span-2">
