@@ -531,7 +531,6 @@
         "examType": "시험 종류",
         "grade": "학년",
         "subject": "과목",
-        "status": "상태",
         "examSetTitle": "시험 세트 제목"
       },
       "placeholders": {
@@ -543,7 +542,6 @@
         "selectSemester": "학기 선택",
         "selectType": "종류 선택",
         "selectGrade": "학년 선택",
-        "selectStatus": "상태 선택",
         "selectVisibility": "공개 여부 선택",
         "problemNumber": "예: 15",
         "title": "예: 15번 문제 풀이",
@@ -555,9 +553,7 @@
       "options": {
         "public": "공개",
         "private": "비공개",
-        "hidden": "숨김",
-        "draft": "초안",
-        "published": "게시됨"
+        "hidden": "숨김"
       },
       "toasts": {
         "uploadSuccess": "동영상이 성공적으로 업로드되었습니다",
