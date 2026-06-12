@@ -32,7 +32,7 @@ import { getSchoolsQueryOptions } from "@/queries/schools.query";
 import { getExamSetsQueryOptions } from "@/queries/exam-sets.query";
 import type { SelectExamSet } from "@/types/drizzle.types";
 
-type ExamSetWithSchoolName = SelectExamSet & { schoolName: string };
+type ExamSetWithSchoolName = SelectExamSet & { schoolName?: string };
 
 const videoUploadSchema = {
   examSetId: "",
@@ -62,9 +62,8 @@ export function VideoUploadDialog() {
   const t = useTranslations("Videos.management");
 
   const { data: schools } = useQuery(getSchoolsQueryOptions());
-  const { data: examSets } = useQuery(getExamSetsQueryOptions()) as {
-    data: ExamSetWithSchoolName[] | undefined;
-  };
+  const { data: examSetsData } = useQuery(getExamSetsQueryOptions());
+  const examSets = (examSetsData?.data ?? []) as ExamSetWithSchoolName[];
 
   const form = useForm({
     defaultValues: videoUploadSchema,

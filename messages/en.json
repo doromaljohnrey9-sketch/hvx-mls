@@ -5,7 +5,8 @@
     "admin": "Admin",
     "videos": "Videos",
     "search": "Search",
-    "users": "Users"
+    "users": "Users",
+    "examSets": "Exam Sets"
   },
   "Index": {
     "title": "Math Learning Studio",
@@ -428,6 +429,7 @@
     "dashboard": "Dashboard",
     "searchvideos": "Search Videos",
     "users": "Users",
+    "examSets": "Exam Sets",
     "logout": "Log out",
     "logoutFailed": "Sign out failed",
     "tryAgain": "Please try again."
@@ -564,6 +566,46 @@
       "uploading": "Uploading...",
       "deleting": "Deleting...",
       "updating": "Updating..."
+    }
+  },
+  "ExamSets": {
+    "title": "Exam Set Management",
+    "description": "Manage exam sets for assessments.",
+    "search": "Search",
+    "searchPlaceholder": "Search by title, subject, or school...",
+    "filterByStatus": "Filter by status",
+    "allStatus": "All Status",
+    "createExamSet": "Create Exam Set",
+    "table": {
+      "noExamSets": "No exam sets found.",
+      "showing": "Showing {start} to {end} of {total} exam sets",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {totalPages}",
+      "columns": {
+        "title": "Title",
+        "subject": "Subject",
+        "school": "School",
+        "grade": "Grade",
+        "year": "Year",
+        "semester": "Semester",
+        "examType": "Exam Type",
+        "status": "Status",
+        "createdAt": "Created"
+      }
+    },
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "hidden": "Hidden"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "toasts": {
+      "created": "Exam set created",
+      "createdDesc": "The exam set has been created successfully."
     }
   }
 }

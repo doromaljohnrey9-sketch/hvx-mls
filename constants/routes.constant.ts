@@ -16,6 +16,7 @@ export const PROTECTED_ROUTES = {
   BLOCKED: "/blocked",
   ADMIN_USERS: "/admin/users",
   ADMIN_VIDEOS: "/admin/videos",
+  ADMIN_EXAM_SETS: "/admin/exam-sets",
   SEARCH: "/search",
   VIDEO: "/videos",
 } as const;
