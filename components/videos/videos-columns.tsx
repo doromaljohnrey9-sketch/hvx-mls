@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   ArrowUpDownIcon,
@@ -14,6 +15,9 @@ import {
   ClipboardList,
   Award,
   Hash,
+  Eye,
+  EyeOff,
+  Lock,
 } from "lucide-react";
 import { useRouter } from "@/i18n/routing";
 
@@ -258,6 +262,41 @@ export function createVideosColumns({
             <Hash className="size-4 text-muted-foreground shrink-0" />
             <span className="text-sm text-foreground truncate">{video.problemNumber}</span>
           </div>
+        );
+      },
+      size: 140,
+    },
+    {
+      accessorKey: "visibility",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.visibility")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const video = row.original;
+        const visibility = video.visibility;
+        const variant = visibility === "public" ? "default" : "secondary";
+
+        const icon =
+          visibility === "public" ? (
+            <Eye className="size-3" />
+          ) : visibility === "private" ? (
+            <Lock className="size-3" />
+          ) : (
+            <EyeOff className="size-3" />
+          );
+
+        return (
+          <Badge variant={variant} className="text-xs gap-1.5">
+            {icon}
+            {t(`management.options.${visibility}`)}
+          </Badge>
         );
       },
       size: 140,

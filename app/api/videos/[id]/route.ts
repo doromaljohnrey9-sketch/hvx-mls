@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/drizzle/db";
 import { problemVideos, examSets, schools } from "@/drizzle/schemas";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { apiResponse } from "@/lib/response";
 import { rateLimit } from "@/lib/ratelimit";
 import { requireRole } from "@/lib/guards/role.guard";
@@ -15,7 +15,21 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const rateLimited = await rateLimit("api");
     if (rateLimited) return rateLimited;
 
+    const {
+      user,
+      profile,
+      error: authError,
+    } = await requireRole(["super_admin", "teacher", "student"]);
+    if (authError) return authError;
+
     const { id } = await params;
+
+    const whereConditions = [eq(problemVideos.id, id)];
+
+    // Students can only access public videos, admins/teachers can access all
+    if (profile?.role === "student") {
+      whereConditions.push(eq(problemVideos.visibility, "public"));
+    }
 
     const results = await db
       .select({
@@ -49,7 +63,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       .from(problemVideos)
       .innerJoin(examSets, eq(problemVideos.examSetId, examSets.id))
       .innerJoin(schools, eq(examSets.schoolId, schools.id))
-      .where(eq(problemVideos.id, id))
+      .where(and(...whereConditions))
       .limit(1);
 
     if (results.length === 0) {
