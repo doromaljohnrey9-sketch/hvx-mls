@@ -429,7 +429,7 @@
     "dashboard": "Dashboard",
     "searchvideos": "Search Videos",
     "users": "Users",
-    "examSets": "Exam Sets",
+    "examsets": "Exam Sets",
     "logout": "Log out",
     "logoutFailed": "Sign out failed",
     "tryAgain": "Please try again."
@@ -601,7 +601,26 @@
     },
     "toasts": {
       "created": "Exam set created",
-      "createdDesc": "The exam set has been created successfully."
+      "createdDesc": "The exam set has been created successfully.",
+      "deleteSuccess": "Exam set deleted",
+      "deleteError": "Failed to delete exam set",
+      "tryAgain": "Please try again",
+      "updateSuccess": "Exam set updated",
+      "updateError": "Failed to update exam set"
+    },
+    "delete": {
+      "title": "Are you sure?",
+      "description": "This action cannot be undone. This will permanently delete the exam set and all associated videos.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting..."
+    },
+    "update": {
+      "title": "Update Exam Set",
+      "description": "Update the exam set details.",
+      "cancel": "Cancel",
+      "save": "Save Changes",
+      "saving": "Saving..."
     }
   }
 }

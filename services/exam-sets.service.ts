@@ -31,4 +31,27 @@ export const examSetsService = {
       return null;
     }
   },
+  delete: async (id: string): Promise<boolean> => {
+    try {
+      const response = await axiosInstance.delete<{ success: boolean }>(
+        `${API_ROUTES.EXAM_SETS}/${id}`
+      );
+      return response.data.success ?? false;
+    } catch (error) {
+      console.error("Failed to delete exam set:", error);
+      return false;
+    }
+  },
+  update: async (id: string, data: Partial<InsertExamSet>): Promise<SelectExamSet | null> => {
+    try {
+      const response = await axiosInstance.patch<{ success: boolean; data: SelectExamSet }>(
+        `${API_ROUTES.EXAM_SETS}/${id}`,
+        data
+      );
+      return response.data.data ?? null;
+    } catch (error) {
+      console.error("Failed to update exam set:", error);
+      return null;
+    }
+  },
 };
