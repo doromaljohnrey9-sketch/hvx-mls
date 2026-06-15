@@ -521,8 +521,10 @@
         "examSetTitle": "Exam Set Title"
       },
       "placeholders": {
+        "selectExamSet": "Select exam set",
         "selectOrCreateExamSet": "Select or create exam set",
         "createExamSet": "Create new exam set",
+        "noExamSet": "No exam sets found.",
         "selectSchool": "Select school",
         "selectYear": "Select year",
         "selectSemester": "Select semester",

@@ -34,7 +34,7 @@ export const adminService = {
 
   updateUser: async (userId: string, updates: AdminUserUpdate): Promise<boolean> => {
     try {
-      await axiosInstance.patch(API_ROUTES.ADMIN.USERS, { userId, ...updates });
+      await axiosInstance.patch(`${API_ROUTES.ADMIN.USERS}/${userId}`, updates);
       return true;
     } catch (error) {
       console.error("Failed to update user:", error);

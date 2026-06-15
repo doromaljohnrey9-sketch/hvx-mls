@@ -3,7 +3,7 @@ import { db } from "@/lib/drizzle/db";
 import { examSets, schools } from "@/drizzle/schemas";
 import { apiResponse } from "@/lib/response";
 import { rateLimit } from "@/lib/ratelimit";
-import { getSupabaseServer } from "@/lib/supabase/server";
+import { requireRole } from "@/lib/guards/role.guard";
 import { HttpStatus } from "@/constants/http-status.constant";
 import { eq, and, like, or } from "drizzle-orm";
 
@@ -110,19 +110,8 @@ export async function POST(request: NextRequest) {
     const rateLimited = await rateLimit("api");
     if (rateLimited) return rateLimited;
 
-    const supabase = await getSupabaseServer();
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return apiResponse({
-        data: null,
-        status: HttpStatus.UNAUTHORIZED,
-        message: "Unauthorized",
-      });
-    }
+    const { user, error: authError } = await requireRole(["super_admin", "teacher"]);
+    if (authError) return authError;
 
     const body = await request.json();
     const { schoolId, year, semester, examType, grade, subject, title } = body;
@@ -147,7 +136,7 @@ export async function POST(request: NextRequest) {
         subject,
         title,
         status: "draft",
-        createdBy: user.id,
+        createdBy: user!.id,
       })
       .returning();
 

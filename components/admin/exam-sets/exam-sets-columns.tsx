@@ -20,6 +20,7 @@ import {
   Clock,
   ClipboardList,
   Hash,
+  ArrowUpDownIcon,
 } from "lucide-react";
 import { ExamSetWithSchool } from "@/hooks/admin/use-exam-sets-management";
 import { ExamSetStatus } from "@/types/drizzle.types";
@@ -60,7 +61,16 @@ export function createExamSetsColumns({
     },
     {
       accessorKey: "title",
-      header: t("table.columns.title"),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.columns.title")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         return (
           <Tooltip>
@@ -79,7 +89,16 @@ export function createExamSetsColumns({
     },
     {
       accessorKey: "subject",
-      header: t("table.columns.subject"),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.columns.subject")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
@@ -94,7 +113,16 @@ export function createExamSetsColumns({
     },
     {
       accessorKey: "schoolName",
-      header: t("table.columns.school"),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.columns.school")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
@@ -109,7 +137,16 @@ export function createExamSetsColumns({
     },
     {
       accessorKey: "grade",
-      header: t("table.columns.grade"),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.columns.grade")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
@@ -118,11 +155,20 @@ export function createExamSetsColumns({
           </div>
         );
       },
-      size: 80,
+      size: 100,
     },
     {
       accessorKey: "year",
-      header: t("table.columns.year"),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.columns.year")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
@@ -131,11 +177,20 @@ export function createExamSetsColumns({
           </div>
         );
       },
-      size: 80,
+      size: 100,
     },
     {
       accessorKey: "semester",
-      header: t("table.columns.semester"),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.columns.semester")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
@@ -146,11 +201,20 @@ export function createExamSetsColumns({
           </div>
         );
       },
-      size: 100,
+      size: 120,
     },
     {
       accessorKey: "examType",
-      header: t("table.columns.examType"),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.columns.examType")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
@@ -165,13 +229,31 @@ export function createExamSetsColumns({
     },
     {
       accessorKey: "status",
-      header: t("table.columns.status"),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.columns.status")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
       cell: ({ row }) => getStatusBadge(row.original.status),
       size: 100,
     },
     {
       accessorKey: "createdAt",
-      header: t("table.columns.createdAt"),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-8 px-2"
+        >
+          {t("table.columns.createdAt")}
+          <ArrowUpDownIcon className="ml-2 size-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
         return (
           <Tooltip>

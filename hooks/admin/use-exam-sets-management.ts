@@ -34,6 +34,7 @@ export function useExamSetsManagement() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getQueryKey.examSets.all });
+      toast.success("Exam set created successfully");
     },
     onError: (error: any) => {
       console.error("Failed to create exam set:", error);
