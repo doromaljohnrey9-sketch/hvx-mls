@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -25,16 +25,17 @@ import { useTranslations } from "next-intl";
 import { useQuery } from "@tanstack/react-query";
 import { schoolsService } from "@/services/schools.service";
 import type { InsertExamSet } from "@/types/drizzle.types";
-import { CreatableCombobox } from "@/components/ui/creatable-combobox";
 
 interface ExamSetCreateDialogProps {
   onCreateExamSet: (data: InsertExamSet) => void;
+  isPending?: boolean;
 }
 
-export function ExamSetCreateDialog({ onCreateExamSet }: ExamSetCreateDialogProps) {
+export function ExamSetCreateDialog({ onCreateExamSet, isPending }: ExamSetCreateDialogProps) {
   const t = useTranslations("ExamSets");
   const tStatus = useTranslations("ExamSets.status");
   const [open, setOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data: schools } = useQuery({
     queryKey: ["schools"],
@@ -58,19 +59,32 @@ export function ExamSetCreateDialog({ onCreateExamSet }: ExamSetCreateDialogProp
       alert("Please fill in all required fields");
       return;
     }
+    setIsSubmitting(true);
     onCreateExamSet(formData as InsertExamSet);
-    setOpen(false);
-    setFormData({
-      schoolId: "",
-      year: new Date().getFullYear(),
-      semester: "1st",
-      examType: "midterm",
-      grade: 1,
-      subject: "",
-      title: "",
-      status: "draft",
-    });
   };
+
+  useEffect(() => {
+    if (!isPending && isSubmitting) {
+      setOpen(false);
+      setIsSubmitting(false);
+      setFormData({
+        schoolId: "",
+        year: new Date().getFullYear(),
+        semester: "1st",
+        examType: "midterm",
+        grade: 1,
+        subject: "",
+        title: "",
+        status: "draft",
+      });
+    }
+  }, [isPending, isSubmitting]);
+
+  useEffect(() => {
+    if (!open) {
+      setIsSubmitting(false);
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -88,18 +102,21 @@ export function ExamSetCreateDialog({ onCreateExamSet }: ExamSetCreateDialogProp
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="school">School *</Label>
-            <CreatableCombobox
-              items={
-                schools?.map((school) => ({
-                  label: school.name,
-                  value: school.id,
-                })) || []
-              }
+            <Select
               value={formData.schoolId || ""}
               onValueChange={(value: string) => setFormData({ ...formData, schoolId: value })}
-              placeholder="Select school"
-              emptyText="No schools found"
-            />
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select school" />
+              </SelectTrigger>
+              <SelectContent>
+                {schools?.map((school) => (
+                  <SelectItem key={school.id} value={school.id}>
+                    {school.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -194,10 +211,17 @@ export function ExamSetCreateDialog({ onCreateExamSet }: ExamSetCreateDialogProp
             </Select>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              disabled={isPending}
+            >
               Cancel
             </Button>
-            <Button type="submit">{t("createExamSet")}</Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Creating..." : t("createExamSet")}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

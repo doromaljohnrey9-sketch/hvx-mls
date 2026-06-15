@@ -19,6 +19,7 @@ interface ExamSetsFiltersProps {
   onSearchSubmit: () => void;
   onStatusFilterChange: (value: string) => void;
   onCreateExamSet: (data: any) => void;
+  isCreatePending?: boolean;
 }
 
 import { useTranslations } from "next-intl";
@@ -30,6 +31,7 @@ export function ExamSetsFilters({
   onSearchSubmit,
   onStatusFilterChange,
   onCreateExamSet,
+  isCreatePending,
 }: ExamSetsFiltersProps) {
   const t = useTranslations("ExamSets");
   const tStatus = useTranslations("ExamSets.status");
@@ -71,7 +73,7 @@ export function ExamSetsFilters({
               {t("allStatus")}
             </Button>
           )}
-          <ExamSetCreateDialog onCreateExamSet={onCreateExamSet} />
+          <ExamSetCreateDialog onCreateExamSet={onCreateExamSet} isPending={isCreatePending} />
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">

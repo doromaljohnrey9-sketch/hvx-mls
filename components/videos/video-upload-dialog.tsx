@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { ExamSetCombobox } from "@/components/videos/exam-set-combobox";
 
 import { videosService } from "@/services/videos.service";
 import { examSetsService } from "@/services/exam-sets.service";
@@ -61,7 +62,7 @@ export function VideoUploadDialog() {
   const t = useTranslations("Videos.management");
 
   const { data: schools } = useQuery(getSchoolsQueryOptions());
-  const { data: examSetsData } = useQuery(getExamSetsQueryOptions());
+  const { data: examSetsData } = useQuery(getExamSetsQueryOptions({ status: "published" }));
   const examSets = (examSetsData?.data ?? []) as ExamSetWithSchoolName[];
 
   const form = useForm({
@@ -133,36 +134,19 @@ export function VideoUploadDialog() {
           <FieldGroup className="space-y-4">
             <Field>
               <FieldLabel>{t("fields.examSet")}</FieldLabel>
-              <Select
-                value={createNewExamSet ? "new" : form.watch("examSetId")}
+              <ExamSetCombobox
+                examSets={examSets}
+                value={form.watch("examSetId")}
                 onValueChange={(value) => {
-                  if (value === "new") {
-                    setCreateNewExamSet(true);
-                  } else {
-                    setCreateNewExamSet(false);
-                    form.setValue("examSetId", value);
-                  }
+                  setCreateNewExamSet(false);
+                  form.setValue("examSetId", value);
                 }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t("placeholders.selectOrCreateExamSet")} />
-                </SelectTrigger>
-                <SelectContent
-                  position="popper"
-                  className="w-(--radix-select-trigger-width) min-w-0"
-                >
-                  <SelectItem value="new">{t("placeholders.createExamSet")}</SelectItem>
-                  {examSets?.map((examSet) => (
-                    <SelectItem key={examSet.id} value={examSet.id} className="wrap-break-word">
-                      {examSet.schoolName} - {examSet.year}{" "}
-                      {examSet.semester === "1st" ? tFilters("semester1") : tFilters("semester2")}{" "}
-                      {examSet.examType === "midterm" ? tFilters("midterm") : tFilters("final")}{" "}
-                      {t("gradeSuffixShort", { grade: examSet.grade })} - {examSet.subject} -{" "}
-                      {examSet.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                placeholder={t("placeholders.selectOrCreateExamSet")}
+                showCreateOption
+                createOptionLabel={t("placeholders.createExamSet")}
+                isCreateMode={createNewExamSet}
+                onCreateSelect={() => setCreateNewExamSet(true)}
+              />
             </Field>
 
             {createNewExamSet && (
@@ -175,7 +159,7 @@ export function VideoUploadDialog() {
                       {...form.register("newExamSet.schoolId")}
                       onValueChange={(value) => form.setValue("newExamSet.schoolId", value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder={t("placeholders.selectSchool")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -197,7 +181,7 @@ export function VideoUploadDialog() {
                       {...form.register("newExamSet.year")}
                       onValueChange={(value) => form.setValue("newExamSet.year", value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder={t("placeholders.selectYear")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -218,7 +202,7 @@ export function VideoUploadDialog() {
                       {...form.register("newExamSet.semester")}
                       onValueChange={(value) => form.setValue("newExamSet.semester", value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder={t("placeholders.selectSemester")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -234,7 +218,7 @@ export function VideoUploadDialog() {
                       {...form.register("newExamSet.examType")}
                       onValueChange={(value) => form.setValue("newExamSet.examType", value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder={t("placeholders.selectType")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -250,7 +234,7 @@ export function VideoUploadDialog() {
                       {...form.register("newExamSet.grade")}
                       onValueChange={(value) => form.setValue("newExamSet.grade", value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder={t("placeholders.selectGrade")} />
                       </SelectTrigger>
                       <SelectContent>
@@ -305,7 +289,7 @@ export function VideoUploadDialog() {
                   onValueChange={(value) => form.setValue("visibility", value)}
                   defaultValue="public"
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder={t("placeholders.selectVisibility")} />
                   </SelectTrigger>
                   <SelectContent>

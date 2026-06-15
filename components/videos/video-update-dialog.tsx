@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { ExamSetCombobox } from "@/components/videos/exam-set-combobox";
 
 import { videosService } from "@/services/videos.service";
 import { getExamSetsQueryOptions } from "@/queries/exam-sets.query";
@@ -50,11 +51,9 @@ import { useTranslations } from "next-intl";
 export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDialogProps) {
   const queryClient = useQueryClient();
   const t = useTranslations("Videos.management");
-  const tFilters = useTranslations("Videos.search.filters");
 
-  const { data: examSets } = useQuery(getExamSetsQueryOptions()) as {
-    data: ExamSetWithSchoolName[] | undefined;
-  };
+  const { data: examSetsData } = useQuery(getExamSetsQueryOptions({ status: "published" }));
+  const examSets = (examSetsData?.data ?? []) as ExamSetWithSchoolName[];
 
   const form = useForm({
     defaultValues: {
@@ -121,24 +120,12 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
           <FieldGroup className="space-y-4">
             <Field>
               <FieldLabel>{t("fields.examSet")}</FieldLabel>
-              <Select
+              <ExamSetCombobox
+                examSets={examSets}
                 value={form.watch("examSetId")}
                 onValueChange={(value) => form.setValue("examSetId", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={t("placeholders.selectExamSet")} />
-                </SelectTrigger>
-                <SelectContent>
-                  {examSets?.map((examSet) => (
-                    <SelectItem key={examSet.id} value={examSet.id}>
-                      {examSet.schoolName} - {examSet.year}{" "}
-                      {examSet.semester === "1st" ? tFilters("semester1") : tFilters("semester2")}{" "}
-                      {examSet.examType === "midterm" ? tFilters("midterm") : tFilters("final")} G
-                      {examSet.grade} - {examSet.subject} - {examSet.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                placeholder={t("placeholders.selectExamSet")}
+              />
             </Field>
 
             <div className="grid grid-cols-2 gap-4">
@@ -162,7 +149,7 @@ export function VideoUpdateDialog({ video, open, onOpenChange }: VideoUpdateDial
                     form.setValue("visibility", value)
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder={t("placeholders.selectVisibility")} />
                   </SelectTrigger>
                   <SelectContent>

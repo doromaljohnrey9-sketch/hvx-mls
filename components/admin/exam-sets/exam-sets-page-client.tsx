@@ -41,6 +41,10 @@ export function ExamSetsPageClient() {
     handlePageChange,
   } = useExamSetsManagement();
 
+  const handleCreateExamSet = (data: any) => {
+    createExamSet.mutate(data);
+  };
+
   const tStatus = (status: ExamSetStatus) => tStatusTranslations(status);
 
   const columns = createExamSetsColumns({
@@ -57,10 +61,6 @@ export function ExamSetsPageClient() {
     tStatus,
   });
 
-  const handleCreateExamSet = (data: any) => {
-    createExamSet.mutate(data);
-  };
-
   return (
     <div className="flex-1 min-w-0 space-y-6 p-8">
       <ExamSetsPageHeader />
@@ -71,6 +71,7 @@ export function ExamSetsPageClient() {
         onSearchSubmit={handleSearchSubmit}
         onStatusFilterChange={handleStatusFilterChange}
         onCreateExamSet={handleCreateExamSet}
+        isCreatePending={createExamSet.isPending}
       />
       <ExamSetsTable
         columns={columns}

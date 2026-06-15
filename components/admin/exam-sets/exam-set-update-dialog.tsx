@@ -26,7 +26,6 @@ import { useQuery } from "@tanstack/react-query";
 import { schoolsService } from "@/services/schools.service";
 import { examSetsService } from "@/services/exam-sets.service";
 import type { ExamSetWithSchool } from "@/hooks/admin/use-exam-sets-management";
-import { CreatableCombobox } from "@/components/ui/creatable-combobox";
 
 interface ExamSetUpdateDialogProps {
   examSet: ExamSetWithSchool;
@@ -105,18 +104,21 @@ export function ExamSetUpdateDialog({ examSet, open, onOpenChange }: ExamSetUpda
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="school">School *</Label>
-            <CreatableCombobox
-              items={
-                schools?.map((school) => ({
-                  label: school.name,
-                  value: school.id,
-                })) || []
-              }
+            <Select
               value={formData.schoolId || ""}
               onValueChange={(value: string) => setFormData({ ...formData, schoolId: value })}
-              placeholder="Select school"
-              emptyText="No schools found"
-            />
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select school" />
+              </SelectTrigger>
+              <SelectContent>
+                {schools?.map((school) => (
+                  <SelectItem key={school.id} value={school.id}>
+                    {school.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
